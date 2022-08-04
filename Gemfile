@@ -74,3 +74,21 @@ end
 group :test, :development do
   gem "dotenv-rails"
 end
+
+group :development do
+  gem "rubocop"
+end
+
+group :test do
+  gem "faker"
+end
+
+group :test, :development do
+  gem "byebug"
+  gem "factory_bot_rails"
+  gem "rspec"
+end
+
+group :development, :production do
+  gem "aws-sdk-s3"
+end
