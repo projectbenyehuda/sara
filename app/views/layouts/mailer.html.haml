@@ -1,0 +1,11 @@
+\!!!
+\%html
+\%head
+\%meta{:content =&gt; "text/html; charset=UTF-8", "http-equiv" =&gt; "Content-Type"}/
+\%title Sara
+\%meta{:content =&gt; "width=device-width,initial-scale=1", :name =&gt; "viewport"}/
+\= csrf_meta_tags
+\= csp_meta_tag
+\= stylesheet_link_tag "application", "data-turbo-track": "reload"
+\%body
+\= yield
