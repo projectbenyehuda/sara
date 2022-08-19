@@ -25,7 +25,7 @@ sudo snap start docker
 # Running app
 
 ```
-cd ./development-dependencies
+cd ./development
 docker-compose up
 ```
 
