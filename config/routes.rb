@@ -6,4 +6,9 @@ Rails.application.routes.draw do
   root 'welcome#index'
 
   resource :welcome, only: :index
+  resources :timelines, only: :index do
+    collection do
+      get :data
+    end
+  end
 end
