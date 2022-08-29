@@ -16,10 +16,38 @@ In Ubuntu
     nvm use 16.17.0
     ```
    You may need to close and reopen terminal window after nvm installation
+3. Install proper version of yarn package manager:
+   ```
+   npm install yarn --global
+   ```
+   
+   This will install 'classic' yarn version 1.x. You need to switch it to latest version:
+   ```
+   yarn set version berry
+   ```
+   
+   ensure that yarn have version > 3.x:
+   ```
+   yarn --version
+   ```
+   
+   Install project js dependencies:
+   ```
+   yarn install
+   ```
 
-3. Setup and launch DB and other services using Docker (see instruction in development/README.md)
+4. Build assets using yarn
+   ```
+   yarn build
+   ```
 
-4. 
+   Note: if you want yarn to monitor changes to js files and automatically recompile them launch it with `watch` option:
+   ```
+   yarn build --watch
+   ```
+
+5. Setup and launch DB and other services using Docker (see instruction in development/README.md)
+
 
 # Javascript handling
 

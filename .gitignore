@@ -36,6 +36,9 @@
 # Ignore IDE settings
 .idea
 
+.yarnrc.yml
+.pnp.cjs
+
 # Ignore machine-specific settings for dotenv-rails gem
 .env.*.local
 
