@@ -22,6 +22,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_02_115804) do
     t.integer "source", null: false
     t.integer "media_type", null: false
     t.string "url", null: false
+    t.string "media_url"
+    t.string "thumbnail_url"
     t.string "title"
     t.text "text"
     t.datetime "created_at", null: false
