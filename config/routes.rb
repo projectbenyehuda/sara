@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   root 'welcome#index'
 
   resource :welcome, only: :index
+  get 'welcome/query_by_filter'
   resources :timelines, only: :index do
     collection do
       get :data

@@ -1,0 +1,86 @@
+{
+  "version": "0.1",
+  "description": "POC demonstration tree",
+  "maintainer": "editor@benyehuda.org",
+  "nodes": [
+    {
+      "title": "אישים",
+      "nodetype": "branch",
+      "description": "בני אדם ממשיים מכל התקופות",
+      "base_query": "people",
+      "nodes": [
+        {
+          "title": "לפי עיסוק",
+          "nodetype": "Wikidata filter"
+        }
+      ]
+    }
+  ],
+  "base_queries": {
+    "wikidata": [
+      {
+        "tag": "people",
+        "title": "אישים",
+        "description": "בני אדם ממשיים מכל התקופות",
+        "sparql": "SELECT ?item ?itemLabel WHERE { ?item wdt:P31 wd:Q5.   SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". } }"
+      },
+      {
+        "tag": "human_settlements",
+        "title": "יישובים",
+        "description": "נקודות יישוב אנושיות מכל העולם",
+        "sparql": "SELECT ?item ?itemLabel WHERE { ?item wdt:P31/wdt:P279* wd:Q486972.   SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". } }"
+      }
+    ],
+    "nli": []
+  },
+  "filters": {
+    "wikidata": [
+      {
+        "tag": "citizen",
+        "title": "אזרחות",
+        "description": "סינון לפי מדינת האזרחות",
+        "relevant_base_queries": [
+          "people"
+        ],
+        "param_count": 1,
+        "lookup_type": "dropdown",
+        "lookup_query": "SELECT ?item ?itemLabel WHERE { ?item wdt:P31 wd:Q6256.   SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". } }",
+        "default_param_values": [
+          "wd:Q801"
+        ],
+        "sparql": "?item wdt:P27 &&&1 ."
+      },
+      {
+        "tag": "gender",
+        "title": "מיגדר",
+        "description": "סינון לפי מיגדר",
+        "relevant_base_queries": [
+          "people"
+        ],
+        "param_count": 1,
+        "lookup_type": "dropdown",
+        "lookup_query": "SELECT ?item ?itemLabel WHERE { ?item wdt:P31 wd:Q48277.   SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". } }",
+        "default_param_values": [
+          "wd:Q6581072"
+        ],
+        "sparql": "?item wdt:P21 &&&1 ."
+      },
+      {
+        "tag": "country",
+        "title": "מדינה",
+        "description": "סינון לפי מדינה",
+        "relevant_base_queries": [
+          "human_settlements"
+        ],
+        "param_count": 1,
+        "lookup_type": "dropdown",
+        "lookup_query": "SELECT ?item ?itemLabel WHERE { ?item wdt:P31 wd:Q6256.   SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". } }",
+        "default_param_values": [
+          "wd:Q801"
+        ],
+        "sparql": "?item wdt:P17 &&&1 ."
+      }
+    ],
+    "nli": []
+  }
+}

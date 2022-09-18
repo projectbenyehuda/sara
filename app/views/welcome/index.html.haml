@@ -6,3 +6,27 @@
   %li Assistant
 
 To be Done: This is a stub page
+
+%hr
+%h2 Browsing tree prototyping
+%ul
+  - @menu.each do |node|
+    %li
+      = "#{node['title']} (#{node['description']})"
+      - if node['nodetype'] == 'branch' && node['base_query'].present?
+        %p= 'Please pick at least one filter:'
+        %ul
+          - @filters['wikidata'].select{|f| f['relevant_base_queries'].include?(node['base_query'])}.each do |f|
+            %li
+              %b= f['title']
+              = " (#{f['description']})"
+              - f['param_count'].times do |i|
+                = text_field_tag "param_#{i}", nil, {placeholder: f['default_param_values'][i], 'data-behavior': 'autocomplete'}
+              = link_to 'run query!', action: :query_by_filter, filter: f['tag']
+      - else
+        %p TODO: add code to handle leaf nodes
+:javascript
+  var options = { data: ['moose', 'elk', 'wapiti'] };
+  $(document).ready(function() {
+    $('*[data-behavior=autocomplete]').easyAutocomplete(options);
+  });
