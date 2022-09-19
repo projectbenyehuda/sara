@@ -63,6 +63,18 @@
         "sparql": "?item wdt:P140 &&&1 ."
       },
       {
+        "tag": "born_after",
+        "title": "נולד/ה אחרֵי",
+        "description": "סינון לפי תאריך לידה מאוחר לשנה הנתונה",
+        "relevant_base_queries": [
+          "people"
+        ],
+        "param_count": 1,
+        "lookup_type": "",
+        "lookup_query": "",
+        "sparql": "?item wdt:P569 ?dob . FILTER (?birth > \"&&&1-01-01\"^^xsd:dateTime ."
+      },
+      {
         "tag": "gender",
         "title": "מיגדר",
         "description": "סינון לפי מיגדר",
