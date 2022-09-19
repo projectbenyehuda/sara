@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   root 'welcome#index'
 
   resource :welcome, only: :index
-  get 'welcome/query_by_filter'
+  get 'welcome/query_by_filter', as: 'query_by_filter'
+  get 'welcome/autocomplete_by_filter_tag', as: 'autocomplete_by_filter_tag'
   resources :timelines, only: :index do
     collection do
       get :data

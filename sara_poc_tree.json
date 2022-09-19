@@ -43,12 +43,24 @@
           "people"
         ],
         "param_count": 1,
-        "lookup_type": "dropdown",
+        "lookup_type": "autocomplete",
         "lookup_query": "SELECT ?item ?itemLabel WHERE { ?item wdt:P31 wd:Q6256.   SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". } }",
         "default_param_values": [
-          "wd:Q801"
+          "Q801"
         ],
         "sparql": "?item wdt:P27 &&&1 ."
+      },
+      {
+        "tag": "religion",
+        "title": "דת",
+        "description": "סינון לפי דת האדם המוצהרת",
+        "relevant_base_queries": [
+          "people"
+        ],
+        "param_count": 1,
+        "lookup_type": "autocomplete",
+        "lookup_query": "SELECT ?item ?itemLabel WHERE { ?item wdt:P31 wd:Q9174.   SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". } }",
+        "sparql": "?item wdt:P140 &&&1 ."
       },
       {
         "tag": "gender",
@@ -59,9 +71,9 @@
         ],
         "param_count": 1,
         "lookup_type": "dropdown",
-        "lookup_query": "SELECT ?item ?itemLabel WHERE { ?item wdt:P31 wd:Q48277.   SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". } }",
+        "lookup_query": "SELECT ?item ?itemLabel WHERE { ?item wdt:P31 wd:Q48264.   SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". } }",
         "default_param_values": [
-          "wd:Q6581072"
+          "Q6581072"
         ],
         "sparql": "?item wdt:P21 &&&1 ."
       },
@@ -76,7 +88,7 @@
         "lookup_type": "dropdown",
         "lookup_query": "SELECT ?item ?itemLabel WHERE { ?item wdt:P31 wd:Q6256.   SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". } }",
         "default_param_values": [
-          "wd:Q801"
+          "Q801"
         ],
         "sparql": "?item wdt:P17 &&&1 ."
       }

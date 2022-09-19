@@ -1,6 +1,8 @@
 require 'sparql/client'
 class ApplicationController < ActionController::Base
 
+  helper_method :wikidata_query_as_hash
+
   SARA_BROWSING_TREE_FILENAME = './sara_poc_tree.json' # TODO: un-hardcode this
 
   # dumping some quick prototyping code here for now # TODO: consider refactoring into other contollers
@@ -21,13 +23,22 @@ class ApplicationController < ActionController::Base
 
   # Query Wikidata for a list of items
   def wikidata_query(query, params)
+    # TODO: add caching (use a hash of the query string as key)
     interpolated_query = interpolate_sparql_statement(query, params) # handle any remaining params (perhaps from base_query)
+    puts "DBG: interpolated_query: #{interpolated_query}"
     return @@sparql_endpoint.query(interpolated_query) # returns a collection of RDF:QUERY::Solutions
+  end
+  def wikidata_query_as_hash(query)
+    results = wikidata_query(query, params[:params])
+    puts "DBG: #{results.count} results"
+    ret = {}
+    results.each{|r| ret[r['itemLabel'].to_s] = r['item'].to_s.sub('http://www.wikidata.org/entity/', 'wd:')}
+    return ret
   end
 
   # load the SARA browsing tree JSON file
   def load_browsing_tree
-    return JSON.parse(File.read(SARA_BROWSING_TREE_FILENAME))
+    @browsing_tree = JSON.parse(File.read(SARA_BROWSING_TREE_FILENAME))
   end
   
 end
