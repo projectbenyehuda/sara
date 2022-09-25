@@ -1,11 +1,10 @@
-// TODO: migrate this to importmap, below.
-// Entry point for the build script in your package.json
 import $ from 'jquery';
-require('jquery-mousewheel')($);
-
 window.$ = window.jQuery = $;
+
+require('jquery-mousewheel')($);
+require('easy-autocomplete');
+
 import { Histropedia } from '../../lib/assets/javascript/histropedia-1.2.0';
-require('../../lib/assets/javascript/jquery.easy-autocomplete.min');
 
 $(() => {
   const container = document.getElementById('timeline-sample');
@@ -25,4 +24,3 @@ $(() => {
     });
   }
 })
-// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
