@@ -36,7 +36,7 @@ In Ubuntu
    yarn install
    ```
 
-4. Build assets using yarn
+4. Build javascript assets using yarn
    ```
    yarn build
    ```
@@ -44,6 +44,17 @@ In Ubuntu
    Note: if you want yarn to monitor changes to js files and automatically recompile them launch it with `watch` option:
    ```
    yarn build --watch
+   ```
+
+5. Build stylesheets assets using yarn
+   ```
+   yarn build:css
+   ```
+
+   Note: if you want yarn to monitor changes to css/scss/sass files and automatically recompile them launch it 
+   with `watch` option:
+   ```
+   yarn build:css --watch
    ```
 
 5. Setup and launch DB and other services using Docker (see instruction in development/README.md)
@@ -63,8 +74,3 @@ Values specified in `env.<ENVIRONMENT>.local` file take precedence over  values 
 
 NOTE: `env.*.local` files are added to `.gitignore` and will not be stored in repo, because those files should be
 different for each developer.
-
-# Javascript handling
-
-This project uses [jsbundling-rails](https://github.com/rails/jsbundling-rails) gem with esbuild for managing JS dependencies.
-If you new to this see this [tutorial](https://www.youtube.com/watch?v=qOptalp8zUY) 

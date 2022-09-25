@@ -10,4 +10,11 @@
     = javascript_include_tag 'application', 'data-turbo-track': 'reload'
     /= javascript_importmap_tags
   %body{ class: "#{controller_name}-#{action_name}" }
-    = yield
+    .container-fluid
+      %h1 SARA project
+      %ul
+        %li Smart
+        %li Automatic
+        %li Research
+        %li Assistant
+      = yield

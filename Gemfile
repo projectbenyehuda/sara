@@ -89,3 +89,5 @@ group :development, :production do
   gem "aws-sdk-s3"
 end
 
+
+gem "cssbundling-rails", "~> 1.1"

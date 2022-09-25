@@ -1,10 +1,14 @@
 import $ from 'jquery';
 window.$ = window.jQuery = $;
 
+import * as bootstrap from "bootstrap"
+
 require('jquery-mousewheel')($);
 require('easy-autocomplete');
 
 import { Histropedia } from '../../lib/assets/javascript/histropedia-1.2.0';
+
+
 
 $(() => {
   const container = document.getElementById('timeline-sample');
@@ -24,3 +28,4 @@ $(() => {
     });
   }
 })
+
