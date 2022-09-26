@@ -1,13 +1,9 @@
 default: &default
   adapter: mysql2
-  # url: <%= ENV['DATABASE_URL'] %>
   encoding: utf8mb4
   collation: utf8mb4_bin
 
 development:
-  username: bybe
-  password: bybe
-  database: sara_development
   <<: *default
 
 test:
