@@ -25,20 +25,22 @@ class ApplicationController < ActionController::Base
   def wikidata_query(query, params)
     # TODO: add caching (use a hash of the query string as key)
     interpolated_query = interpolate_sparql_statement(query, params) # handle any remaining params (perhaps from base_query)
-    puts "DBG: interpolated_query: #{interpolated_query}"
+    Rails.logger.debug "Interpolated query: #{interpolated_query}"
     return @@sparql_endpoint.query(interpolated_query) # returns a collection of RDF:QUERY::Solutions
   end
   def wikidata_query_as_hash(query)
-    results = wikidata_query(query, params[:params])
-    puts "DBG: #{results.count} results"
-    ret = {}
-    results.each{|r| ret[r['itemLabel'].to_s] = r['item'].to_s.sub('http://www.wikidata.org/entity/', 'wd:')}
-    return ret
+    Rails.cache.fetch("wikidata_query_as_hash_#{query}", expires_in: 12.hours) do
+      Rails.logger.debug "Running WikiData query: #{query}"
+      results = wikidata_query(query, params[:params])
+      Rails.logger.debug("#{results.count} results")
+      ret = {}
+      results.each{|r| ret[r['itemLabel'].to_s] = r['item'].to_s.sub('http://www.wikidata.org/entity/', 'wd:')}
+      ret
+    end
   end
 
   # load the SARA browsing tree JSON file
   def load_browsing_tree
     @browsing_tree = JSON.parse(File.read(SARA_BROWSING_TREE_FILENAME))
   end
-  
 end
