@@ -13,7 +13,7 @@ In Ubuntu
 2. Install proper NodeJS version, we recommend using [NVM](https://github.com/nvm-sh/nvm):
     ```
     nvm install lts/gallium
-    nvm use 16.17.0
+    nvm use lts/gallium
     ```
    You may need to close and reopen terminal window after nvm installation
 3. Install proper version of yarn package manager:
@@ -26,7 +26,7 @@ In Ubuntu
    yarn set version berry
    ```
    
-   ensure that yarn have version > 3.x:
+   ensure that yarn have version >= 3.x:
    ```
    yarn --version
    ```

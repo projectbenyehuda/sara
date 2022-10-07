@@ -46,12 +46,15 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap", require: false
 
 gem 'sparql-client' # for querying Wikidata with SPARQL
-gem 'rest-client' # for searching Wikidata's Elasticsearch index
+gem "rest-client", "~> 2.1"
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
+
+
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]

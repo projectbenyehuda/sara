@@ -30,8 +30,18 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 he:
-  focused_search: חיפוש ממוקד
-  suggest_topics: הצעות לנושאים
+  nav:
+    focused_search: חיפוש ממוקד
+    suggest_topics: הצעות לנושאים
+    stored_queries: Stored Queries
+  queries:
+    index:
+      header: Stored Search Queries
+      responses_quantity: Responses Quantity
+      create_new: New Search
+      run: Run
+    show:
+      header: "Found results for query: '%{query_text}'"
   databases: מאגרי מידע
   data_items: פריטי מידע
   about_8_million: כ־8 מליון

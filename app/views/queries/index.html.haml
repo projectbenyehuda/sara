@@ -1,0 +1,23 @@
+%h1= t('.header')
+
+= form_for(Query.new) do |f|
+  .row
+    .col-sm-3
+    .col-sm-1
+      = f.label t('.create_new'), class: 'form-label'
+    .col-sm-4
+      = f.text_field :text, placeholder: true, class: 'form-control'
+    .col-sm-2
+      = f.submit t('.run'), class: 'btn btn-primary'
+
+%table.table
+  %thead
+    %th= t('activerecord.attributes.default.created_at')
+    %th= t('activerecord.attributes.query.text')
+    %th= t('.responses_quantity')
+  %tbody
+    - @records.each do |q|
+      %tr
+        %td= q.created_at
+        %td= link_to q.text, q
+        %td= q.responses_quantity

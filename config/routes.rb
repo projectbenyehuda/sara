@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
-  # root "articles#index"
   root 'welcome#index'
 
   resource :welcome, only: :index
@@ -11,6 +10,9 @@ Rails.application.routes.draw do
   match 'welcome/search', as: 'search', via: [:get, :post]
   match 'welcome/suggest', as: 'suggest', via: [:get, :post]
   match 'welcome/search_disambig', as: 'search_disambig', via: [:get, :post]
+
+  resources :queries, only: [:index, :create, :show]
+
   resources :timelines, only: :index do
     collection do
       get :data

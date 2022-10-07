@@ -2,9 +2,10 @@
 %ul
   %li
     %h3
-      %a{href: search_path}
-        = t(:focused_search)
+      = link_to t('nav.focused_search'), search_path
   %li
     %h3
-      %a{href: suggest_path}
-        = t(:suggest_topics)
+      = link_to t('nav.suggest_topics'), suggest_path
+  %li
+    %h3
+      = link_to t('nav.stored_queries'), queries_path

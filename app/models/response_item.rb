@@ -15,5 +15,5 @@ class ResponseItem < ApplicationRecord
     video: 4
   }, _prefix: true
 
-  validates_presence_of :query, :source, :media_type, :url
+  validates_presence_of :query, :source, :media_type, :url, :index
 end
