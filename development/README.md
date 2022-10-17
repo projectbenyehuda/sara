@@ -22,14 +22,22 @@ Launch docker service:
 sudo snap start docker
 ```
 
-# Running app
+# Running services with docker
+
+To create and run containers for the first time you need to use `up` command
 
 ```
 cd ./development
 docker-compose up
 ```
 
-To run docker containers in daemon mode add `-d` key:
+You can run this command in daemon mode by adding `-d` key:
 ```
 docker-compose up -d
 ```
+
+If you want to start or stop already created containers you should use `docker-compose start` and 
+`docker-compose stop` commands. 
+
+`docker-compose down` will delete container. So all data (e.g. database state) will be dropped. 
+

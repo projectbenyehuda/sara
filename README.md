@@ -74,3 +74,13 @@ Values specified in `env.<ENVIRONMENT>.local` file take precedence over  values 
 
 NOTE: `env.*.local` files are added to `.gitignore` and will not be stored in repo, because those files should be
 different for each developer.
+
+# Caching
+Project uses [Memcached](https://memcached.org/) as caching serice.
+Development and production environment expects to have environment variable `MEMCACHE_SERVERS` to be set to address of 
+Memcached server (or servers) to be used. If this variable is not set it will fallback to `127.0.0.1:11211`
+
+By default development environment has cache disabled, you can toggle it by running command
+```
+rails dev:cache
+```
