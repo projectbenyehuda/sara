@@ -38,3 +38,16 @@ he:
   x_favorites: "%{x} פריטים מועדפים"
   what_would_you_like_me_to_research_for_you: מה תרצו שאחקור עבורכם?
   search: חיפוש
+  x_topics_found: נמצאו %{x} נושאים מתאימים. בחרו נושא אחד להרצת שאילתה בכל המקורות.
+  search_this_topic: חיפוש תוצאות עבור הנושא הנבחר
+  search_string: "טקסט: %{q}"
+  display_colon: "תצוגה:"
+  display_list: רשימה
+  display_map: מפה
+  display_timeline: ציר זמן
+  pby: פרויקט בן־יהודה
+  nli: הספרייה הלאומית
+  wikipedia: ויקיפדיה
+  commons: ויקישיתוף
+  jpress: עיתונות יהודית היסטורית
+  kan: כאן

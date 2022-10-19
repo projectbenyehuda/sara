@@ -5,22 +5,21 @@
         .filter-tags-area
           .tags-right
             %p
-              %strong נמצאו 4 נושאים מתאימים.
-              בחרו נושא אחד להרצת שאילתה בכל המקורות.
+              %strong= t(:x_topics_found, x: @topic_count)
             .tag-line
               .tag
-                טקסט: פרישמן
+                = t(:search_string, q: @q)
                 %a.by-icon-v02{:href => "#"} -
           .left-bottons-area
             %button#search-subject-results-button.sara-button.button-primary.disabled
-              חיפוש תוצאות עבור הנושא הנבחר
+              = t(:search_this_topic)
               .by-icon-v02 1
         .view-switch-line
-          תצוגה:
+          = t(:display_colon)
           .small-switch
-            %button#list.small-switch-option.sort-by.active רשימה
-            %button#timeline.small-switch-option.sort-by ציר זמן
-            %button#map.small-switch-option.sort-by מפה
+            %button#list.small-switch-option.sort-by.active= t(:display_list)
+            %button#timeline.small-switch-option.sort-by= t(:display_timeline)
+            %button#map.small-switch-option.sort-by= t(:display_map)
     .filters
       .subjects-filter
         .flex-headline-space-between
@@ -42,42 +41,21 @@
           %a{:href => ""} הוספת מסנן
     .subjects
       .results-area
-        .results-list
-          .result-item
-            .result-texts
-              .flex-headline-space-between
-                %p.headline-3 נדב פרישמן
-                .result-sources-icons
-                  %img{:alt => "ויקיפדיה", :src => "assets/Wikipedia_logo_24.png"}/
-              .results-limited-text
-                %p נדב פרישמן (נולד ב-29 ליוני 1976) הוא תסריטאי, עורך, במאי וסטנדאפיסט ישראלי.
-          .result-item
-            .subject-picture
-              %img{:alt => "דוד פרישמן", :src => "assets/Dawid_Frischmann.png"}/
-            .result-texts
-              .flex-headline-space-between
-                %p.headline-3 דוד פרישמן
-                .result-sources-icons
-                  %img{:alt => "ויקיפדיה", :src => "assets/Wikipedia_logo_24.png"}/
-                  %img{:alt => "The National Library of Israel", :src => "assets/nli_logo_24.png"}/
-                  %img{:alt => "פרויקט בן־יהודה", :src => "assets/pby_logo_24.png"}/
-                  %a.by-icon-v02{:href => "#"} -
-              .results-limited-text
-                %p דוד פרישמן (31 בדצמבר 1859, זגייז׳, פולין - 4 באוגוסט 1922, ברלין) היה משורר, עורך, מבקר ספרות, מתרגם, סופר ופיליטוניסט עברי, מחלוצי הספרות העברית המודרנית. במשפטו הידוע: "מלאכת מחשבת - תחיית האומה" הביע את אמונתו בצורך בחיזוק האמנות והספרות בחיי העם היהודי. מבחינה פוליטית התנגד לתנועה הציונית ולא היה שותף לעמדותיה.
-                %a{:href => ""} להמשך הערך בויקיפדיה העברית
-          .result-item
-            .result-texts
-              .flex-headline-space-between
-                %p.headline-3 עמוס פרישמן
-                .result-sources-icons
-                  %img{:alt => "ויקיפדיה", :src => "assets/Wikipedia_logo_24.png"}/
-              .results-limited-text
-                %p עמוס פרישמן (נולד ב-20 בספטמבר 1964) הוא כדורסלן עבר ישראלי. בסוף שנות ה-80 ותחילת שנות ה-90 היה משחקניה הבולטים של הפועל.
-          .result-item
-            .result-texts
-              .flex-headline-space-between
-                %p.headline-3 רחוב פרישמן
-                .result-sources-icons
-                  %img{:alt => "ויקיפדיה", :src => "assets/Wikipedia_logo_24.png"}/
-              .results-limited-text
-                %p רחוב פרישמן הוא אחד מרחובות הרוחב החשובים בעיר תל-אביב המחבר בין כיכר רבין (מתחיל במקום שבן רחוב צייטלין נגמר) וחוף הים המכונה חוף פרישמן.
+        .results-list{style: 'margin-top: 121px;'}
+          - @results.each do |result|
+            .result-item
+              - if false # if result has a picture
+                .subject-picture
+                  -#%img{:alt => "דוד פרישמן", :src => "assets/Dawid_Frischmann.png"}/
+              .result-texts
+                .flex-headline-space-between
+                  %p.headline-3= result.dig('display', 'label', 'value')
+                  = result.dig('display', 'description', 'value')
+                  .result-sources-icons
+                    %img{:alt => t(:wikipedia), :src => "/assets/Wikipedia_logo_24.png"}
+                    %img{:alt => t(:nli), src: "/assets/nli_logo_24.png"}
+                    %img{:alt => t(:pby), src: "/assets/pby_logo_24.png"}
+                    %a.by-icon-v02{:href => "#"} -
+                .results-limited-text
+                  %p= 'TBD'
+                  %a{:href => ""} להמשך הערך בויקיפדיה העברית

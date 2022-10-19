@@ -42,7 +42,23 @@ class ApplicationController < ActionController::Base
       ret
     end
   end
-
+  # retrieve labels for a group of QIDs from Wikidata
+  def get_labels_for_qids(qids)
+    ret = {}
+    qids.each_slice(50) do |qids_slice|
+      RestClient.get 'https://www.wikidata.org/w/api.php', {params: {action: 'wbgetentities', ids: qids_slice.join('|'), languages: 'he', props: 'labels', format: 'json'}} do |resp, req, res, &block|
+        if resp.code == 200
+          json = JSON.parse(resp)
+          json['entities'].each do |qid, data|
+            ret[qid] = data['labels']['he']['value'] if data['labels']['he'].present?
+          end
+        else
+          Rails.logger.error "Error retrieving labels for QIDs #{qids_slice.join(', ')}: #{resp}"
+        end
+      end
+    end
+    return ret
+  end
   # load the SARA browsing tree JSON file
   def load_browsing_tree
     @browsing_tree = JSON.parse(File.read(SARA_BROWSING_TREE_FILENAME))
