@@ -68,6 +68,7 @@ class WelcomeController < ApplicationController
                 @moredata[qid]['occupations'] = item['claims']['P106'].map{|c| c['mainsnak']['datavalue']['value']['id']} if item['claims']['P106']
                 @moredata[qid]['nationality'] = item['claims']['P27'] ? item['claims']['P27'][0]['mainsnak']['datavalue']['value']['id'] : ''
                 @moredata[qid]['benyehuda_url'] = 'https://benyehuda.org/author/'+item['claims']['P7507'][0]['mainsnak']['datavalue']['value'] if item['claims']['P7507']
+                @moredata[qid]['nli_id'] = item['claims']['P8189'][0]['mainsnak']['datavalue']['value'] if item['claims']['P8189']
               when @moredata[qid]['instance-of'].include?('Q16521') # organization
                 @moredata[qid]['inception'] = item['claims']['P571'] ? item['claims']['P571'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
                 @moredata[qid]['country'] = item['claims']['P17'] ? item['claims']['P17'][0]['mainsnak']['datavalue']['value']['id'] : ''
