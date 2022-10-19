@@ -1,73 +1,10 @@
-%h2 Browsing tree prototyping
+%h2= 'temporary homepage'
 %ul
-  - @menu.each do |node|
-    %li
-      = "#{node['title']} (#{node['description']})"
-      - if node['nodetype'] == 'branch' && node['base_query'].present?
-        %p= 'Please pick at least one filter:'
-        %ul
-          - form_tag 'filters' do
-            - @filters['wikidata'].select{|f| f['relevant_base_queries'].include?(node['base_query'])}.each do |f|
-              %li
-                %b= f['title']
-                = " (#{f['description']})"
-                - f['param_count'].times do |i|
-                  - default_value = f['default_param_values'][i] if f['default_param_values'].present?
-                  - case f['lookup_type']
-                  - when 'autocomplete'
-                    = text_field_tag "param_#{f['tag']}_#{i}", nil, {placeholder: default_value, 'data-behavior': 'autocomplete', 'data-tag': f['tag']}
-                    = hidden_field_tag "param_#{f['tag']}_#{i}_value"
-                  - when 'dropdown'
-                    = select_tag "param_#{f['tag']}_#{i}", options_for_select(options_from_query(f['tag']), default_value), {include_blank: :true, 'data-tag': f['tag']}
-                  - when ''
-                    = text_field_tag "param_#{f['tag']}_#{i}", nil, {placeholder: '1950', 'data-tag': f['tag']}
-                = button_tag 'run query!', {id: 'run_'+f['tag'], class: 'run_query', data: {'base-query': node['base_query'], 'tag': f['tag'], 'disable_with': 'querying...'}}
-      - else
-        %p TODO: add code to handle leaf nodes
-  %h3 Results
-  %ol#result_list
-:javascript
-  $(document).ready(function() {
-    $('*[data-behavior=autocomplete]').each(function() {
-      var iid = $(this).attr('id');
-      var tag = $(this).data('tag');
-      options = { 
-        url: function(phrase) { return "#{autocomplete_by_filter_tag_path}?phrase=" + phrase + "&tag=" + tag + "&format=json";}, 
-        getValue: "name",
-        list: { 
-      		match: { enabled: true },
-          onChooseEvent: function() {
-            var value = $('#'+iid).getSelectedItemData().qid;
-            $('#'+iid+'_value').val(value);
-          }
-        }
-      };
-      $(this).easyAutocomplete(options);
-    });
-    $('.run_query').click(function() {
-      $(this).text('querying...');
-      $(this).prop('disabled', true);
-      var base_query = $(this).data('base-query');
-      var tag = $(this).data('tag');
-      var params = [];
-
-      $.post("#{query_by_filter_path}",
-          { base_query: base_query, format: 'json', filter: tag, params: params },
-      ).done(function(data) {
-        data.forEach(function(item) {
-          $('#result_list').append('<li>'+item.name+' ('+item.qid.replace('wd:','')+')</li>');
-        });
-      });
-
-      /* url = "#{query_by_filter_path}?base_query=" + base_query + "&filter=" + tag + "&q=" + $('#param_'+tag+'_0_value').val() + "&format=json"; */
-      $.ajax({type: 'post', url: url, context: this, success: function(response, status){
-        response.forEach(function(item) {
-          $('#result_list').append('<li>'+item.name+' ('+item.qid.replace('wd:','')+')</li>');
-        });
-        $(this).text('run query!');
-        $(this).prop('disabled', false);
-        console.log(response);
-      }});
-
-    }); 
-  });
+  %li
+    %h3
+      %a{href: search_path}
+        = t(:focused_search)
+  %li
+    %h3
+      %a{href: suggest_path}
+        = t(:suggest_topics)

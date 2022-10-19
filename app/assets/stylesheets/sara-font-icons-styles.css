@@ -1,0 +1,70 @@
+@charset "UTF-8";
+
+@font-face {
+  font-family: "sara";
+  src:url("/fonts/sara.eot");
+  src:url("/fonts/sara.eot?#iefix") format("embedded-opentype"),
+    url("/fonts/sara.woff") format("woff"),
+    url("/fonts/sara.ttf") format("truetype"),
+    url("/fonts/sara.svg#sara") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+[data-icon]:before {
+  font-family: "sara" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "sara" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-sara-calendar:before {
+  content: "\63";
+}
+.icon-sara-gender:before {
+  content: "\67";
+}
+.icon-sara-map:before {
+  content: "\6d";
+}
+.icon-sara-pin:before {
+  content: "\70";
+}
+.icon-sara-archive:before {
+  content: "\61";
+}
+.icon-sara-document:before {
+  content: "\64";
+}
+.icon-sara-music:before {
+  content: "\6e";
+}
+.icon-sara-picture:before {
+  content: "\69";
+}
+.icon-sara-video:before {
+  content: "\76";
+}
+.icon-sara-idea:before {
+  content: "\62";
+}

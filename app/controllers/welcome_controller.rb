@@ -3,11 +3,6 @@ class WelcomeController < ApplicationController
 
   def index
 
-    # prototyping of browsing tree
-    #debugger
-    @menu = browsing_tree['nodes']
-    @base_queries = browsing_tree['base_queries']
-    @filters = browsing_tree['filters']
   end
   def autocomplete_by_filter_tag
     tag = params[:tag]
@@ -32,7 +27,16 @@ class WelcomeController < ApplicationController
       head 404
     end
   end
-
+  def search
+    @sara_mode = :search
+  end
+  def suggest
+    @sara_mode = :suggest
+    # prototyping of browsing tree
+    @menu = browsing_tree['nodes']
+    @base_queries = browsing_tree['base_queries']
+    @filters = browsing_tree['filters']
+  end
   private
   def browsing_tree
     @browsing_tree || load_browsing_tree

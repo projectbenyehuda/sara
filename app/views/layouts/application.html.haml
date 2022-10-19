@@ -8,12 +8,14 @@
     = csp_meta_tag
     = stylesheet_link_tag 'application', 'data-turbo-track': 'reload'
     = javascript_include_tag 'application', 'data-turbo-track': 'reload'
-  %body{ class: "#{controller_name}-#{action_name}" }
+  %body{ align: :right, dir: :rtl, class: "#{controller_name}-#{action_name}" }
+    = render partial: 'shared/top_bar'
+    .top-element
     .container-fluid
-      %h1 SARA project
-      %ul
-        %li Smart
-        %li Automatic
-        %li Research
-        %li Assistant
       = yield
+:javascript
+  $(document).ready(function() {
+    // adjust page to accommodate extra header height
+    var h = $('#header').height();
+    $('.top-element').css('margin-top',h);
+  });

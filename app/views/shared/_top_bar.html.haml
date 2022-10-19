@@ -1,0 +1,49 @@
+%header
+  #header
+    .header-general-area
+      .header-general
+        .top-right
+          %a.top-logo{href: '/'}
+          .top-search-switch
+            %a{href: search_path, class: 'top-search-option right' + (@sara_mode == :search ? ' active' : '')}
+              %div= t(:focused_search)
+            %a{href: suggest_path, class: 'top-search-option left' + (@sara_mode == :suggest ? ' active' : '')}
+              %div= t(:suggest_topics)
+          .statistics-box
+            .statistics
+              .stat-big 9
+              .stat-small= t(:databases)
+            .statistics
+              .stat-big= t(:about_8_million)
+              .stat-small= t(:data_items)
+        .top-left
+          .top-left-content
+            %a.by-icon-v02{:title => "שיתוף עמוד נוכחי"} U
+            .icons-seperator
+            .collapsed.user-menu-trigger{"data-target" => "#user_collapsible", "data-toggle" => "collapse", :title => "תפריט המשתמש"}
+              %div
+                שלום
+                = succeed "!" do
+                  %span.bold-text גלית כהן
+              .by-icon-v02 )
+              #user-actions-menu.dropdown-content.dropdown-menu{"x-placement" => "bottom-start"}
+                %a{:href => ""}
+                  %span.by-icon-v02> D
+                  שאילתות אחרונות
+                %a{:href => ""}
+                  %span.by-icon-v02> "
+                  מועדפים
+                %a{:href => ""}
+                  %span.by-icon-v02> p
+                  הצגה מחדש של
+                %a{:href => ""}
+                  %span.by-icon-v02> {
+                  האזור האישי
+                %a{:href => ""}
+                  %span.by-icon-v02> Z
+                  התנתקות
+    - if defined?(current_user)
+      %button.favorites-btn
+        .by-icon-v02 "
+        %div= t(:x_favorites, x: current_user.  favorite_count)
+    = render partial: 'shared/breadcrumbs'

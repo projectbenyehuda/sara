@@ -31,7 +31,11 @@ class ApplicationController < ActionController::Base
   def wikidata_query_as_hash(query)
     Rails.cache.fetch("wikidata_query_as_hash_#{query}", expires_in: 12.hours) do
       Rails.logger.debug "Running WikiData query: #{query}"
-      results = wikidata_query(query, params[:params])
+      begin
+        results = wikidata_query(query, params[:params])
+      rescue
+        results = {}
+      end
       Rails.logger.debug("#{results.count} results")
       ret = {}
       results.each{|r| ret[r['itemLabel'].to_s] = r['item'].to_s.sub('http://www.wikidata.org/entity/', 'wd:')}

@@ -1,0 +1,21 @@
+.navigation-area
+  .navigation
+    - if @sara_mode == :suggest
+      %button.sara-button.button-primary.back-button
+        .by-icon-v02> 2
+        חזרה לבחירת נושא
+      .breadcrumbs
+        .breadcrumbs-text
+          %a{:href => ""}= t(:suggest_topics)
+        .by-icon-v02 1
+        .breadcrumbs-text
+          %a{:href => ""} ארץ ישראל
+        .by-icon-v02 1
+        .breadcrumbs-text
+          %a{:href => ""} חינוך ותרבות
+        .by-icon-v02 1
+        .breadcrumbs-text
+          %a{:href => ""} אקדמיה
+        .by-icon-v02 1
+        .breadcrumbs-text.active
+          %a{:href => ""} פרופסורים/ות
