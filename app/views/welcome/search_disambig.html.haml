@@ -52,7 +52,8 @@
                   %p.headline-3= result.dig('display', 'label', 'value')
                   = result.dig('display', 'description', 'value')
                   .result-sources-icons
-                    %img{:alt => t(:wikipedia), :src => "/assets/Wikipedia_logo_24.png"}
+                    - if @moredata[result['id']]['wikipedia_url'].present?
+                      %img{:alt => t(:wikipedia), :src => "/assets/Wikipedia_logo_24.png"} 
                     %img{:alt => t(:nli), src: "/assets/nli_logo_24.png"}
                     %img{:alt => t(:pby), src: "/assets/pby_logo_24.png"}
                     %a.by-icon-v02{:href => "#"} -

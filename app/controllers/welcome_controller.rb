@@ -58,7 +58,7 @@ class WelcomeController < ApplicationController
             json2['entities'].keys.each do |qid|
               item = json2['entities'][qid]
               @moredata[qid]['instance-of'] = item['claims']['P31'].map{|c| c['mainsnak']['datavalue']['value']['id']} if item['claims'].key?('P31')
-              @moredata[qid]['wikipedia_url'] = item['sitelinks']['hewiki'] ? item['sitelinks']['hewiki']['url'] : ''
+              @moredata[qid]['wikipedia_url'] = item['sitelinks']['hewiki'] ? 'https://he.wikipedia.org/wiki/'+item['sitelinks']['hewiki']['title'] : ''
               imagename = item['claims']['P18'] ? item['claims']['P18'][0]['mainsnak']['datavalue']['value'] : ''
               images['File:'+imagename] = qid unless imagename.empty?
               case 
