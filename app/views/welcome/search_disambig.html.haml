@@ -49,7 +49,9 @@
                   %img{alt: result.dig('display', 'label', 'value'), src: @moredata[result['id']]['thumbnail']}
               .result-texts
                 .flex-headline-space-between
-                  %p.headline-3= result.dig('display', 'label', 'value')
+                  - birth = @moredata[result['id']]['birthyear'].present? ? @moredata[result['id']]['birthyear'] : '?'
+                  - death = @moredata[result['id']]['deathyear'].present? ? @moredata[result['id']]['deathyear'] : ''
+                  %p.headline-3= result.dig('display', 'label', 'value')+ " (#{birth}–#{death})"
                   = result.dig('display', 'description', 'value')
                   .result-sources-icons
                     - if @moredata[result['id']]['wikipedia_url'].present?
@@ -68,7 +70,7 @@
                       = t(:nationality)+': '
                       = @labels[@moredata[result['id']]['nationality']]
                   - if @moredata[result['id']]['wikipedia_url'].present?
-                    %a{href: @moredata[result['id']]['wikipedia_url']} להמשך הערך בויקיפדיה העברית
+                    %a{href: @moredata[result['id']]['wikipedia_url']}= t(:to_wikipedia)
 :javascript
   $(document).ready(function() {
     $('.result-item').click(function(e) {
