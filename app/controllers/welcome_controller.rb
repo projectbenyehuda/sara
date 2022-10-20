@@ -80,11 +80,13 @@ class WelcomeController < ApplicationController
               end
             end
             # get image thumbnail URLs
-            RestClient.get 'https://commons.wikimedia.org/w/api.php', {params: {action: 'query', prop: 'imageinfo', iiprop: 'url', iiurlwidth: 80, titles: images.keys.join('|'), format: 'json'}} do |resp3, req3, res3, &block|
-              if res3.class == Net::HTTPOK
-                json3 = JSON.parse(resp3.body)['query']['pages']
-                json3.each do |page, data|
-                  @moredata[images[data['title']]]['thumbnail'] = data['imageinfo'][0]['thumburl']
+            unless images.empty?
+              RestClient.get 'https://commons.wikimedia.org/w/api.php', {params: {action: 'query', prop: 'imageinfo', iiprop: 'url', iiurlwidth: 80, titles: images.keys.join('|'), format: 'json'}} do |resp3, req3, res3, &block|
+                if res3.class == Net::HTTPOK
+                  json3 = JSON.parse(resp3.body)['query']['pages']
+                  json3.each do |page, data|
+                    @moredata[images[data['title']]]['thumbnail'] = data['imageinfo'][0]['thumburl']
+                  end
                 end
               end
             end
