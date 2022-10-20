@@ -86,7 +86,7 @@ group :development, :test do
 end
 
 group :production do
-  gem "aws-sdk-s3"
+  # gem "aws-sdk-s3"
 end
 
 group :production, :development do
