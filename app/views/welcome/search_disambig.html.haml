@@ -44,21 +44,37 @@
         .results-list{style: 'margin-top: 121px;'}
           - @results.each do |result|
             .result-item
-              - if false # if result has a picture
+              - if @moredata[result['id']]['thumbnail'].present? # if result has a picture
                 .subject-picture
-                  -#%img{:alt => "דוד פרישמן", :src => "assets/Dawid_Frischmann.png"}/
+                  %img{alt: result.dig('display', 'label', 'value'), src: @moredata[result['id']]['thumbnail']}
               .result-texts
                 .flex-headline-space-between
                   %p.headline-3= result.dig('display', 'label', 'value')
                   = result.dig('display', 'description', 'value')
                   .result-sources-icons
                     - if @moredata[result['id']]['wikipedia_url'].present?
-                      %img{:alt => t(:wikipedia), :src => "/assets/Wikipedia_logo_24.png"} 
+                      %img{alt: t(:wikipedia), title: t(:wikipedia), src: "/assets/Wikipedia_logo_24.png"} 
                     - if @moredata[result['id']]['nli_id'].present?
-                      %img{:alt => t(:nli), src: "/assets/nli_logo_24.png"}
+                      %img{alt: t(:nli), title: t(:nli), src: "/assets/nli_logo_24.png"}
                     - if @moredata[result['id']]['benyehuda_url'].present?
-                      %img{:alt => t(:pby), src: "/assets/pby_logo_24.png"}
+                      %img{alt: t(:pby), title: t(:pby), src: "/assets/pby_logo_24.png"}
                     %a.by-icon-v02{:href => "#"} -
                 .results-limited-text
-                  %p= 'TBD'
-                  %a{:href => ""} להמשך הערך בויקיפדיה העברית
+                  - if @moredata[result['id']]['occupations'].present?
+                    %p
+                      = t(:occupations)+': '
+                      = @moredata[result['id']]['occupations'].map{|occ| @labels[occ] || '...'}.join('; ')
+                    %p
+                      = t(:nationality)+': '
+                      = @labels[@moredata[result['id']]['nationality']]
+                  - if @moredata[result['id']]['wikipedia_url'].present?
+                    %a{href: @moredata[result['id']]['wikipedia_url']} להמשך הערך בויקיפדיה העברית
+:javascript
+  $(document).ready(function() {
+    $('.result-item').click(function(e) {
+      e.stopPropagation();
+      $('.result-item').removeClass('active');
+      $(this).addClass('active');
+    });
+  });
+  
