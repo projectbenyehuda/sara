@@ -49,17 +49,21 @@
                   %img{alt: result.dig('display', 'label', 'value'), src: @moredata[result['id']]['thumbnail']}
               .result-texts
                 .flex-headline-space-between
-                  - birth = @moredata[result['id']]['birthyear'].present? ? @moredata[result['id']]['birthyear'] : '?'
-                  - death = @moredata[result['id']]['deathyear'].present? ? @moredata[result['id']]['deathyear'] : ''
-                  %p.headline-3= result.dig('display', 'label', 'value')+ " (#{birth}–#{death})"
-                  = result.dig('display', 'description', 'value')
+                  - if @moredata[result['id']]['instance-of'].include?('Q5') # human
+                    - birth = @moredata[result['id']]['birthyear'].present? ? @moredata[result['id']]['birthyear'] : '?'
+                    - death = @moredata[result['id']]['deathyear'].present? ? @moredata[result['id']]['deathyear'] : ''
+                    %p.headline-3= result.dig('display', 'label', 'value')+ " (#{birth}–#{death})"
+                    = result.dig('display', 'description', 'value')
+                  - else
+                    %p.headline-3= result.dig('display', 'label', 'value')
+                    = result.dig('display', 'description', 'value')
                   .result-sources-icons
                     - if @moredata[result['id']]['wikipedia_url'].present?
-                      %img{alt: t(:wikipedia), title: t(:wikipedia), src: "/assets/Wikipedia_logo_24.png"} 
+                      = image_tag 'Wikipedia_logo_24.png', {alt: t(:wikipedia), title: t(:wikipedia)} 
                     - if @moredata[result['id']]['nli_id'].present?
-                      %img{alt: t(:nli), title: t(:nli), src: "/assets/nli_logo_24.png"}
+                      = image_tag 'nli_logo_24.png', {alt: t(:nli), title: t(:nli)}
                     - if @moredata[result['id']]['benyehuda_url'].present?
-                      %img{alt: t(:pby), title: t(:pby), src: "/assets/pby_logo_24.png"}
+                      = image_tag 'pby_logo_24.png', {alt: t(:pby), title: t(:pby)}
                     %a.by-icon-v02{:href => "#"} -
                 .results-limited-text
                   - if @moredata[result['id']]['occupations'].present?
