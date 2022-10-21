@@ -6,8 +6,8 @@
       = "#{node['title']} (#{node['description']})"
       - if node['nodetype'] == 'branch' && node['base_query'].present?
         %p= 'Please pick at least one filter:'
-        %ul
-          - form_tag 'filters' do
+        = form_tag 'filters' do
+          %ul
             - @filters['wikidata'].select{|f| f['relevant_base_queries'].include?(node['base_query'])}.each do |f|
               %li
                 %b= f['title']
@@ -60,7 +60,7 @@
         });
       });
 
-      /* url = "#{query_by_filter_path}?base_query=" + base_query + "&filter=" + tag + "&q=" + $('#param_'+tag+'_0_value').val() + "&format=json"; */
+      url = "#{query_by_filter_path}?base_query=" + base_query + "&filter=" + tag + "&q=" + $('#param_'+tag+'_0_value').val() + "&format=json";
       $.ajax({type: 'post', url: url, context: this, success: function(response, status){
         response.forEach(function(item) {
           $('#result_list').append('<li>'+item.name+' ('+item.qid.replace('wd:','')+')</li>');
