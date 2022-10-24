@@ -3,7 +3,7 @@ class ResponseItem < ApplicationRecord
 
   enum source: {
     wikipedia: 1,
-    national_library_of_israel: 2,
+    nli: 2,
     pby: 3,
     wikidata: 4
   }, _prefix: true

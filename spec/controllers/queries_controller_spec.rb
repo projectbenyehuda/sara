@@ -16,6 +16,7 @@ describe QueriesController do
 
       before do
         expect_any_instance_of(Search::PbySearchProvider).to receive(:call).and_return(build_list(:search_response_item, 5))
+        expect_any_instance_of(Search::NliSearchProvider).to receive(:call).and_return(build_list(:search_response_item, 3))
       end
 
       it 'creates new Query record' do
@@ -24,6 +25,7 @@ describe QueriesController do
 
         expect(q).to have_attributes(text: 'New Query')
         expect(q.response_items.source_pby.count).to eq 5
+        expect(q.response_items.source_nli.count).to eq 3
       end
     end
   end

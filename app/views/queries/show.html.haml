@@ -9,5 +9,5 @@
             = image_tag item.thumbnail_url, alt: item.title
           .card-body
             %h5.card-title
-              = link_to item.title, item.url
+              = link_to item.title, item.url, target: :blank
             %p.card-text= item.text
