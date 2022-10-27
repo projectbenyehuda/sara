@@ -1,0 +1,13 @@
+%h1= t('.header', query_text: @query.text)
+- @query.response_items.to_a.group_by(&:source).each do |source, items|
+  %h2= t("activerecord.attributes.response_item.sources.#{source}")
+  .row
+    - items.each do |item|
+      .col-lg-2.col-sm-3
+        .card
+          - if item.thumbnail_url.present?
+            = image_tag item.thumbnail_url, alt: item.title
+          .card-body
+            %h5.card-title
+              = link_to item.title, item.url, target: :blank
+            %p.card-text= item.text

@@ -1,0 +1,17 @@
+en:
+  activerecord:
+    models:
+      query: Search Query
+      response_item: Response Item
+    attributes:
+      default:
+        created_at: Created At
+        updated_at: Updated At
+      query:
+        text: Query Text
+      response_item:
+        sources:
+          pby: "Project Ben Yehuda"
+          nli: "National Library of Israel"
+          wikipedia: "Wikipedia"
+          wikidata: "WikiData"

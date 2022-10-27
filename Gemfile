@@ -46,7 +46,8 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap", require: false
 
 gem 'sparql-client' # for querying Wikidata with SPARQL
-gem 'rest-client' # for searching Wikidata's Elasticsearch index
+gem "rest-client", "~> 2.1"
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 

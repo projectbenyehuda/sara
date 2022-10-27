@@ -13,9 +13,10 @@ In Ubuntu
 2. Install proper NodeJS version, we recommend using [NVM](https://github.com/nvm-sh/nvm):
     ```
     nvm install lts/gallium
-    nvm use 16.17.0
+    nvm use lts/gallium
     ```
    You may need to close and reopen terminal window after nvm installation
+
 3. Install proper version of yarn package manager:
    ```
    npm install yarn --global
@@ -25,8 +26,14 @@ In Ubuntu
    ```
    yarn set version berry
    ```
-   
-   ensure that yarn have version > 3.x:
+
+   Configure yarn to use node-modules linker instead of PnP linker 
+   (Damir: I did not found other way to make cssbundling gem to work properly): 
+   ```
+   yarn config set nodeLinker node-modules
+   ```
+
+   ensure that yarn have version >= 3.x:
    ```
    yarn --version
    ```
