@@ -12,7 +12,10 @@ class ResponseItem < ApplicationRecord
     text: 1,
     image: 2,
     audio: 3,
-    video: 4
+    video: 4,
+    map: 5,
+    archive: 6,
+    unknown: 7
   }, _prefix: true
 
   validates_presence_of :query, :source, :media_type, :url, :index
