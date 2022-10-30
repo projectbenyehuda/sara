@@ -12,6 +12,7 @@
   --system-200: #001A24;
   --suggestions-50: #005574;
   --suggestions-100: #007590;
+  --suggestions-120: #006981;
   --text-100: #333333;
   --disabled-background: #c0c0c0;
   --disabled-icon: #909090;
@@ -152,9 +153,9 @@ a.top-search-option{
 	height: 60px;
 	display: flex;
 	flex-wrap: nowrap;
-	align-items: center;
+	align-items: flex-end;
 	gap: 24px;
-	padding: 4px 18px 0 18px;
+	padding: 8px 18px 8px 18px;
 	border: solid 1px var(--system-60);
 	color: var(--system-20);
 	margin-bottom: 2px;
@@ -166,6 +167,9 @@ a.top-search-option{
 }
 .stat-big{
 	font-size: 14pt;
+}
+.stat-number{
+	font-size: 12pt;
 }
 .stat-small{
 	font-size: 10pt;
@@ -255,21 +259,17 @@ a.top-search-option{
 
 .full-screen-search-area{
   width: 100%;
-	min-height: 700px;
+  height: 700px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 .full-screen-area{
   width: 100%;
-  height: 100%;
   display: flex;
+	flex-direction: column;
   justify-content: center;
-}
-.focus-search{
-  min-height: 700px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	align-items: center;
 }
 .full-screen-search-area::before{
   background-image: linear-gradient(to bottom, #EAECED00, #EAECED00, #EAECED00, #EAECED00, #EAECED), url("/assets/New NLI.jpeg");
@@ -373,6 +373,7 @@ select {
 }
 .search-content{
 	width: 90%;
+	min-height: 496px;
 	display: flex;
 	flex-wrap: nowrap;
 	gap: 24px;
@@ -483,7 +484,8 @@ select {
 	display: flex;
 	flex-wrap: nowrap;
 	justify-content: space-between;
-	align-items: center;
+	align-items: flex-start;
+	gap: 24px;
 }
 
 .dates-range{
@@ -1488,10 +1490,12 @@ a.level-4.active{
 	z-index: 4;
 }
 .timeline-selected-item{
-	width: 400px;
+	width: 200px;
 	display: flex;
 	flex-wrap: nowrap;
-	justify-content: space-between;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	padding: 12px;
 	gap: 12px;
 	background-color: var(--system-20);
@@ -1499,6 +1503,10 @@ a.level-4.active{
 }
 .timeline-selected-item a{
 	text-decoration: underline;
+}
+.timeline-selected-item .subject-picture img{
+	width: 120px;
+	object-fit: cover;
 }
 .timeline-item{
 	width: 120px;
@@ -1516,5 +1524,131 @@ a.level-4.active{
 	display: flex;
 	align-items: center;
 	gap: 4px;
+}
+.top-right-c {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    gap: 24px;
+    width: 368px;
+}
+.top-left-c {
+    height: 60px;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 24px;
+}
+.home-switch{
+	display: flex;
+	flex-wrap: nowrap;
+	gap: 48px;
+}
+.home-switch-option{
+	width: 420px;
+	height: 420px;
+	border-radius: 50%;
+	text-align: center;
+	font-size: 18pt;
+	line-height: 21pt;
+	font-weight: bold;
+	color: white;
+	padding-top: 60px;
+}
+.home-switch-option div{
+	font-size: 14pt;
+	line-height: 14pt;
+	font-weight: normal;
+	text-align: right;
+}
+.home-switch-option a{
+	color: white;
+	text-decoration: none;
+}
+.home-switch-option a:hover{
+	color: white;
+	text-decoration: underline;
+}
+.focus-search-option{
+	background-color: var(--system-100);
+}
+
+.suggestions-search-option{
+	background-color: var(--suggestions-100);
+}
+
+.top-left-home{
+    height: 60px;
+    padding-right: 43px;
+}
+.home-switch-option .focus-search-bar{
+  margin-right: auto;
+  margin-left: auto;
+	margin-top: 100px;
+  width: 360px;
+  padding: 12px;
+  background-color: var(--system-40);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+}
+.home-switch-option .focus-search-bar input{
+	height: 28px;
+	font-size: 12pt;
+}
+.logos-banner{
+	display: flex;
+	flex-wrap: nowrap;
+	flex-direction: row-reverse;
+	gap: 24px;
+	justify-content: center; 
+}
+.logos-banner img{
+	height: 50px;
+}
+.bubble {
+  position: relative;
+  border-radius: 24px;
+  background-color: var(--system-10);
+  padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.bubble-top{
+  content: "";
+  width: 0px;
+  height: 0px;
+  border-left: 24px solid transparent;
+  border-right: 12px solid var(--system-10);
+  border-top: 12px solid transparent;
+  border-bottom: 20px solid var(--system-10);
+  margin-right: 32px;	
+}
+#focus-search .focus-search-bar{
+	margin-top: 220px;
+}
+#focus-search .logos-banner{
+	margin-top: 300px;
+}
+#browsing-route .note{
+	width: 300px;
+	margin-right: auto;
+}
+#home-steady .home-switch{
+	margin-top: 80px;
+}
+#home-steady .logos-banner{
+	margin-top: 80px;
+}
+#home-initial .bubble-with-top{
+	margin-top: 30px;
+}
+#home-initial .home-switch{
+	margin-top: 80px;
+}
+#browsing-route .logos-banner{
+	margin-top: 40px;
 }
 /* SARA styles end */
