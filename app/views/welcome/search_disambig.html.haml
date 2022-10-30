@@ -11,10 +11,9 @@
                 = t(:search_string, q: @q)
                 %a.by-icon-v02{:href => "#"} -
           .left-bottons-area
-            = link_to '', do_search_path do
-              %button#search-subject-results-button.sara-button.button-primary.disabled
-                = t(:search_this_topic)
-                .by-icon-v02 1
+            %button#search-subject-results-button.sara-button.button-primary.disabled
+              = t(:search_this_topic)
+              .by-icon-v02 1
         .view-switch-line
           = t(:display_colon)
           .small-switch

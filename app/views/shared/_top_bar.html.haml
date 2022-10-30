@@ -6,9 +6,9 @@
           %a.top-logo{href: '/'}
           .top-search-switch
             %a{href: search_path, class: 'top-search-option right' + (@sara_mode == :search ? ' active' : '')}
-              %div= t(:focused_search)
+              %div= t('nav.focused_search')
             %a{href: suggest_path, class: 'top-search-option left' + (@sara_mode == :suggest ? ' active' : '')}
-              %div= t(:suggest_topics)
+              %div= t('nav.suggest_topics')
           .statistics-box
             .statistics
               .stat-big 9

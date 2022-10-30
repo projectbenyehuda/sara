@@ -33,20 +33,20 @@ he:
   nav:
     focused_search: חיפוש ממוקד
     suggest_topics: הצעות לנושאים
-    stored_queries: Stored Queries
+    stored_queries: חיפושים שמורים
   queries:
     index:
-      header: Stored Search Queries
-      responses_quantity: Responses Quantity
-      create_new: New Search
-      run: Run
+      header: תוצאות חיפושים קודמים
+      responses_quantity: מספר תוצאות
+      create_new: חיפוש חדש
+      run: חפש!
     show:
-      header: "Found results for query: '%{query_text}'"
+      header: "להלן התוצאות עבור החיפוש: '%{query_text}'"
   databases: מאגרי מידע
   data_items: פריטי מידע
   about_8_million: כ־8 מליון
   x_favorites: "%{x} פריטים מועדפים"
-  what_would_you_like_me_to_research_for_you: מה תרצו שאחקור עבורכם?
+  what_would_you_like_me_to_research_for_you: מה תרצו שאחקור?
   search: חיפוש
   x_topics_found: נמצאו %{x} נושאים מתאימים. בחרו נושא אחד להרצת שאילתה בכל המקורות.
   search_this_topic: חיפוש תוצאות עבור הנושא הנבחר
