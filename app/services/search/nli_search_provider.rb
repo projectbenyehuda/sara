@@ -14,7 +14,7 @@ module Search
         headers: {
           params: {
             api_key: NLI_API_KEY,
-            query: "any,contains,#{query}"
+            query: "any,contains,#{query}&availability_type=online_and_api_access"
           },
           content_type: :json
         }
@@ -25,7 +25,7 @@ module Search
           thumbnail_url: property_value(item, 'thumbnail'),
           external_id: item['http://purl.org/dc/elements/1.1/recordid'],
           title: "#{property_value(item, 'creator')} / #{property_value(item, 'title')}",
-          media_type: :text,
+          media_type: media_type_from_nli_type(property_value(item, 'type')),
           media_url: property_value(item, 'download'),
           text: property_value(item, 'format')
         )
@@ -40,6 +40,27 @@ module Search
     def property_value(item, property)
       val = item["http://purl.org/dc/elements/1.1/#{property}"]&.first
       return val.present? ? val['@value'] : nil
+    end
+    def media_type_from_nli_type(nli_type)
+      case nli_type
+      when 'book'
+      when 'dissertation'
+      when 'journal'
+        return :text
+      when 'recbroad'
+        return :audio
+      when 'archive'
+        return :archive
+      when 'image'
+      when 'sheet'
+        return :image
+      when 'map'
+        return :map
+      #when 'video'
+      #  return :video
+      else
+        return :unknown
+      end
     end
   end
 end
