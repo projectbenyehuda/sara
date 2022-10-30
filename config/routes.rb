@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   resources :queries, only: [:index, :create, :show]
 
+  
   resources :timelines, only: :index do
     collection do
       get :data
