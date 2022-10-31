@@ -2,17 +2,13 @@ require 'rails_helper'
 
 describe QueriesController do
   describe 'Collection Actions' do
+    let(:project) { create(:project) }
     before do
-      create_list(:query, 5)
-    end
-
-    describe '#index' do
-      subject! { get :index }
-      it { is_expected.to be_successful }
+      create_list(:query, 5, project: project)
     end
 
     describe '#create' do
-      subject(:call) { post :create, params: { query: { text: 'New Query' } } }
+      subject(:call) { post :create, params: { project_id: project.id, query: { text: 'New Query' } } }
 
       before do
         expect_any_instance_of(Search::PbySearchProvider).to receive(:call).and_return(build_list(:search_response_item, 5))

@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :query do
+    project
     text { Faker::Name.name }
 
     transient do

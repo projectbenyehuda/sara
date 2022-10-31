@@ -2,12 +2,64 @@ en:
   nav:
     focused_search: Focused Search
     suggest_topics: Suggested Topics
-    stored_queries: Stored Queries
-  queries:
+    projects: Projects
+  projects:
     index:
-      header: Stored Search Queries
+      header: 'List of Projects'
+      create_new: New Project
+      create: Create!
+    create:
+      failed: 'Failed to create project: %{errors}'
+      success: 'Project created'
+    edit:
+      header: 'Edit project'
+    update:
+      failed: 'Failed to save changes to project: %{errors}'
+      success: 'Project updated'
+    show:
+      header: '%{title} Project'
       responses_quantity: Responses Quantity
       create_new: New Search
-      run: Run
+      run: Run!
+  queries:
     show:
       header: "Found results for query: '%{query_text}'"
+      result_count: 'תוצאות החיפוש:'
+      x_results: '%{x} פריטי מידע'
+      remove_from_list: מחיקה מהרשימה
+      add_to_fav: הוספה למועדפים
+      create_outline: יצירת שלד כתיבה
+      by_type: לפי סוג פריט
+      flat_list: רשימה שטוחה
+      summary_by_type: תמצית תוצאות לפי סוג פריט
+  databases: מאגרי מידע
+  data_items: פריטי מידע
+  about_8_million: כ־8 מליון
+  x_favorites: "%{x} פריטים מועדפים"
+  what_would_you_like_me_to_research_for_you: מה תרצו שאחקור?
+  search: חיפוש
+  x_topics_found: נמצאו %{x} נושאים מתאימים. בחרו נושא אחד להרצת שאילתה בכל המקורות.
+  search_this_topic: חיפוש תוצאות עבור הנושא הנבחר
+  search_string: "טקסט: %{q}"
+  display_colon: "תצוגה:"
+  display_list: רשימה
+  display_map: מפה
+  display_timeline: ציר זמן
+  pby: פרויקט בן־יהודה
+  nli: הספרייה הלאומית
+  wikipedia: ויקיפדיה
+  commons: ויקישיתוף
+  jpress: עיתונות יהודית היסטורית
+  kan: כאן
+  occupations: תחומי עיסוק
+  nationality: לאום
+  to_wikipedia: לערך בוויקיפדיה
+  text: טקסט
+  image: תצלום
+  audio: שמע
+  video: סרטון
+  map: מפה
+  archive: חומר ארכיוני
+  unknown: לא ידוע
+  edit: Edit
+  cancel: Cancel

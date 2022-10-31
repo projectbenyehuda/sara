@@ -3,10 +3,13 @@ he:
     models:
       query: חיפוש
       response_item: תוצאת חיפוש
+      project: Research Project
     attributes:
       default:
         created_at: נוצר בתאריך
         updated_at: עודכן בתאריך
+      project:
+        title: Title
       query:
         text: נושא החיפוש
       response_item:

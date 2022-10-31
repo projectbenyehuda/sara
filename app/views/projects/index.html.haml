@@ -1,0 +1,24 @@
+= form_for(Project.new) do |f|
+  .row
+    .col-sm-3
+    .col-sm-1
+      = f.label t('.create_new'), class: 'form-label'
+    .col-sm-4
+      = f.text_field :title, placeholder: true, class: 'form-control'
+    .col-sm-2
+      = f.submit t('.create'), class: 'btn btn-primary'
+
+
+
+%table.table
+  %thead
+    %th= t('activerecord.attributes.default.created_at')
+    %th= t('activerecord.attributes.default.updated_at')
+    %th= t('activerecord.attributes.query.title')
+  %tbody
+    - @projects.each do |p|
+      %tr
+        %td= p.created_at
+        %td= p.updated_at
+        %td= link_to p.title, p
+

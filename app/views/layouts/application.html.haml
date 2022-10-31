@@ -1,5 +1,5 @@
 !!!
-%html
+%html{dir: :rtl, lang: :he}
   %head
     %meta{ content: 'text/html; charset=UTF-8', 'http-equiv': 'Content-Type' }/
     %title Sara
@@ -12,6 +12,14 @@
     = render partial: 'shared/top_bar'
     .top-element
     .container-fluid
+      - if flash.alert.present?
+        .alert.alert-danger.alert-dismissible.fade.show
+          = flash.alert
+          %button.btn-close{ type: :button, data: { bs_dismiss: :alert } }
+      - if flash.notice.present?
+        .alert.alert-info.alert-dismissible.fade.show
+          = flash.notice
+          %button.btn-close{ type: :button, data: { bs_dismiss: :alert } }
       = yield
 :javascript
   $(document).ready(function() {

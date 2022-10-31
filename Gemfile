@@ -4,6 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.1.2"
 
 gem "rails", "~> 7.0", ">= 7.0.3.1"
+gem "rails-i18n", "~> 7.0"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -74,6 +75,7 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
   gem "faker"
+  gem "rails-controller-testing"
 end
 
 group :development, :test do
