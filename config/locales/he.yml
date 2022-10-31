@@ -2,25 +2,26 @@ he:
   nav:
     focused_search: חיפוש ממוקד
     suggest_topics: הצעות לנושאים
-    projects: Projects
+    projects: תיקי נושא
   projects:
     index:
-      header: 'List of Projects'
-      create_new: New Project
-      create: Create!
+      header: 'רשימת תיקי נושא'
+      create_new: תיק נושא חדש
+      create: צור חדש!
     create:
-      failed: 'Failed to create project: %{errors}'
-      success: 'Project created'
+      failed: 'יצירת תיק נושא נכשלה: %{errors}'
+      success: 'תיק הנושא נוצר!'
     edit:
-      header: 'Edit project'
+      header: 'עריכת תיק נושא'
     update:
-      failed: 'Failed to save changes to project: %{errors}'
-      success: 'Project updated'
+      failed: 'שמירת השינויים לתיק הנושא נכשלה: %{errors}'
+      success: 'תיק הנושא עודכן'
     show:
-      header: '%{title} Project'
+      header: 'תיק נושא: %{title}'
       responses_quantity: מספר תוצאות
       create_new: חיפוש חדש
       run: חפש!
+      stored_queries: חיפושים שמורים
   queries:
     show:
       header: "להלן התוצאות עבור החיפוש: '%{query_text}'"
@@ -61,5 +62,5 @@ he:
   map: מפה
   archive: חומר ארכיוני
   unknown: לא ידוע
-  edit: Edit
-  cancel: Cancel
+  edit: עריכה
+  cancel: ביטול
