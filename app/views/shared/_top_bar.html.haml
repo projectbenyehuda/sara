@@ -5,9 +5,9 @@
         .top-right
           %a.top-logo{href: '/'}
           .top-search-switch
-            %a{href: search_path, class: 'top-search-option right' + (@sara_mode == :search ? ' active' : '')}
+            %a{href: search_path, class: 'top-search-option right' + (@sara_mode == :search ? ' active' : ''), style:'color:white;'}
               %div= t('nav.focused_search')
-            %a{href: suggest_path, class: 'top-search-option left' + (@sara_mode == :suggest ? ' active' : '')}
+            %a{href: suggest_path, class: 'top-search-option left' + (@sara_mode == :suggest ? ' active' : ''), style:'color:white;'}
               %div= t('nav.suggest_topics')
           .statistics-box
             .statistics
@@ -47,3 +47,5 @@
         .by-icon-v02 "
         %div= t(:x_favorites, x: current_user.  favorite_count)
     = render partial: 'shared/breadcrumbs'
+    - unless @header_partial.nil?
+      = render partial: @header_partial
