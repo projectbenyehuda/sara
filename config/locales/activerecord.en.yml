@@ -3,10 +3,13 @@ en:
     models:
       query: Search Query
       response_item: Response Item
+      project: Research Project
     attributes:
       default:
         created_at: Created At
         updated_at: Updated At
+      project:
+        title: Title
       query:
         text: Query Text
       response_item:

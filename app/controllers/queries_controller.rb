@@ -1,9 +1,13 @@
 class QueriesController < ApplicationController
+  before_action :set_models
+
   def create
     text = params.require(:query).permit(:text)[:text].squish
-    q = Query.find_by(text: text)
+    # checking if project already has query with such title
+    q = @project.queries.find_by(text: text)
     if q.nil?
-      q = Query.create!(text: text)
+      # if not we create new query in project, otherwise old query will be reused
+      q = @project.queries.create!(text: text)
     end
     SearchService.call(q)
 
@@ -11,14 +15,17 @@ class QueriesController < ApplicationController
   end
 
   def show
-    @query = Query.find(params[:id])
   end
 
-  def index
-    @records = Query.select(:id, :created_at, :text)
-                    .select('count(*) as responses_quantity')
-                    .left_joins(:response_items)
-                    .group(Arel.sql('queries.id'))
-                    .order(:created_at)
+  def set_models
+    project_id = params[:project_id]
+    if project_id.present?
+      @project = Project.find(project_id)
+    else
+      id = params[:id]
+      if id.present?
+        @query = Query.find(id)
+      end
+    end
   end
 end

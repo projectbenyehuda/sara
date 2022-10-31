@@ -1,6 +1,7 @@
-%h1= t('.header')
+%h1= t('.header', title: @project.title)
+= link_to t(:edit), edit_project_path(@project)
 
-= form_for(Query.new) do |f|
+= form_for([@project, Query.new]) do |f|
   .row
     .col-sm-3
     .col-sm-1
@@ -10,13 +11,15 @@
     .col-sm-2
       = f.submit t('.run'), class: 'btn btn-primary'
 
+%h2= t('.stored_queries')
+
 %table.table
   %thead
     %th= t('activerecord.attributes.default.created_at')
     %th= t('activerecord.attributes.query.text')
     %th= t('.responses_quantity')
   %tbody
-    - @records.each do |q|
+    - @queries.each do |q|
       %tr
         %td= q.created_at
         %td= link_to q.text, q

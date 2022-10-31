@@ -1,0 +1,12 @@
+%h1= t('.header')
+= form_for @project do |f|
+  .row
+    .col-sm-2
+      = label_tag :title, nil, class: 'control-label'
+    .col-sm-6
+      = f.text_field :title, class: 'form-control'
+
+    .col-sm-2
+      .btn-group
+        = f.submit nil, class: 'btn btn-primary'
+        = link_to t(:cancel), @project, class: 'btn btn-light'

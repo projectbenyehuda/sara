@@ -11,7 +11,11 @@ Rails.application.routes.draw do
   match 'welcome/suggest', as: 'suggest', via: [:get, :post]
   match 'welcome/search_disambig', as: 'search_disambig', via: [:get, :post]
 
-  resources :queries, only: [:index, :create, :show]
+  resources :queries, only: [:show]
+
+  resources :projects, except: [:new] do
+    resources :queries, only: [:create]
+  end
 
   
   resources :timelines, only: :index do
