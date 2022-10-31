@@ -308,7 +308,7 @@
                     - mtype_img = image_for_media_type(mtype)
                     - unless mtype_img.empty?
                       .dashboard-image
-                        %img{alt: textify_media_type(mtype), src: mtype_img}
+                        = image_tag mtype_img, {alt: textify_media_type(mtype)}
                   -#.dashboard-item-left
                   -#  .result-sources-icons
                   -#    %img{:alt => "הספריה הלאומית של ישראל", :src => "/assets/nli_logo_24.png"}/
@@ -347,7 +347,7 @@
                     -#  .result-type-label ארכיון
                     .collapsed.vertical-expand.fcoll{"data-target" => "", "data-toggle" => "collapse"}
                     .result-origin
-                      %img{alt: textify_source(item.source), height: '24px', src: image_for_source(item.source), width: '24px'}
+                      = image_tag image_for_source(item.source), {alt: textify_source(item.source), height: '24px', width: '24px'}
         .notes-area
           .note
             .flex-headline-space-between

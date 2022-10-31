@@ -8,17 +8,15 @@
     .col-sm-2
       = f.submit t('.create'), class: 'btn btn-primary'
 
-
-
 %table.table
   %thead
+    %th= t('activerecord.attributes.query.title')
     %th= t('activerecord.attributes.default.created_at')
     %th= t('activerecord.attributes.default.updated_at')
-    %th= t('activerecord.attributes.query.title')
   %tbody
     - @projects.each do |p|
       %tr
+        %td= link_to p.title, p
         %td= p.created_at
         %td= p.updated_at
-        %td= link_to p.title, p
 

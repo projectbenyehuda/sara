@@ -44,17 +44,17 @@ module ApplicationHelper
   def image_for_media_type(mtype)
     case mtype
     when 'text'
-      return '/assets/text item_pic.png'
+      return 'text_item_pic.png'
     when 'image'
-      return '/assets/picture_pic.png'
+      return 'picture_pic.png'
     #when 'audio'
     #  return 'audio.png'
     when 'video'
-      return '/assets/video_pic.png'
+      return 'video_pic.png'
     #when 'map'
     #  return 'map.png'
     when 'archive'
-      return '/assets/archive item_pic.png'
+      return 'archive_item_pic.png'
     else
       return ''
     end
@@ -62,13 +62,13 @@ module ApplicationHelper
   def image_for_source(source)
     case source
     when 'wikipedia'
-      return '/assets/wikipedia_logo_24.png'
+      return 'wikipedia_logo_24.png'
     when 'nli'
-      return '/assets/nli_logo_24.png'
+      return 'nli_logo_24.png'
     when 'pby'
-      return '/assets/pby_logo_24.png'
+      return 'pby_logo_24.png'
     when 'wikidata'
-      return '/assets/wikidata_logo_24.png'
+      return 'wikidata_logo_24.png'
     else
       return ''
     end
