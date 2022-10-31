@@ -78,7 +78,7 @@
 
 = form_for([Project.last, Query.new]) do |f|
   = f.hidden_field :text, class: 'form-control', id: 'search_q'
-  = f.submit t('.run'), class: 'btn btn-primary'
+  = f.submit t('projects.show.run'), style: 'display:none'
 
 :javascript
   $(document).ready(function() {
@@ -89,8 +89,10 @@
       $('#search-subject-results-button').removeClass('disabled');
     });
     $('#search-subject-results-button').click(function(e) {
-      $('#search_q').val($('div.result-item.active > div.result-texts > div.flex-headline-space-between > p').text());
-      $('form').submit();
+      if(!$(this).hasClass('disabled')) {
+        $('#search_q').val($('div.result-item.active > div.result-texts > div.flex-headline-space-between > p').text());
+        $('form').submit();
+      } else alert('#{ t(:please_select_topic) }');
     });
   });
   
