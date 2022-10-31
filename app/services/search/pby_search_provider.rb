@@ -27,7 +27,7 @@ module Search
         result += response['data'].map do |rec|
           metadata = rec['metadata']
           Search::ResponseItem.new(
-            title: metadata['title'],
+            title: "#{metadata['title']} / #{metadata['author_string']}",
             media_url: metadata['url'],
             media_type: :text,
             url: rec['url'],
