@@ -19,7 +19,6 @@
   --disabled-text: #707070;
   --gentle-background: #EAECED;
 }
-
 body {
   font-family:"open sans", Helvetica, Arial, "sans-serif";
   font-size: 11pt;
@@ -272,7 +271,7 @@ a.top-search-option{
 	align-items: center;
 }
 .full-screen-search-area::before{
-  background-image: linear-gradient(to bottom, #EAECED00, #EAECED00, #EAECED00, #EAECED00, #EAECED), url("/assets/New NLI.jpeg");
+  background-image: linear-gradient(to bottom, #EAECED00, #EAECED00, #EAECED00, #EAECED00, #EAECED), url(image-path("/assets/new-nli.jpeg"));
  
   content: "";
   position: absolute;
