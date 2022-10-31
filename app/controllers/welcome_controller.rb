@@ -61,22 +61,24 @@ class WelcomeController < ApplicationController
               @moredata[qid]['wikipedia_url'] = item['sitelinks']['hewiki'] ? 'https://he.wikipedia.org/wiki/'+item['sitelinks']['hewiki']['title'] : ''
               imagename = item['claims']['P18'] ? item['claims']['P18'][0]['mainsnak']['datavalue']['value'] : ''
               images['File:'+imagename] = qid unless imagename.empty?
-              case 
-              when @moredata[qid]['instance-of'].include?('Q5') # human
-                @moredata[qid]['birthyear'] = item['claims']['P569'] ? item['claims']['P569'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
-                @moredata[qid]['deathyear'] = item['claims']['P570'] ? item['claims']['P570'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
-                @moredata[qid]['occupations'] = item['claims']['P106'].map{|c| c['mainsnak']['datavalue']['value']['id']} if item['claims']['P106']
-                @moredata[qid]['nationality'] = item['claims']['P27'] ? item['claims']['P27'][0]['mainsnak']['datavalue']['value']['id'] : ''
-                @moredata[qid]['benyehuda_url'] = 'https://benyehuda.org/author/'+item['claims']['P7507'][0]['mainsnak']['datavalue']['value'] if item['claims']['P7507']
-                @moredata[qid]['nli_id'] = item['claims']['P8189'][0]['mainsnak']['datavalue']['value'] if item['claims']['P8189']
-              when @moredata[qid]['instance-of'].include?('Q16521') # organization
-                @moredata[qid]['inception'] = item['claims']['P571'] ? item['claims']['P571'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
-                @moredata[qid]['country'] = item['claims']['P17'] ? item['claims']['P17'][0]['mainsnak']['datavalue']['value']['id'] : ''
-              when @moredata[qid]['instance-of'].include?('Q486972') # human settlement
-                @moredata[qid]['population'] = item['claims']['P1082'] ? item['claims']['P1082'][0]['mainsnak']['datavalue']['value']['amount'] : ''
-                @moredata[qid]['coordinates'] = item['claims']['P625'] ? item['claims']['P625'][0]['mainsnak']['datavalue']['value'] : ''
-                @moredata[qid]['inception'] = item['claims']['P571'] ? item['claims']['P571'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
-                @moredata[qid]['country'] = item['claims']['P17'] ? item['claims']['P17'][0]['mainsnak']['datavalue']['value']['id'] : ''
+              unless @moredata[qid]['instance-of'].nil?
+                case
+                when @moredata[qid]['instance-of'].include?('Q5') # human
+                  @moredata[qid]['birthyear'] = item['claims']['P569'] ? item['claims']['P569'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
+                  @moredata[qid]['deathyear'] = item['claims']['P570'] ? item['claims']['P570'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
+                  @moredata[qid]['occupations'] = item['claims']['P106'].map{|c| c['mainsnak']['datavalue']['value']['id']} if item['claims']['P106']
+                  @moredata[qid]['nationality'] = item['claims']['P27'] ? item['claims']['P27'][0]['mainsnak']['datavalue']['value']['id'] : ''
+                  @moredata[qid]['benyehuda_url'] = 'https://benyehuda.org/author/'+item['claims']['P7507'][0]['mainsnak']['datavalue']['value'] if item['claims']['P7507']
+                  @moredata[qid]['nli_id'] = item['claims']['P8189'][0]['mainsnak']['datavalue']['value'] if item['claims']['P8189']
+                when @moredata[qid]['instance-of'].include?('Q16521') # organization
+                  @moredata[qid]['inception'] = item['claims']['P571'] ? item['claims']['P571'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
+                  @moredata[qid]['country'] = item['claims']['P17'] ? item['claims']['P17'][0]['mainsnak']['datavalue']['value']['id'] : ''
+                when @moredata[qid]['instance-of'].include?('Q486972') # human settlement
+                  @moredata[qid]['population'] = item['claims']['P1082'] ? item['claims']['P1082'][0]['mainsnak']['datavalue']['value']['amount'] : ''
+                  @moredata[qid]['coordinates'] = item['claims']['P625'] ? item['claims']['P625'][0]['mainsnak']['datavalue']['value'] : ''
+                  @moredata[qid]['inception'] = item['claims']['P571'] ? item['claims']['P571'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
+                  @moredata[qid]['country'] = item['claims']['P17'] ? item['claims']['P17'][0]['mainsnak']['datavalue']['value']['id'] : ''
+                end
               end
             end
             # get image thumbnail URLs

@@ -49,7 +49,7 @@
                   %img{alt: result.dig('display', 'label', 'value'), src: @moredata[result['id']]['thumbnail']}
               .result-texts
                 .flex-headline-space-between
-                  - if @moredata[result['id']]['instance-of'].include?('Q5') # human
+                  - if @moredata[result['id']]['instance-of'].present? && @moredata[result['id']]['instance-of'].include?('Q5') # human
                     - birth = @moredata[result['id']]['birthyear'].present? ? @moredata[result['id']]['birthyear'] : '?'
                     - death = @moredata[result['id']]['deathyear'].present? ? @moredata[result['id']]['deathyear'] : ''
                     %p.headline-3= result.dig('display', 'label', 'value')+ " (#{birth}–#{death})"
@@ -75,6 +75,11 @@
                       = @labels[@moredata[result['id']]['nationality']]
                   - if @moredata[result['id']]['wikipedia_url'].present?
                     %a{href: @moredata[result['id']]['wikipedia_url']}= t(:to_wikipedia)
+
+= form_for([Project.last, Query.new]) do |f|
+  = f.hidden_field :text, class: 'form-control', id: 'search_q'
+  = f.submit t('.run'), class: 'btn btn-primary'
+
 :javascript
   $(document).ready(function() {
     $('.result-item').click(function(e) {
@@ -82,6 +87,10 @@
       $('.result-item').removeClass('active');
       $(this).addClass('active');
       $('#search-subject-results-button').removeClass('disabled');
+    });
+    $('#search-subject-results-button').click(function(e) {
+      $('#search_q').val($('div.result-item.active > div.result-texts > div.flex-headline-space-between > p').text());
+      $('form').submit();
     });
   });
   
