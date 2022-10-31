@@ -271,7 +271,7 @@ a.top-search-option{
 	align-items: center;
 }
 .full-screen-search-area::before{
-  background-image: linear-gradient(to bottom, #EAECED00, #EAECED00, #EAECED00, #EAECED00, #EAECED), url(image-path("/assets/new-nli.jpeg"));
+  background-image: linear-gradient(to bottom, #EAECED00, #EAECED00, #EAECED00, #EAECED00, #EAECED), url(image-path("new-nli.jpeg"));
  
   content: "";
   position: absolute;
