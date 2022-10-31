@@ -1,13 +1,388 @@
-%h1= t('.header', query_text: @query.text)
-- @query.response_items.to_a.group_by(&:source).each do |source, items|
-  %h2= t("activerecord.attributes.response_item.sources.#{source}")
-  .row
-    - items.each do |item|
-      .col-lg-2.col-sm-3
-        .card
-          - if item.thumbnail_url.present?
-            = image_tag item.thumbnail_url, alt: item.title
-          .card-body
-            %h5.card-title
-              = link_to item.title, item.url, target: :blank
-            %p.card-text= item.text
+.full-screen-area
+  .search-content
+    %form.works_filters{"accept-charset" => "UTF-8", :action => "", "data-remote" => "true", :method => "post"}
+      %input{:name => "utf8", :type => "hidden", :value => "✓"}/
+      %input#sort_by{:name => "sort_by", :type => "hidden", :value => "alphabetical_asc"}/
+      .filters-panel
+        .flex-headline-space-between
+          %p.headline-3 סינון לפי:
+          %a{:href => ""} איפוס סינון
+        .sort-type
+          .vertical-expand.fcoll{"data-target" => ".collforigin", "data-toggle" => "collapse"}
+            %p.headline-4 מאגר מידע
+          .nested.active.collapse.show.collforigin
+            .nested-content.nested-list
+              .option-line
+                %input#nli{:name => "ckb_origin[]", :type => "checkbox", :value => "nli"}>/
+                הספריה הלאומית
+              .option-line
+                %input#nli-articles{:name => "ckb_origin[]", :type => "checkbox", :value => "nli-articles"}>/
+                מאמרים בספריה הלאומית
+              .option-line
+                %input#heb-wikipedia{:name => "ckb_origin[]", :type => "checkbox", :value => "heb-wikipedia"}>/
+                ויקיפדיה העברית
+              .option-line
+                %input#wikintons{:name => "ckb_origin[]", :type => "checkbox", :value => "wikintons"}>/
+                ויקינתונים
+              .option-line
+                %input#wikishare{:name => "ckb_origin[]", :type => "checkbox", :value => "wikishare"}>/
+                ויקישיתוף
+              .option-line
+                %input#pby{:name => "ckb_origin[]", :type => "checkbox", :value => "pby"}>/
+                פרויקט בן־יהודה
+              .option-line
+                %input#heb-lex{:name => "ckb_origin[]", :type => "checkbox", :value => "heb-lex"}>/
+                לקסיקון הספרות העברית
+              .option-line
+                %input#youtube{:name => "ckb_origin[]", :type => "checkbox", :value => "youtube"}>/
+                יוטיוב
+              .option-line
+                %input#lex-ref{:name => "ckb_origin[]", :type => "checkbox", :value => "lex-ref"}>/
+                לקסיקון הקשרים
+        .sort-type
+          .vertical-expand.fcoll{"data-target" => ".collfmetadata", "data-toggle" => "collapse"}
+            %p.headline-4 אזכור הנושא במטה-דאטה
+          .nested.active.collapse.show.collfmetadata
+            .nested-content.nested-list
+              .option-line
+                %input#headline{:name => "ckb_metadata[]", :type => "checkbox", :value => "headline"}>/
+                כותרת
+              .option-line
+                %input#author{:name => "ckb_ckb_metadata[]", :type => "checkbox", :value => "author"}>/
+                יוצרים/ות
+              .option-line
+                %input#description{:name => "ckb_metadata[]", :type => "checkbox", :value => "description"}>/
+                תיאור
+              .option-line
+                %input#additional-authors{:name => "ckb_metadata[]", :type => "checkbox", :value => "additional-authors"}>/
+                יוצרים/ות נוספים
+        .sort-type
+          .vertical-expand.fcoll{"data-target" => ".collfaccess", "data-toggle" => "collapse"}
+            %p.headline-4 סוג גישה
+          .nested.active.collapse.show.collfaccess
+            .nested-content.nested-list
+              .option-line
+                %input#digital-far{:name => "ckb_access[]", :type => "checkbox", :value => "digital-far"}>/
+                דיגיטלית מרחוק
+              .option-line
+                %input#physical-local{:name => "ckb_ckb_access[]", :type => "checkbox", :value => "physical-local"}>/
+                פיזית מקומית
+        .sort-type
+          .vertical-expand.fcoll{"data-target" => ".collfinfotype", "data-toggle" => "collapse"}
+            %p.headline-4 סוג המידע
+          .nested.active.collapse.show.collfinfotype
+            .nested-content.nested-list{:style => "column-count: 1"}
+              %ul
+                %li
+                  .option-line
+                    %input#texts{:name => "ckb_infotype[]", :type => "checkbox", :value => "texts"}>/
+                    טקסטים
+                    %span.sara-icon d
+                  .info-type-filters
+                    %ul.nested-list.xlat_texts{:style => "column-count: 1"}
+                      %li.option-line
+                        %input#books{:name => "ckb_texts[]", :type => "checkbox", :value => "books"}>/
+                        חיבורים יחידים - ספרים
+                      %li.option-line
+                        %input#file-of-works{:name => "ckb_texts[]", :type => "checkbox", :value => "file-of-works"}>/
+                        קובצי יצירות - אסופות, ספרי שירים...
+                      %li.option-line
+                        %input#not-published-separately{:name => "ckb_texts[]", :type => "checkbox", :value => "not-published-separately"}>/
+                        יצירות - לא פורסמו בנפרד
+                      %li.option-line
+                        %input#articles-journals-press{:name => "ckb_texts[]", :type => "checkbox", :value => "articles-journals-press"}>/
+                        מאמרים, כתבי עת ועיתונות
+                      %li.option-line
+                        %input#biographies{:name => "ckb_texts[]", :type => "checkbox", :value => "biographies"}>/
+                        רשומות ביוגרפיות וביו-ביבליוגרפיות
+                %li
+                  .option-line
+                    %input#pictures{:name => "ckb_infotype[]", :type => "checkbox", :value => "pictures"}>/
+                    תמונות
+                    %span.sara-icon i
+                  .info-type-filters
+                    %ul.nested-list.xlat_texts{:style => "column-count: 1"}
+                      %li.option-line
+                        %input#photographs{:name => "ckb_pictures[]", :type => "checkbox", :value => "photographs"}>/
+                        צילומים
+                      %li.option-line
+                        %input#drawings-drawings-illustrations{:name => "ckb_pictures[]", :type => "checkbox", :value => "drawings-drawings-illustrations"}>/
+                        ציורים, רישומים ואיורים
+                      %li.option-line
+                        %input#posters-brochures{:name => "ckb_pictures[]", :type => "checkbox", :value => "posters-brochures"}>/
+                        פוסטרים, כרזות ואפרמה
+                      %li.option-line
+                        %input#historical-maps{:name => "ckb_pictures[]", :type => "checkbox", :value => "historical-maps"}>/
+                        מפות היסטוריות
+                      %li.option-line
+                        %input#manuscript{:name => "ckb_pictures[]", :type => "checkbox", :value => "manuscript"}>/
+                        כתבי יד
+                      %li.option-line
+                        %input#music-notes{:name => "ckb_pictures[]", :type => "checkbox", :value => "music-notes"}>/
+                        תווים
+                %li
+                  .option-line
+                    %input#archive-records{:name => "ckb_infotype[]", :type => "checkbox", :value => "archive-records"}>/
+                    רשומות ארכיון
+                    %span.sara-icon a
+                  .info-type-filters
+                    %ul.nested-list.xlat_texts{:style => "column-count: 1"}
+                      %li.option-line
+                        %input#historical-documents{:name => "ckb_archive-records[]", :type => "checkbox", :value => "historical-documents"}>/
+                        מסמכים היסטוריים
+                      %li.option-line
+                        %input#other-doc{:name => "ckb_archive-records[]", :type => "checkbox", :value => "other-doc"}>/
+                        מסמכים אחרים
+                      %li.option-line
+                        %input#general{:name => "ckb_archive-records[]", :type => "checkbox", :value => "general"}>/
+                        כללי
+                %li
+                  .option-line
+                    %input#videos{:name => "ckb_infotype[]", :type => "checkbox", :value => "videos"}>/
+                    קטעי וידאו
+                    %span.sara-icon v
+                  .info-type-filters
+                    %ul.nested-list.xlat_texts{:style => "column-count: 1"}
+                      %li.option-line
+                        %input#historical-videos{:name => "ckb_videos[]", :type => "checkbox", :value => "historical-videos"}>/
+                        קטעי וידאו היסטוריים - עם/בלי קול
+                      %li.option-line
+                        %input#interviews{:name => "ckb_videos[]", :type => "checkbox", :value => "interviews"}>/
+                        ראיונות
+                      %li.option-line
+                        %input#documentries{:name => "ckb_videos[]", :type => "checkbox", :value => "documentries"}>/
+                        כתבות וסרטים דוקומנטריים
+                      %li.option-line
+                        %input#video-clips{:name => "ckb_videos[]", :type => "checkbox", :value => "video-clips"}>/
+                        קליפים, הופעות וקונצרטים
+                      %li.option-line
+                        %input#tv-cinema{:name => "ckb_videos[]", :type => "checkbox", :value => "tv-cinema"}>/
+                        סרטי טלויזיה וקולנוע
+                %li
+                  .option-line
+                    %input#audio{:name => "ckb_origin[]", :type => "checkbox", :value => "audio"}>/
+                    קטעי קול
+                    %span.sara-icon n
+                  .info-type-filters
+                    %ul.nested-list.xlat_texts{:style => "column-count: 1"}
+                      %li.option-line
+                        %input#historical-audio{:name => "ckb_audio[]", :type => "checkbox", :value => "historical-audio"}>/
+                        קטעי קול היסטוריים
+                      %li.option-line
+                        %input#interviews-audio{:name => "ckb_audio[]", :type => "checkbox", :value => "interviews-audio"}>/
+                        ראיונות
+                      %li.option-line
+                        %input#radio-programs{:name => "ckb_audio[]", :type => "checkbox", :value => "radio-programs"}>/
+                        כתבות ותוכניות רדיו
+                      %li.option-line
+                        %input#songs{:name => "ckb_audio[]", :type => "checkbox", :value => "songs"}>/
+                        שירים, הקלטות, הופעות וקונצרטים
+        .sort-type
+          .vertical-expand.fcoll{"data-target" => ".collfscope", "data-toggle" => "collapse"}
+            %p.headline-4 תחומים
+          .nested.active.collapse.show.collfscope
+            .nested-content.nested-list
+              .option-line
+                %input#history{:name => "ckb_scope[]", :type => "checkbox", :value => "history"}>/
+                היסטוריה יהודית וישראלית
+              .option-line
+                %input#literature-culture{:name => "ckb_scope[]", :type => "checkbox", :value => "literature-culture"}>/
+                ספרות ותרבות
+              .option-line
+                %input#hebrew-language{:name => "ckb_scope[]", :type => "checkbox", :value => "hebrew-language"}>/
+                השפה העברית
+              .option-line
+                %input#religion{:name => "ckb_scope[]", :type => "checkbox", :value => "religion"}>/
+                דת ותיאולוגיה
+              .option-line
+                %input#israel-politics{:name => "ckb_scope[]", :type => "checkbox", :value => "israel-politics"}>/
+                פוליטיקה ישראלית
+              .option-line
+                %input#arts{:name => "ckb_ckb_scope[]", :type => "checkbox", :value => "arts"}>/
+                אמנויות
+              .option-line
+                %input#science{:name => "ckb_scope[]", :type => "checkbox", :value => "science"}>/
+                מדעים
+              .option-line
+                %input#medicine{:name => "ckb_scope[]", :type => "checkbox", :value => "medicine"}>/
+                רפואה
+              .option-line
+                %input#sport{:name => "ckb_scope[]", :type => "checkbox", :value => "sport"}>/
+                ספורט
+        .sort-type
+          .vertical-expand.fcoll{"data-target" => ".collfrights", "data-toggle" => "collapse"}
+            %p.headline-4 מצב זכויות יוצרים
+          .nested.active.collapse.show.collfrights
+            .nested-content.nested-list
+              .option-line
+                %input#public-domain{:name => "ckb_rights[]", :type => "checkbox", :value => "public-domain"}/
+                = succeed "\u{5e0}\u{5d7}\u{5dc}\u{5ea}" do
+                  %span.by-icon-v02 m
+              .option-line
+                %input#publication{:name => "ckb_rights[]", :type => "checkbox", :value => "publication"}/
+                = succeed "\u{5e8}\u{5e9}\u{5d5}\u{5ea}" do
+                  %span.by-icon-v02 x
+              .option-line
+                %input#protected{:name => "ckb_rights[]", :type => "checkbox", :value => "protected"}/
+                = succeed "\u{5de}\u{5d5}\u{5d2}\u{5e0}\u{5d9}\u{5dd}" do
+                  %span.by-icon-v02 x
+              .option-line
+                %input#undefined{:name => "ckb_rights[]", :type => "checkbox", :value => "undefined"}>/
+                לא הוגדר
+        .sort-type
+          .vertical-expand.fcoll{"data-target" => ".collfdates", "data-toggle" => "collapse"}
+            %p.headline-4 תאריכים
+          .nested.active.collapse.show.collfdates
+            .nested-content.nested-list{:style => "column-count: 1"}
+              .small-switch
+                %button#birth.small-switch-option.sort-by.active שנת לידה
+                %button#death.small-switch-option.sort-by שנת פטירה
+                %button#uploaded.small-switch-option.sort-by העלאה
+              .dates-range
+                %input#fromdate{"data-target" => "#fromdate", "data-toggle" => "datetimepicker", :name => "fromdate", :placeholder => "שנה"}/
+                %div עד
+                %input#todate{"data-target" => "#todate", "data-toggle" => "datetimepicker", :name => "todate", :placeholder => "שנה"}/
+        .sort-type
+          .vertical-expand.fcoll{"data-target" => ".collfgender", "data-toggle" => "collapse"}
+            %p.headline-4 מגדר
+          .nested.active.collapse.show.collfgender
+            .nested-content.nested-list
+              .option-line
+                %input#women{:name => "ckb_gender[]", :type => "checkbox", :value => "women"}>/
+                נשים
+              .option-line
+                %input#men{:name => "ckb_gender[]", :type => "checkbox", :value => "men"}>/
+                גברים
+              .option-line
+                %input#other-gender{:name => "ckb_gender[]", :type => "checkbox", :value => "other-gender"}>/
+                אחר
+              .option-line
+                %input#undifined-gender{:name => "ckb_gender[]", :type => "checkbox", :value => "undifined-gender"}>/
+                לא הוגדר
+        %input#emit_filters{:name => "emit_filters", :type => "hidden", :value => "true"}/
+        %input#cur_page_tag{:name => "cur_page", :type => "hidden", :value => "1"}/
+        %input#page_tag{:name => "page", :type => "hidden", :value => ""}/
+        %input#toletter_tag{:name => "to_letter", :type => "hidden", :value => ""}/
+    .subjects-fixed-top-elements
+      .right-gap-large
+        .filter-tags-area
+          .tags-right
+            %p
+              %strong= t('.result_count')
+              = t('.x_results', x: @query.response_items.count)
+            .tag-line
+              .tag
+                = @query.text
+                %a.by-icon-v02{:href => "#"} -
+          .left-bottons-area
+            %button#delete-from-list-button.sara-button.button-primary.disabled
+              .by-icon-v02> ^
+              = t('.remove_from_list')
+            %button#add-to-fav-button.sara-button.button-primary.disabled
+              .by-icon-v02> '"'
+              = t('.add_to_fav')
+            %button#create-outline-button.sara-button.button-primary.disabled
+              .by-icon-v02> J
+              = t('.create_outline')
+        .view-switch-line
+          = t(:display_colon)
+          .small-switch
+            %button#item-by-type.small-switch-option.sort-by.active= t('.by_type')
+            %button#flat-list.small-switch-option.sort-by= t('.flat_list')
+    .results-side
+      .dashboard-views{style: 'margin-top: 121px;'}
+        .flex-headline-space-between
+          %p.headline-3= t('.summary_by_type')
+          %a.by-icon-v02{:href => "#"} -
+        .dashboard
+          - @query.response_items.group(:media_type).count.each do |mtype, count|
+            .dashboard-item
+              %p.headline-4
+                %a{:href => "#"}= textify_media_type(mtype)
+                = "(#{count})"
+              .d-frame.d1
+              .d-frame.d2
+              .d-frame.d3
+                %a{:href => "#"}
+                  .dashboard-item-right
+                    - mtype_img = image_for_media_type(mtype)
+                    - unless mtype_img.empty?
+                      .dashboard-image
+                        %img{alt: textify_media_type(mtype), src: mtype_img}
+                  -#.dashboard-item-left
+                  -#  .result-sources-icons
+                  -#    %img{:alt => "הספריה הלאומית של ישראל", :src => "/assets/nli_logo_24.png"}/
+                  -#  .result-type-label תמונה
+      .results-by-type
+        .results-list
+          .flex-headline-space-between
+            %div
+              %p.headline-3
+                תוצאות לפי סוג פריט
+                %span{:style => "font-weight: normal"} (39)
+            .collapsed.vertical-expand.fcoll{"data-target" => "", "data-toggle" => "collapse"}
+              %p הרחבת כל הפריטים
+          - @query.response_items.to_a.group_by(&:media_type).each do |mtype, items|
+            .item-type-headline
+              %p.headline-4
+                %a{:href => "#"}= textify_media_type(mtype)
+                = "(#{items.count})"
+            - items.each do |item|
+              .card-line
+                %input{:id => "", :name => "", :type => "checkbox", :value => ""}
+                .result-item
+                  .result-item-content
+                    - if item.thumbnail_url.present?
+                      .subject-picture
+                        %img{src: item.thumbnail_url}
+                    .result-texts
+                      - if item.title.present?
+                        %b= item.title
+                        %br
+                      %p= item.text
+                    %a.by-icon-v02.fav{:href => "#"} !
+                  .result-item-buttom-area
+                    -#.result-typr-labels-area
+                    -#  .result-type-label תמונה
+                    -#  .result-type-label ארכיון
+                    .collapsed.vertical-expand.fcoll{"data-target" => "", "data-toggle" => "collapse"}
+                    .result-origin
+                      %img{alt: textify_source(item.source), height: '24px', src: image_for_source(item.source), width: '24px'}
+        .notes-area
+          .note
+            .flex-headline-space-between
+              %p.headline-3 הידעת?
+              %a.by-icon-v02{:href => "#"} -
+            .note-content
+              .sara-icon b
+              %div
+                %p מוצגים עד 10 פריטים לכל סוג - ניתן לצפות בכל הפריטים בכל סוג בלחיצה על הקישור המתאים.
+                %p
+                  לצפיה נוחה בכלל הפריטים, לאפשרות מיון ולבחירה של עד 100 פריטים יחד עברו ל
+                  %a{:href => "#"}> רשימה שטוחה
+                  \.
+          .note
+            .flex-headline-space-between
+              %p.headline-3 הידעת?
+              %a.by-icon-v02{:href => "#"} -
+            .note-content
+              .sara-icon b
+              %div
+                %p
+                  פריטים נוספים המתאימים לתוצאות השאילתה זמינים לעיון מקומי בלבד. ניתן להוסיפם לרשימה על ידי שינוי המסנן מימין ״סוג גישה״ או בקישורית מטה
+                  = succeed "." do
+                    %a{:href => "#"} הכללת פריטים אשר אינם זמינים לגישה מרחוק
+
+-#%h1= t('.header', query_text: @query.text)
+-#- @query.response_items.to_a.group_by(&:source).each do |source, items|
+-#  %h2= t("activerecord.attributes.response_item.sources.#{source}")
+-#  .row
+-#    - items.each do |item|
+-#      .col-lg-2.col-sm-3
+-#        .card
+-#          - if item.thumbnail_url.present?
+-#            = image_tag item.thumbnail_url, alt: item.title
+-#          .card-body
+-#            %h5.card-title
+-#              = link_to item.title, item.url, target: :blank
+-#            %p.card-text= item.text

@@ -10,7 +10,7 @@ class SearchService < ApplicationService
       Query.transaction do
         query.response_items.where(source: source).delete_all
         items.each_with_index do |item, index|
-          query.response_items.create!(
+          Rails.logger.error "DBG: can't create response item for #{item.url}!" unless query.response_items.create(
             source: source,
             index: index,
             title: item.title[0..100],
@@ -21,6 +21,7 @@ class SearchService < ApplicationService
             text: item.text,
             external_id: item.external_id
           )
+          
         end
       end
     end

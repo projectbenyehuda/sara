@@ -42,6 +42,14 @@ he:
       run: חפש!
     show:
       header: "להלן התוצאות עבור החיפוש: '%{query_text}'"
+      result_count: 'תוצאות החיפוש:'
+      x_results: '%{x} פריטי מידע'
+      remove_from_list: מחיקה מהרשימה
+      add_to_fav: הוספה למועדפים
+      create_outline: יצירת שלד כתיבה
+      by_type: לפי סוג פריט
+      flat_list: רשימה שטוחה
+      summary_by_type: תמצית תוצאות לפי סוג פריט
   databases: מאגרי מידע
   data_items: פריטי מידע
   about_8_million: כ־8 מליון
@@ -64,3 +72,10 @@ he:
   occupations: תחומי עיסוק
   nationality: לאום
   to_wikipedia: לערך בוויקיפדיה
+  text: טקסט
+  image: תצלום
+  audio: שמע
+  video: סרטון
+  map: מפה
+  archive: חומר ארכיוני
+  unknown: לא ידוע
