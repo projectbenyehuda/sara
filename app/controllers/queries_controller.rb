@@ -15,6 +15,8 @@ class QueriesController < ApplicationController
   end
 
   def show
+    @query = Query.find(params[:id])
+    @header_partial = 'queries/show_top'
   end
 
   def set_models
