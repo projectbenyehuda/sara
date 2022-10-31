@@ -49,7 +49,7 @@ gem 'sparql-client' # for querying Wikidata with SPARQL
 gem "rest-client", "~> 2.1"
 
 # Use Sass to process CSS
-# gem "sassc-rails"
+gem "sassc-rails", "~> 2.1.2"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
