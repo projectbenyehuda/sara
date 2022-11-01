@@ -1,11 +1,42 @@
-%h2= 'temporary homepage'
-%ul
-  %li
-    %h3
-      = link_to t('nav.focused_search'), search_path
-  %li
-    %h3
-      = link_to t('nav.suggest_topics'), suggest_path
-  %li
-    %h3
-      = link_to t('nav.projects'), projects_path
+#home-initial.top-element
+  .full-screen-search-area
+    .bubble-with-top
+      .bubble-top
+      .bubble
+        .flex-headline-space-between
+          %div
+            %p= t('.intro_html')
+          %a.by-icon-v02{:href => "#"} -
+    .home-switch
+      .home-switch-option.focus-search-option
+        = form_tag search_disambig_path, method: :get, id: 'search-form' do
+          = t('nav.focused_search')
+          .focus-search-bar
+            %input{ name: 'q', placeholder: t(:what_would_you_like_me_to_research_for_you)}/
+            %button.sara-button.button-primary{:style => "display: flex"}
+              = t(:search)
+      .home-switch-option.suggestions-search-option{style: 'cursor: pointer;'}
+        = t('nav.suggest_topics')
+        %div{:style => "margin-right:36px; margin-top: 48px"}
+          %a{:href => ""} היום בהיסטוריה
+        %div{:style => "margin-right:240px; margin-top: 0px"}
+          %a{:href => ""} יהדות
+        %div{:style => "margin-right:90px; margin-top: 12px"}
+          %a{:href => ""} תולדות העם היהודי
+        %div{:style => "margin-right:300px; margin-top: 12px"}
+          %a{:href => ""} אימפריות
+        %div{:style => "margin-right:120px; margin-top: 8px"}
+          %a{:href => ""} קונפליקטים ומלחמות
+        %div{:style => "margin-right:76px; margin-top: 18px"}
+          %a{:href => ""} ארץ ישראל
+        %div{:style => "margin-right:270px; margin-top: 12px"}
+          %a{:href => ""} מקומות
+        %div{:style => "margin-right:136px; margin-top: 8px"}
+          %a{:href => ""} אישים ומנהיגים
+
+:javascript
+  $(document).ready(function() {
+    $('.suggestions-search-option').click(function() {
+      window.location.href = '#{suggest_path}';
+    });
+  });

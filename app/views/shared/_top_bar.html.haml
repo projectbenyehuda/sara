@@ -22,9 +22,10 @@
             .icons-seperator
             .collapsed.user-menu-trigger{"data-target" => "#user_collapsible", "data-toggle" => "collapse", :title => "תפריט המשתמש"}
               %div
-                שלום
-                = succeed "!" do
-                  %span.bold-text גלית כהן
+                = link_to projects_path, {style:'color:white'} do
+                  שלום
+                  = succeed "!" do
+                    %span.bold-text גלית כהן
               .by-icon-v02 )
               #user-actions-menu.dropdown-content.dropdown-menu{"x-placement" => "bottom-start"}
                 %a{:href => ""}
