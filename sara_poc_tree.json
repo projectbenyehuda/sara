@@ -4,6 +4,180 @@
   "maintainer": "editor@benyehuda.org",
   "nodes": [
     {
+      "title": "אימפריות",
+      "nodetype": "branch",
+      "description": "",
+      "nodes": [{"title": "TBD"}]
+    },
+    {
+      "title": "אישים ומנהיגים",
+      "nodetype": "branch",
+      "description": "",
+      "nodes": [{"title": "TBD"}]
+    },
+    {
+      "title": "ארץ ישראל",
+      "nodetype": "branch",
+      "description": "",
+      "nodes": [
+        {
+          "title": "אמנות וספורט",
+          "nodetype": "branch",
+          "description": "",
+          "nodes": [{"title": "TBD"}]
+        },
+        {
+          "title": "גיאוגרפיה ואקלים",
+          "nodetype": "branch",
+          "description": "",
+          "nodes": [{"title": "TBD"}]
+        },
+        {
+          "title": "החי והצומח",
+          "nodetype": "branch",
+          "description": "",
+          "nodes": [{"title": "TBD"}]
+        },
+        {
+          "title": "חינוך ותרבות",
+          "nodetype": "branch",
+          "description": "",
+          "nodes": [
+            {
+              "title": "אנשי חינוך ישראלים",
+              "nodetype": "branch",
+              "description": "",
+              "nodes": [{"title": "TBD"}]
+            },
+            {
+              "title": "אקדמיה",
+              "nodetype": "branch",
+              "description": "",
+              "nodes": [
+                {
+                  "title": "מוסדות להשכלה גבוהה",
+                  "nodetype": "branch",
+                  "description": "",
+                  "nodes": [{"title": "TBD"}]
+                },
+                {
+                  "title": "מחקר",
+                  "nodetype": "branch",
+                  "description": "",
+                  "nodes": [{"title": "TBD"}]
+                },
+                {
+                  "title": "ספריות",
+                  "nodetype": "branch",
+                  "description": "",
+                  "nodes": [{"title": "TBD"}]
+                },
+                {
+                  "title": "פרופסורים/ות",
+                  "nodetype": "wikidata_query",
+                  "description": "",
+                  "base_query": "israeli_professors"
+                },
+                {
+                  "title": "קהילה לומדת",
+                  "nodetype": "branch",
+                  "description": "",
+                  "nodes": [{"title": "TBD"}]
+                },
+                {
+                  "title": "תוכניות לימוד",
+                  "nodetype": "branch",
+                  "description": "",
+                  "nodes": [{"title": "TBD"}]
+                }
+              ]
+            },
+            {
+              "title": "ארגוני חינוך",
+              "nodetype": "branch",
+              "description": "",
+              "nodes": [{"title": "TBD"}]
+            },
+            {
+              "title": "בתי ספר וגנים",
+              "nodetype": "branch",
+              "description": "",
+              "nodes": [{"title": "TBD"}]
+            },
+            {
+              "title": "כתבי חינוך",
+              "nodetype": "branch",
+              "description": "",
+              "nodes": [{"title": "TBD"}]
+            },
+            {
+              "title": "מלגות ופרסים",
+              "nodetype": "branch",
+              "description": "",
+              "nodes": [{"title": "TBD"}]
+            },
+            {
+              "title": "מלחינות ומלחינים",
+              "nodetype": "branch",
+              "description": "",
+              "nodes": [{"title": "TBD"}]
+            },
+            {
+              "title": "סופרים/ות ומשוררים/ות",
+              "nodetype": "branch",
+              "description": "",
+              "nodes": [{"title": "TBD"}]
+            },
+            {
+              "title": "פרויקטי חינוך מיוחדים",
+              "nodetype": "branch",
+              "description": "",
+              "nodes": [{"title": "TBD"}]
+            }
+
+          ]
+        },
+        {
+          "title": "מדע וטכנולוגיה",
+          "nodetype": "branch",
+          "description": "",
+          "nodes": [{"title": "TBD"}]
+        },
+        {
+          "title": "פוליטיקה, ממשל וכלכלה",
+          "nodetype": "branch",
+          "description": "",
+          "nodes": [{"title": "TBD"}]
+        }
+
+      ]
+    },
+    {
+      "title": "יהדות",
+      "nodetype": "branch",
+      "description": "",
+      "nodes": [{"title": "TBD"}]
+    },
+    {
+      "title": "מקומות",
+      "nodetype": "branch",
+      "description": "",
+      "nodes": [{"title": "TBD"}]
+    },
+    {
+      "title": "קונפליקטים ומלחמות",
+      "nodetype": "branch",
+      "description": "",
+      "nodes": [{"title": "TBD"}]
+    },
+    {
+      "title": "תולדות העם היהודי",
+      "nodetype": "branch",
+      "description": "",
+      "nodes": [{"title": "TBD"}]
+    },
+
+    {
       "title": "אישים",
       "nodetype": "branch",
       "description": "בני אדם ממשיים מכל התקופות",
@@ -39,6 +213,11 @@
   ],
   "base_queries": {
     "wikidata": [
+      {
+        "tag": "israeli_professors",
+        "title": "פרופסורים ישראליים",
+        "sparql": "WHERE { ?item wdt:P31 wd:Q5 ; wdt:P27 wd:Q801 ; wdt:P106 wd:Q1622272 .}"
+      },
       {
         "tag": "people",
         "title": "אישים",

@@ -1,6 +1,6 @@
 require 'rest-client'
 
-MAX_WIKIDATA_RESULTS = 500
+MAX_WIKIDATA_RESULTS = 1200
 
 class WelcomeController < ApplicationController
   before_action :force_json, only: [:autocomplete_by_filter_tag, :query_by_filter]
