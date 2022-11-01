@@ -1,10 +1,21 @@
-%h2= 'suggest'
+.full-screen-area
+  .search-content.browsing-route
+    %form.works_filters{"accept-charset" => "UTF-8", :action => "", "data-remote" => "true", :method => "post"}
+      %input{:name => "utf8", :type => "hidden", :value => "✓"}/
+      %input#sort_by{:name => "sort_by", :type => "hidden", :value => "alphabetical_asc"}/
+      .filters-panel.categories
+        .sort-type
+          - ordinal = 0
+          - @menu.each do |node|
+            - ordinal += 1
+            = render partial: 'shared/menu_item', locals: { node: node, level: 1, ordinal: ordinal, parent: '.categories' }
 
 %ul
   - @menu.each do |node|
     %li
       = "#{node['title']} (#{node['description']})"
-      - if node['nodetype'] == 'branch' && node['base_query'].present?
+      - if node['nodetype'] == 'branch'
+      - elsif node['base_query'].present?
         %p= 'Please pick at least one filter:'
         = form_tag 'filters' do
           %ul
@@ -24,11 +35,13 @@
                     = text_field_tag "param_#{f['tag']}_#{i}", nil, {placeholder: '1950', 'data-tag': f['tag']}
                 = button_tag 'run query!', {id: 'run_'+f['tag'], class: 'run_query', data: {'base-query': node['base_query'], 'tag': f['tag'], 'disable_with': 'querying...'}}
       - else
-        %p TODO: add code to handle leaf nodes
+        %p TODO: ???
   %h3 Results
   %ol#result_list
 :javascript
   $(document).ready(function() {
+    $('.collapse').collapse('hide');
+
     $('*[data-behavior=autocomplete]').each(function() {
       var iid = $(this).attr('id');
       var tag = $(this).data('tag');

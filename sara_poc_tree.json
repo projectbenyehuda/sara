@@ -11,9 +11,30 @@
       "nodes": [
         {
           "title": "לפי עיסוק",
-          "nodetype": "Wikidata filter"
+          "nodetype": "branch",
+          "description": "מקצוע או עיסוק",
+          "nodes": [
+            {
+              "title": "סופרות וסופרים",
+              "nodetype": "wikidata_query",
+              "base_query": "writers",
+              "description": "משוררות וסופרים, מסאיות ומחברי ספרי עיון"
+            },
+            {
+              "title": "מדינאיות ופוליטיקאים",
+              "nodetype": "wikidata_query",
+              "base_query": "politicians",
+              "description": "מדינאיות ופוליטיקאים"
+            }
+          ]
         }
       ]
+    },
+    {
+      "title": "יישובים",
+      "nodetype": "branch",
+      "description": "יישובים מכל העולם",
+      "base_query": "human_settlements"
     }
   ],
   "base_queries": {
@@ -22,13 +43,25 @@
         "tag": "people",
         "title": "אישים",
         "description": "בני אדם ממשיים מכל התקופות",
-        "sparql": "SELECT ?item ?itemLabel WHERE { ?item wdt:P31 wd:Q5.   SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". } }"
+        "sparql": "WHERE { ?item wdt:P31 wd:Q5. }"
+      },
+      {
+        "tag": "writers",
+        "title": "סופרות וסופרים",
+        "description": "משוררות וסופרים, מסאיות ומחברי ספרי עיון",
+        "sparql": "with { select ?class { ?class wdt:P279* wd:Q482980 } } as %classes WHERE { include %classes .   ?item wdt:P106 ?class . } "
+      },
+      {
+        "tag": "politicians",
+        "title": "מדינאיות ופוליטיקאים",
+        "description": "מדינאיות ופוליטיקאים",
+        "sparql": "with { select ?class { ?class wdt:P279* wd:Q82955 } } as %classes WHERE { include %classes .   ?item wdt:P106 ?class . } "
       },
       {
         "tag": "human_settlements",
         "title": "יישובים",
         "description": "נקודות יישוב אנושיות מכל העולם",
-        "sparql": "SELECT ?item ?itemLabel WHERE { ?item wdt:P31/wdt:P279* wd:Q486972.   SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". } }"
+        "sparql": "WHERE { ?item wdt:P31/wdt:P279* wd:Q486972. }"
       }
     ],
     "nli": []
@@ -44,7 +77,7 @@
         ],
         "param_count": 1,
         "lookup_type": "autocomplete",
-        "lookup_query": "SELECT ?item ?itemLabel WHERE { ?item wdt:P31 wd:Q6256.   SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". } }",
+        "lookup_query": "WHERE { ?item wdt:P31 wd:Q6256. }",
         "default_param_values": [
           "Q801"
         ],
@@ -59,7 +92,7 @@
         ],
         "param_count": 1,
         "lookup_type": "autocomplete",
-        "lookup_query": "SELECT ?item ?itemLabel WHERE { ?item wdt:P31 wd:Q9174.   SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". } }",
+        "lookup_query": "WHERE { ?item wdt:P31 wd:Q9174. }",
         "sparql": "?item wdt:P140 &&&1 ."
       },
       {
@@ -72,7 +105,7 @@
         "param_count": 1,
         "lookup_type": "",
         "lookup_query": "",
-        "sparql": "?item wdt:P569 ?dob . FILTER (?birth > \"&&&1-01-01\"^^xsd:dateTime ."
+        "sparql": "?item wdt:P569 ?dob . FILTER (?birth > \"&&&1-01-01\"^^xsd:dateTime) ."
       },
       {
         "tag": "gender",
@@ -82,8 +115,8 @@
           "people"
         ],
         "param_count": 1,
-        "lookup_type": "dropdown",
-        "lookup_query": "SELECT ?item ?itemLabel WHERE { ?item wdt:P31 wd:Q48264.   SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". } }",
+        "lookup_type": "autocomplete",
+        "lookup_query": "WHERE { ?item wdt:P31 wd:Q48264. }",
         "default_param_values": [
           "Q6581072"
         ],
@@ -97,8 +130,8 @@
           "human_settlements"
         ],
         "param_count": 1,
-        "lookup_type": "dropdown",
-        "lookup_query": "SELECT ?item ?itemLabel WHERE { ?item wdt:P31 wd:Q6256.   SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". } }",
+        "lookup_type": "autocomplete",
+        "lookup_query": "WHERE { ?item wdt:P31 wd:Q6256. } ORDER BY ?itemLabel",
         "default_param_values": [
           "Q801"
         ],

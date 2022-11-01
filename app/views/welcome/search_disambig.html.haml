@@ -7,9 +7,10 @@
             %p
               %strong= t(:x_topics_found, x: @topic_count)
             .tag-line
-              .tag
-                = t(:search_string, q: @q)
-                %a.by-icon-v02{:href => "#"} -
+              - if @q.present?
+                .tag
+                  = t(:search_string, q: @q)
+                  %a.by-icon-v02{:href => "#"} -
           .left-bottons-area
             %button#search-subject-results-button.sara-button.button-primary.disabled
               = t(:search_this_topic)
@@ -42,39 +43,40 @@
     .subjects
       .results-area
         .results-list{style: 'margin-top: 121px;'}
-          - @results.each do |result|
-            .result-item
-              - if @moredata[result['id']]['thumbnail'].present? # if result has a picture
-                .subject-picture
-                  %img{alt: result.dig('display', 'label', 'value'), src: @moredata[result['id']]['thumbnail']}
-              .result-texts
-                .flex-headline-space-between
-                  - if @moredata[result['id']]['instance-of'].present? && @moredata[result['id']]['instance-of'].include?('Q5') # human
-                    - birth = @moredata[result['id']]['birthyear'].present? ? @moredata[result['id']]['birthyear'] : '?'
-                    - death = @moredata[result['id']]['deathyear'].present? ? @moredata[result['id']]['deathyear'] : ''
-                    %p.headline-3= result.dig('display', 'label', 'value')+ " (#{birth}–#{death})"
-                    = result.dig('display', 'description', 'value')
-                  - else
-                    %p.headline-3= result.dig('display', 'label', 'value')
-                    = result.dig('display', 'description', 'value')
-                  .result-sources-icons
-                    - if @moredata[result['id']]['wikipedia_url'].present?
-                      = image_tag 'Wikipedia_logo_24.png', {alt: t(:wikipedia), title: t(:wikipedia)} 
-                    - if @moredata[result['id']]['nli_id'].present?
-                      = image_tag 'nli_logo_24.png', {alt: t(:nli), title: t(:nli)}
-                    - if @moredata[result['id']]['benyehuda_url'].present?
-                      = image_tag 'pby_logo_24.png', {alt: t(:pby), title: t(:pby)}
-                    %a.by-icon-v02{:href => "#"} -
-                .results-limited-text
-                  - if @moredata[result['id']]['occupations'].present?
-                    %p
-                      = t(:occupations)+': '
-                      = @moredata[result['id']]['occupations'].map{|occ| @labels[occ] || '...'}.join('; ')
-                    %p
-                      = t(:nationality)+': '
-                      = @labels[@moredata[result['id']]['nationality']]
-                  - if @moredata[result['id']]['wikipedia_url'].present?
-                    %a{href: @moredata[result['id']]['wikipedia_url']}= t(:to_wikipedia)
+          - if @results.present?
+            - @results.keys.each do |qid|
+              .result-item
+                - if @results[qid]['thumbnail'].present? # if result has a picture
+                  .subject-picture
+                    %img{alt: @results[qid][:label], src: @results[qid]['thumbnail']}
+                .result-texts
+                  .flex-headline-space-between
+                    - if @results[qid]['instance-of'].present? && @results[qid]['instance-of'].include?('Q5') # human
+                      - birth = @results[qid]['birthyear'].present? ? @results[qid]['birthyear'] : '?'
+                      - death = @results[qid]['deathyear'].present? ? @results[qid]['deathyear'] : ''
+                      %p.headline-3= @results[qid][:label]+ " (#{birth}–#{death})"
+                      = @results[qid][:description]
+                    - else
+                      %p.headline-3= @results[qid][:label]
+                      = @results[qid][:description]
+                    .result-sources-icons
+                      - if @results[qid]['wikipedia_url'].present?
+                        = image_tag 'Wikipedia_logo_24.png', {alt: t(:wikipedia), title: t(:wikipedia)} 
+                      - if @results[qid]['nli_id'].present?
+                        = image_tag 'nli_logo_24.png', {alt: t(:nli), title: t(:nli)}
+                      - if @results[qid]['benyehuda_url'].present?
+                        = image_tag 'pby_logo_24.png', {alt: t(:pby), title: t(:pby)}
+                      %a.by-icon-v02{:href => "#"} -
+                  .results-limited-text
+                    - if @results[qid]['occupations'].present?
+                      %p
+                        = t(:occupations)+': '
+                        = @results[qid]['occupations'].map{|occ| @labels[occ] || '...'}.join('; ')
+                      %p
+                        = t(:nationality)+': '
+                        = @labels[@results[qid]['nationality']]
+                    - if @results[qid]['wikipedia_url'].present?
+                      %a{href: @results[qid]['wikipedia_url']}= t(:to_wikipedia)
 
 = form_for([Project.last, Query.new]) do |f|
   = f.hidden_field :text, class: 'form-control', id: 'search_q'

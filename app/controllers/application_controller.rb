@@ -2,6 +2,7 @@ require 'sparql/client'
 class ApplicationController < ActionController::Base
 
   helper_method :wikidata_query_as_hash
+  helper_method :wikidata_count
 
   SARA_BROWSING_TREE_FILENAME = './sara_poc_tree.json' # TODO: un-hardcode this
 
@@ -24,10 +25,11 @@ class ApplicationController < ActionController::Base
   # Query Wikidata for a list of items
   def wikidata_query(query, params)
     # TODO: add caching (use a hash of the query string as key)
-    interpolated_query = interpolate_sparql_statement(query, params) # handle any remaining params (perhaps from base_query)
+    interpolated_query = "SELECT ?item ?itemLabel WITH { SELECT ?item "+interpolate_sparql_statement(query, params)+" AS %i WHERE { INCLUDE %i SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". }}" # handle any remaining params (perhaps from base_query)
     Rails.logger.debug "Interpolated query: #{interpolated_query}"
     return @@sparql_endpoint.query(interpolated_query) # returns a collection of RDF:QUERY::Solutions
   end
+
   def wikidata_query_as_hash(query)
     Rails.cache.fetch("wikidata_query_as_hash_#{query}", expires_in: 12.hours) do
       Rails.logger.debug "Running WikiData query: #{query}"
@@ -39,6 +41,20 @@ class ApplicationController < ActionController::Base
       Rails.logger.debug("#{results.count} results")
       ret = {}
       results.each{|r| ret[r['itemLabel'].to_s] = r['item'].to_s.sub('http://www.wikidata.org/entity/', 'wd:')}
+      ret
+    end
+  end
+  def wikidata_count(query)
+    Rails.cache.fetch("wikidata_count_#{query}", expires_in: 12.hours) do
+      ret = -1
+      interpolated_query = "SELECT (COUNT(?item) AS ?count) "+interpolate_sparql_statement(query, params) # handle any remaining params (perhaps from base_query)
+      Rails.logger.debug "Running interpolated query: #{interpolated_query}"
+      begin
+        res = @@sparql_endpoint.query(interpolated_query) # returns a collection of RDF:QUERY::Solutions
+        ret = res.first['count'].to_i
+      rescue
+        Rails.logger.debug "Error running query #{interpolated_query}"
+      end
       ret
     end
   end
