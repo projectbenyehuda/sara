@@ -175,40 +175,6 @@
       "nodetype": "branch",
       "description": "",
       "nodes": [{"title": "TBD"}]
-    },
-
-    {
-      "title": "אישים",
-      "nodetype": "branch",
-      "description": "בני אדם ממשיים מכל התקופות",
-      "base_query": "people",
-      "nodes": [
-        {
-          "title": "לפי עיסוק",
-          "nodetype": "branch",
-          "description": "מקצוע או עיסוק",
-          "nodes": [
-            {
-              "title": "סופרות וסופרים",
-              "nodetype": "wikidata_query",
-              "base_query": "writers",
-              "description": "משוררות וסופרים, מסאיות ומחברי ספרי עיון"
-            },
-            {
-              "title": "מדינאיות ופוליטיקאים",
-              "nodetype": "wikidata_query",
-              "base_query": "politicians",
-              "description": "מדינאיות ופוליטיקאים"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "יישובים",
-      "nodetype": "branch",
-      "description": "יישובים מכל העולם",
-      "base_query": "human_settlements"
     }
   ],
   "base_queries": {
