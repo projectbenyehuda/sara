@@ -1,23 +1,23 @@
  /* CSS Document */
 /* SARA styles start */
 :root {
-  --system-10: #C1D9E2;
-  --system-20: #98C1D0;
-  --system-30: #4595B1;
-  --system-40: #3285A2;
-  --system-60: #17617B;
-  --system-100: #00435B;
-  --system-120: #00394E;
-  --system-150: #012735;
-  --system-200: #001A24;
-  --suggestions-50: #005574;
-  --suggestions-100: #007590;
-  --suggestions-120: #006981;
-  --text-100: #333333;
-  --disabled-background: #c0c0c0;
+  --system-10: #e5d2ee;
+  --system-20: #ceb7da;
+  --system-30: #ad80c5;
+  --system-40: #a36dc0;
+  --system-60: #7c329f;
+  --system-100: #47235a;
+  --system-120: #3d1e4e;
+  --system-150: #39183e;
+  --system-200: #24122e;
+  --suggestions-50: #954fb5;
+  --suggestions-100: #5d3271;
+  --suggestions-120: #41234f;
+  --text-100: #39323c;
+  --disabled-background: #bab3bd;
   --disabled-icon: #909090;
   --disabled-text: #707070;
-  --gentle-background: #EAECED;
+  --gentle-background: #e9e6ec;
 }
 body {
   font-family:"open sans", Helvetica, Arial, "sans-serif";
@@ -57,7 +57,7 @@ p{
   width: 90%;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   padding: 16px 0 8px 0;
 }
 .top-element{
@@ -262,6 +262,7 @@ a.top-search-option{
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 52px;
 }
 .full-screen-area{
   width: 100%;
@@ -269,6 +270,7 @@ a.top-search-option{
 	flex-direction: column;
   justify-content: center;
 	align-items: center;
+	  padding-top: 52px;
 }
 .full-screen-search-area::before{
   background-image: linear-gradient(to bottom, #EAECED00, #EAECED00, #EAECED00, #EAECED00, #EAECED), url(image-path("new-nli.jpeg"));
@@ -372,22 +374,26 @@ select {
 }
 .search-content{
 	width: 90%;
-	min-height: 496px;
+	min-height: 540px;
 	display: flex;
 	flex-wrap: nowrap;
 	gap: 24px;
 	align-items: flex-start;
 }
 .navigation-area{
+	position: fixed;
+	z-index: 2;
+	width: 100%;
+	padding-right: 5%;
+	padding-left: 5%;
 	display: flex;
 	flex-wrap: nowrap;
 	background-color: var(--gentle-background);
 }
+#browsing-route .navigation-area{
+	background-color: transparent;
+}
 .navigation{
-	z-index: 12px;
-	width: 90%;
-	margin-right: 5%;
-	margin-left: 5%;
 	display: flex;
 	flex-wrap: nowrap;
 	gap: 24px;
@@ -405,6 +411,7 @@ select {
 	flex-wrap: nowrap;
 	gap: 4px;
 	align-items: center;
+	height: 28px;
 }
 .breadcrumbs-text.active a{
 	color: var(--system-200);
@@ -797,12 +804,6 @@ ul{
 .d3 a:hover{
 	background-color: var(--system-10);
 	text-decoration: none;
-	color: white;
-}
-.result-type-label{
-	text-align: center;
-	background-color: var(--system-100);
-	padding: 0 6px;
 	color: white;
 }
 .dashboard-image{
@@ -1529,7 +1530,9 @@ a.level-4.active{
     flex-wrap: nowrap;
     align-items: flex-end;
     gap: 24px;
-    width: 368px;
+}
+.top-gap-placeholder{
+	width: 171px;
 }
 .top-left-c {
     height: 60px;
@@ -1545,13 +1548,14 @@ a.level-4.active{
 .home-switch-option{
 	width: 420px;
 	height: 420px;
+	border: none;
 	border-radius: 50%;
 	text-align: center;
 	font-size: 18pt;
 	line-height: 21pt;
 	font-weight: bold;
 	color: white;
-	padding-top: 60px;
+	cursor: pointer;
 }
 .home-switch-option div{
 	font-size: 14pt;
@@ -1559,20 +1563,18 @@ a.level-4.active{
 	font-weight: normal;
 	text-align: right;
 }
-.home-switch-option a{
-	color: white;
-	text-decoration: none;
-}
-.home-switch-option a:hover{
-	color: white;
-	text-decoration: underline;
-}
 .focus-search-option{
 	background-color: var(--system-100);
 }
 
+.focus-search-option:hover{
+	background-color: var(--system-120);
+}
 .suggestions-search-option{
 	background-color: var(--suggestions-100);
+}
+.suggestions-search-option:hover{
+	background-color: var(--suggestions-120);
 }
 
 .top-left-home{
@@ -1582,7 +1584,8 @@ a.level-4.active{
 .home-switch-option .focus-search-bar{
   margin-right: auto;
   margin-left: auto;
-	margin-top: 100px;
+  margin-top: 100px;
+  margin-bottom: 100px;
   width: 360px;
   padding: 12px;
   background-color: var(--system-40);
@@ -1607,7 +1610,6 @@ a.level-4.active{
 }
 .bubble {
   position: relative;
-  border-radius: 24px;
   background-color: var(--system-10);
   padding: 12px;
 	display: flex;
@@ -1641,13 +1643,13 @@ a.level-4.active{
 #home-steady .logos-banner{
 	margin-top: 80px;
 }
-#home-initial .bubble-with-top{
-	margin-top: 30px;
-}
 #home-initial .home-switch{
 	margin-top: 80px;
 }
 #browsing-route .logos-banner{
 	margin-top: 40px;
+}
+.note-text{
+	width: 100%;
 }
 /* SARA styles end */
