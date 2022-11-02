@@ -8,7 +8,7 @@
         - ordinal += 1
         = render partial: 'shared/menu_item', locals: { node: inode, level: level + 1, ordinal: ordinal, parent: "#collf_#{level}_#{ordinal}" }
 - elsif node['nodetype'] == 'wikidata_query' && node['base_query'].present?
-  = link_to search_disambig_path(base_query: node['base_query']) do
+  = link_to search_disambig_path(base_query: node['base_query']), {style:'text-decoration: none;'} do
     %div{class: "vertical-expand level-#{level} fcoll", title: node['description']}
       %p.headline-4= node['title']
 - else
