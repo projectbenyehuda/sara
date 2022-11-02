@@ -7,18 +7,12 @@
       - if @sara_mode == :suggest
         .breadcrumbs
           .by-icon-v02 1
-          - if @suggest_choices.present?
+          - if @base_query.present?
             .breadcrumbs-text
               %a{href: suggest_path}= t('nav.suggest_topics')
             .by-icon-v02 1
             .breadcrumbs-text
-              %a{:href => ""} '...'
-            .by-icon-v02 1
-            .breadcrumbs-text
-              %a{:href => ""} '...'
-            .by-icon-v02 1
-            .breadcrumbs-text.active
-              %a{:href => ""} פרופסורים/ות
+              = @base_query['title']
           - else
             .breadcrumbs-text.active
               %a= t('nav.suggest_topics')
