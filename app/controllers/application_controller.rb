@@ -1,4 +1,5 @@
 require 'sparql/client'
+require 'digest'
 class ApplicationController < ActionController::Base
 
   helper_method :wikidata_query_as_hash
@@ -25,14 +26,29 @@ class ApplicationController < ActionController::Base
   # Query Wikidata for a list of items
   def wikidata_query(query, params)
     # TODO: add caching (use a hash of the query string as key)
-    interpolated_query = "SELECT ?item ?itemLabel WITH { SELECT ?item "+interpolate_sparql_statement(query, params)+" AS %i WHERE { INCLUDE %i SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". }}" # handle any remaining params (perhaps from base_query)
+    interpolated_query = "SELECT ?item ?itemLabel ?itemDescription WITH { SELECT ?item "+interpolate_sparql_statement(query, params)+"} AS %i WHERE { INCLUDE %i SERVICE wikibase:label { bd:serviceParam wikibase:language \"he,en\". }}" # handle any remaining params (perhaps from base_query)
     Rails.logger.debug "Interpolated query: #{interpolated_query}"
     return @@sparql_endpoint.query(interpolated_query) # returns a collection of RDF:QUERY::Solutions
   end
-
+  def wikidata_query_as_qid_hash(query, params)
+    Rails.cache.fetch("wikidata_query_as_qid_hash_#{Digest::SHA256.hexdigest(query+params.to_s)}", expires_in: 12.hours) do
+      puts "DBG: cache miss for query #{query+params.to_s}\n#{Digest::SHA256.hexdigest(query+params.to_s)}"
+      Rails.logger.debug "Running Wikidata query: #{query}"
+      begin
+        results = wikidata_query(query, params[:params])
+      rescue
+        results = {}
+      end
+      Rails.logger.debug("#{results.count} results")
+      ret = {}
+      results.each{|r| ret[r['item'].to_s.sub('http://www.wikidata.org/entity/','')] = {label: r['itemLabel'].to_s, description: r['itemLabel'].to_s}}
+      ret
+    end
+  end
   def wikidata_query_as_hash(query)
-    Rails.cache.fetch("wikidata_query_as_hash_#{query}", expires_in: 12.hours) do
-      Rails.logger.debug "Running WikiData query: #{query}"
+    Rails.cache.fetch("wikidata_query_as_hash_#{Digest::SHA256.hexdigest(query+params.to_s)}", expires_in: 12.hours) do
+      puts "DBG: cache miss for query #{query+params.to_s}\n#{Digest::SHA256.hexdigest(query+params.to_s)}"
+      Rails.logger.debug "Running Wikidata query: #{query}"
       begin
         results = wikidata_query(query, params[:params])
       rescue
@@ -45,7 +61,7 @@ class ApplicationController < ActionController::Base
     end
   end
   def wikidata_count(query)
-    Rails.cache.fetch("wikidata_count_#{query}", expires_in: 12.hours) do
+    Rails.cache.fetch("wikidata_count_#{Digest::SHA256.digest(query+params.to_s)}", expires_in: 12.hours) do
       ret = -1
       interpolated_query = "SELECT (COUNT(?item) AS ?count) "+interpolate_sparql_statement(query, params) # handle any remaining params (perhaps from base_query)
       Rails.logger.debug "Running interpolated query: #{interpolated_query}"
