@@ -45,12 +45,11 @@ class WelcomeController < ApplicationController
           search_results = json['search']
           # enrich results with images and intro paragraphs
           @results = {}
-          ids = ''
+          ids = []
           search_results.each do |result|
             @results[result['id']] = {label: result.dig('display', 'label', 'value') || '', description: result.dig('display', 'description', 'value') || ''}
-            ids += result['id'] + '|'
+            ids << result['id']
           end
-          ids = ids[0..-2] # remove trailing pipe
           prep_items(ids)
         end
       end
@@ -150,6 +149,5 @@ class WelcomeController < ApplicationController
         end
       end
     end
-    puts
   end
 end
