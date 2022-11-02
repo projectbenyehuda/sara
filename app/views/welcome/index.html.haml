@@ -10,13 +10,13 @@
     .home-switch
       .home-switch-option.focus-search-option
         = form_tag search_disambig_path, method: :get, id: 'search-form' do
-          = t('nav.focused_search')
+          %p{style:'margin-top:50px'}= t('nav.focused_search')
           .focus-search-bar
             %input{ name: 'q', placeholder: t(:what_would_you_like_me_to_research_for_you)}/
             %button.sara-button.button-primary{:style => "display: flex"}
               = t(:search)
       .home-switch-option.suggestions-search-option{style: 'cursor: pointer;'}
-        = t('nav.suggest_topics')
+        %p{style:'margin-top:50px'}= t('nav.suggest_topics')
         %div{:style => "margin-right:36px; margin-top: 48px"}
           %a.white{:href => ""} היום בהיסטוריה
         %div{:style => "margin-right:240px; margin-top: 0px"}

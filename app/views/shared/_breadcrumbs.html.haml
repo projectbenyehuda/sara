@@ -1,9 +1,10 @@
-.navigation-area
-  .navigation
-    - if @sara_mode == :suggest
+- if @sara_mode == :suggest || @sara_mode == :search
+  .navigation-area
+    .navigation
       %button.sara-button.button-primary.back-button
         .by-icon-v02> 2
         = t('nav.back_home')
+    - if @sara_mode == :suggest
       .breadcrumbs
         .by-icon-v02 1
         - if @suggest_choices.present?
