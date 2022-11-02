@@ -1,5 +1,5 @@
 - if @sara_mode == :suggest || @sara_mode == :search
-  .navigation-area{style: 'background-color: transparent;'}
+  .navigation-area{style: @sara_mode == :search ? 'background-color: transparent;' : ''}
     .navigation
       %button.sara-button.button-primary.back-button
         .by-icon-v02> 2
