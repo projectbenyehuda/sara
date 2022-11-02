@@ -5,9 +5,9 @@
         .top-right
           %a.top-logo{href: '/'}
           .top-search-switch
-            %a{href: search_path, class: 'top-search-option right' + (@sara_mode == :search ? ' active' : ''), style:'color:white;'}
+            %a{href: search_path, class: 'top-search-option right' + (@sara_mode == :search ? ' active' : ''), style:'color:white; text-decoration: none;'}
               %div= t('nav.focused_search')
-            %a{href: suggest_path, class: 'top-search-option left' + (@sara_mode == :suggest ? ' active' : ''), style:'color:white;'}
+            %a{href: suggest_path, class: 'top-search-option left' + (@sara_mode == :suggest ? ' active' : ''), style:'color:white; text-decoration: none;'}
               %div= t('nav.suggest_topics')
           .statistics-box
             .statistics
