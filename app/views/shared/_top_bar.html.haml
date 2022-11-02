@@ -2,8 +2,9 @@
   #header
     .header-general-area
       .header-general
-        .top-right
+        .top-right-c
           %a.top-logo{href: '/'}
+          .top-gap-placeholder
           .top-search-switch
             %a{href: search_path, class: 'top-search-option right' + (@sara_mode == :search ? ' active' : ''), style:'color:white; text-decoration: none;'}
               %div= t('nav.focused_search')
@@ -11,42 +12,42 @@
               %div= t('nav.suggest_topics')
           .statistics-box
             .statistics
-              .stat-big 9
+              .stat-big.stat-number 7
               .stat-small= t(:databases)
             .statistics
-              .stat-big= t(:about_8_million)
+              .stat-big.stat-number= t(:about_8_million)
               .stat-small= t(:data_items)
-        .top-left
-          .top-left-content
-            %a.by-icon-v02{:title => "שיתוף עמוד נוכחי"} U
-            .icons-seperator
-            .collapsed.user-menu-trigger{"data-target" => "#user_collapsible", "data-toggle" => "collapse", :title => "תפריט המשתמש"}
-              %div
-                = link_to projects_path, {style:'color:white'} do
-                  שלום
-                  = succeed "!" do
-                    %span.bold-text גלית כהן
-              .by-icon-v02 )
-              #user-actions-menu.dropdown-content.dropdown-menu{"x-placement" => "bottom-start"}
-                %a{:href => ""}
-                  %span.by-icon-v02> D
-                  שאילתות אחרונות
-                %a{:href => ""}
-                  %span.by-icon-v02> "
-                  מועדפים
-                %a{:href => ""}
-                  %span.by-icon-v02> p
-                  הצגה מחדש של
-                %a{:href => ""}
-                  %span.by-icon-v02> {
-                  האזור האישי
-                %a{:href => ""}
-                  %span.by-icon-v02> Z
-                  התנתקות
-    - if defined?(current_user)
-      %button.favorites-btn
-        .by-icon-v02 "
-        %div= t(:x_favorites, x: current_user.  favorite_count)
+        .top-left-content
+          %a.white.by-icon-v02{:title => "שיתוף עמוד נוכחי"} U
+          .icons-seperator
+          .collapsed.user-menu-trigger{"data-target" => "#user_collapsible", "data-toggle" => "collapse", :title => "תפריט המשתמש"}
+            %div
+              = link_to projects_path, {style:'color:white'} do
+                שלום
+                = succeed "!" do
+                  %span.bold-text גלית כהן
+            .by-icon-v02 )
+            #user-actions-menu.dropdown-content.dropdown-menu{"x-placement" => "bottom-start"}
+              %a{:href => ""}
+                %span.by-icon-v02> D
+                שאילתות אחרונות
+              %a{:href => ""}
+                %span.by-icon-v02> "
+                מועדפים
+              %a{:href => ""}
+                %span.by-icon-v02> p
+                הצגה מחדש של
+              %a{:href => ""}
+                %span.by-icon-v02> {
+                האזור האישי
+              %a{:href => ""}
+                %span.by-icon-v02> Z
+                התנתקות
+    -#- if defined?(current_user)
+    %button.favorites-btn
+      .by-icon-v02 "
+      -#%div= t(:x_favorites, x: current_user.favorite_count)
+      %div= t(:x_favorites, x: 17)
     = render partial: 'shared/breadcrumbs'
     - unless @header_partial.nil?
       = render partial: @header_partial

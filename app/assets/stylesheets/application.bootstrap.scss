@@ -36,9 +36,11 @@
   font-family: 'sara';
   font-style: normal;
   font-weight: normal;
-  src: url(asset-path("sara.eot"));
+  src: url(font-path("sara.eot"));
   src:url(asset-path("sara.eot?#iefix")) format("embedded-opentype"),
     url(asset-path("sara.woff")) format("woff"),
     url(asset-path("sara.ttf")) format("truetype"),
     url(asset-path("sara.svg#ben-yehuda")) format("svg");
 }
+
+.white {color: white;}
