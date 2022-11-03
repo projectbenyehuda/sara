@@ -68,9 +68,9 @@
                 },
                 {
                   "title": "ספריות",
-                  "nodetype": "branch",
+                  "nodetype": "wikidata_query",
                   "description": "",
-                  "nodes": [{"title": "TBD"}]
+                  "base_query": "israeli_libraries"
                 },
                 {
                   "title": "פרופסורים/ות",
@@ -183,6 +183,11 @@
         "tag": "israeli_professors",
         "title": "פרופסורים ישראליים",
         "sparql": "WHERE { ?item wdt:P31 wd:Q5 ; wdt:P27 wd:Q801 ; wdt:P106 wd:Q1622272 .}"
+      },
+      {
+        "tag": "israeli_libraries",
+        "title": "ספריות בישראל",
+        "sparql": "WHERE { ?item wdt:P31 wd:Q7075 ; wdt:P17 wd:Q801 .}"
       },
       {
         "tag": "people",
