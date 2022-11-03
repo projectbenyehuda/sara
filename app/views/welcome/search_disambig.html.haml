@@ -52,12 +52,24 @@
             .sara-icon m
           .bottom-buttons-line
             %a{:href => ""} הוספת מסנן
-        .subjects-filter.disabled
-          .flex-headline-space-between
-            %p.headline-3 סינון לפי מגדר
+        .subjects-filter
+          .flex-headline-space-between.vertical-expand{"data-bs-target" => "#gender_f", "data-bs-toggle" => "collapse"}
+            %p.headline-3= t('filters.by_gender')
             .sara-icon g
-          .bottom-buttons-line
-            %a{:href => ""} הוספת מסנן
+          #gender_f{"data-bs-parent" => "#filters", class: "collapse #{@filters['gender'].present? ? 'show' : ''}"}
+            %div{style: "display: flex; flex-direction: column; gap: 12px;"}
+              %select#filter_by_gender{:name => "gender"}
+                %option{:value => '', selected: true}= ''
+                %option{:value => "Q6581097", selected: @filters['gender'] == 'Q6581097' ? true : false}= t('filters.male')
+                %option{:value => "Q6581072", selected: @filters['gender'] == 'Q6581072' ? true : false}= t('filters.female')
+                %option{:value => "other", selected: @filters['gender'] == 'other' ? true : false}= t('filters.other')
+              - if @filters['gender'].present?
+                .bottom-buttons-line
+                  %a#clear_gender{:href => ""}= t('filters.cancel')
+              - else
+                .bottom-buttons-line
+                  = submit_tag t('filters.add'), class: 'sara-button button-primary'
+
     .subjects
       .results-area
         .results-list{style: 'margin-top: 121px;'}
@@ -94,6 +106,8 @@
                         = @labels[@results[qid]['nationality']]
                     - if @results[qid]['wikipedia_url'].present?
                       %a{href: @results[qid]['wikipedia_url']}= t(:to_wikipedia)
+          - else
+            %h3= t('filters.too_many_results', count: @topic_count)
 
 = form_for([Project.last, Query.new]) do |f|
   = f.hidden_field :text, class: 'form-control', id: 'search_q'
@@ -117,6 +131,11 @@
       e.preventDefault();
       $('#fromdate').val('');
       $('#todate').val('');
+      $('#filters_form').submit();
+    });
+    $('#clear_gender').click(function(e) {
+      e.preventDefault();
+      $('#filter_by_gender').val('');
       $('#filters_form').submit();
     });
   });

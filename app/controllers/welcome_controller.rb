@@ -1,6 +1,6 @@
 require 'rest-client'
 
-MAX_WIKIDATA_RESULTS = 1200
+MAX_WIKIDATA_RESULTS = 400
 
 class WelcomeController < ApplicationController
   before_action :force_json, only: [:autocomplete_by_filter_tag, :query_by_filter]
@@ -172,6 +172,14 @@ class WelcomeController < ApplicationController
       ret.sub!('{', "{ FILTER (YEAR(?thedate) >= #{params[:fromdate]})") if prop.present? && params[:fromdate].present?
       ret.sub!('{', "{ FILTER (YEAR(?thedate) <= #{params[:todate]})") if prop.present? && params[:todate].present?
       ret.sub!('{', "{ ?item #{prop} ?thedate . ")
+    end
+    if params[:gender].present?
+      @filters['gender'] = params[:gender]
+      if params[:gender][0] == 'Q'
+        ret.sub!('{', "{ ?item wdt:P21 wd:#{params[:gender]} . ")
+      else
+        ret.sub!('{', '{ ?item wdt:P21 ?gender . FILTER (?gender NOT IN (wd:Q6581097, wd:Q6581072))')
+      end
     end
     return ret
   end
