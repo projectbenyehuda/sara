@@ -21,25 +21,43 @@
             %button#list.small-switch-option.sort-by.active= t(:display_list)
             %button#timeline.small-switch-option.sort-by= t(:display_timeline)
             %button#map.small-switch-option.sort-by= t(:display_map)
-    .filters
-      .subjects-filter
-        .flex-headline-space-between
-          %p.headline-3 סינון לפי זמן
-          .sara-icon c
-        .bottom-buttons-line
-          %a{:href => ""} הוספת מסנן
-      .subjects-filter
-        .flex-headline-space-between
-          %p.headline-3 סינון לפי מיקום
-          .sara-icon m
-        .bottom-buttons-line
-          %a{:href => ""} הוספת מסנן
-      .subjects-filter.disabled
-        .flex-headline-space-between
-          %p.headline-3 סינון לפי מגדר
-          .sara-icon g
-        .bottom-buttons-line
-          %a{:href => ""} הוספת מסנן
+    = form_tag(search_disambig_path, method: :post, id: 'filters_form') do
+      = hidden_field_tag :base_query, params['base_query']
+      = hidden_field_tag :q, params['q']
+      .filters#filters
+        .subjects-filter
+          .flex-headline-space-between.vertical-expand{"data-bs-target" => "#time_filter", "data-bs-toggle" => "collapse"}
+            %p.headline-3= t('filters.by_year')
+            .sara-icon c
+          #time_filter{"data-bs-parent" => "#filters", class: "collapse #{(@filters['fromdate'].present? || @filters['todate'].present?) ? 'show' : ''}"}
+            %div{style: "display: flex; flex-direction: column; gap: 12px;"}
+              %select#filter_by_time{:name => "date_filter"}
+                %option{:value => "birth_date", selected: @filters['date_filter'] == 'birth_date' ? true : false}= t('filters.birth_date')
+                %option{:value => "death_date", selected: @filters['date_filter'] == 'death_date' ? true : false}= t('filters.death_date')
+                %option{:value => "inception_date", selected: @filters['date_filter'] == 'inception_date' ? true : false}= t('filters.inception_date')
+              .dates-range
+                %input#fromdate{"data-target" => "#fromdate", "data-toggle" => "datetimepicker", :name => "fromdate", :placeholder => t(:year), value: @filters['fromdate']}/
+                %div= t(:to)
+                %input#todate{"data-target" => "#todate", "data-toggle" => "datetimepicker", :name => "todate", :placeholder => t(:year), value: @filters['todate']}/
+              - if @filters['fromdate'].present? || @filters['todate'].present?
+                .bottom-buttons-line
+                  %a#clear_dates{:href => ""}= t('filters.cancel')
+              - else
+                .bottom-buttons-line
+                  = submit_tag t('filters.add'), class: 'sara-button button-primary'
+      
+        .subjects-filter
+          .flex-headline-space-between
+            %p.headline-3 סינון לפי מיקום
+            .sara-icon m
+          .bottom-buttons-line
+            %a{:href => ""} הוספת מסנן
+        .subjects-filter.disabled
+          .flex-headline-space-between
+            %p.headline-3 סינון לפי מגדר
+            .sara-icon g
+          .bottom-buttons-line
+            %a{:href => ""} הוספת מסנן
     .subjects
       .results-area
         .results-list{style: 'margin-top: 121px;'}
@@ -94,6 +112,12 @@
         $('#search_q').val($('div.result-item.active > div.result-texts > div.flex-headline-space-between > p').text());
         $('form').submit();
       } else alert('#{ t(:please_select_topic) }');
+    });
+    $('#clear_dates').click(function(e) {
+      e.preventDefault();
+      $('#fromdate').val('');
+      $('#todate').val('');
+      $('#filters_form').submit();
     });
   });
   

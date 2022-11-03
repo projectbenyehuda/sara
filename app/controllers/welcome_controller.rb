@@ -35,28 +35,35 @@ class WelcomeController < ApplicationController
     @sara_mode = :search
   end
   def search_disambig
-    if params[:q].present?
+    @filters = {}
+    unless params[:base_query].present?
       @sara_mode = :search
       @q = params[:q]
-      # search Wikidata using the search action of the standard API
-      RestClient.get 'https://www.wikidata.org/w/api.php', {params: {action: 'wbsearchentities', search: @q, language: 'he', uselang: 'he', type: 'item', limit: '50', format: 'json'}} do |response, request, result, &block|
-        if result.class == Net::HTTPOK
-          json = JSON.parse(response.body)
-          search_results = json['search']
-          # enrich results with images and intro paragraphs
-          @results = {}
-          ids = []
-          search_results.each do |result|
-            @results[result['id']] = {label: result.dig('display', 'label', 'value') || '', description: result.dig('display', 'description', 'value') || ''}
-            ids << result['id']
+      if @q.present?
+        # search Wikidata using the search action of the standard API
+        RestClient.get 'https://www.wikidata.org/w/api.php', {params: {action: 'wbsearchentities', search: @q, language: 'he', uselang: 'he', type: 'item', limit: '50', format: 'json'}} do |response, request, result, &block|
+          if result.class == Net::HTTPOK
+            json = JSON.parse(response.body)
+            search_results = json['search']
+            # enrich results with images and intro paragraphs
+            @results = {}
+            ids = []
+            search_results.each do |result|
+              @results[result['id']] = {label: result.dig('display', 'label', 'value') || '', description: result.dig('display', 'description', 'value') || ''}
+              ids << result['id']
+            end
+            prep_items(ids)
           end
-          prep_items(ids)
         end
+      else
+        flash[:error] = 'לא הוזנו די פרטים'
+        redirect_to root_path
       end
-    elsif params[:base_query].present?
+    else
       @sara_mode = :suggest
       @base_query = browsing_tree['base_queries']['wikidata'].find{|f| f['tag'] == params[:base_query]}
-      unless @base_query.nil?
+      @query = compose_query(@base_query['sparql'])
+      unless @query.nil?
         count = wikidata_count(@base_query['sparql'])
         if count > 0 && count < MAX_WIKIDATA_RESULTS
           @results = wikidata_query_as_qid_hash(@base_query['sparql'],params)
@@ -68,9 +75,6 @@ class WelcomeController < ApplicationController
         @topic_count = count
         flash[:error] = "לא ניתן להציג תוצאות כי יש #{count} תוצאות. יש להוסיף מסננים עד שיהיו פחות מ־#{MAX_WIKIDATA_RESULTS} תוצאות"
       end
-    else
-      flash[:error] = 'לא הוזנו די פרטים'
-      redirect_to root_path
     end
   end
   def suggest
@@ -149,5 +153,26 @@ class WelcomeController < ApplicationController
         end
       end
     end
+  end
+  def compose_query(base_query)
+    ret = base_query
+    if params[:fromdate].present? || params[:todate].present?
+      @filters['date_filter'] = params[:date_filter]
+      @filters['fromdate'] = params[:fromdate] if params[:fromdate].present?
+      @filters['todate'] = params[:todate] if params[:todate].present?
+
+      prop = case params[:date_filter]
+      when 'birth_date'
+        'wdt:P569'
+      when 'death_date'
+        'wdt:P570'
+      when 'inception_date'
+        'wdt:P571'
+      end
+      ret.sub!('{', "{ FILTER (YEAR(?thedate) >= #{params[:fromdate]})") if prop.present? && params[:fromdate].present?
+      ret.sub!('{', "{ FILTER (YEAR(?thedate) <= #{params[:todate]})") if prop.present? && params[:todate].present?
+      ret.sub!('{', "{ ?item #{prop} ?thedate . ")
+    end
+    return ret
   end
 end
