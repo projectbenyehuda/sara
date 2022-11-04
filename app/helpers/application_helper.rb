@@ -62,13 +62,13 @@ module ApplicationHelper
   def image_for_source(source)
     case source
     when 'wikipedia'
-      return 'wikipedia_logo_24.png'
+      return 'Wikipedia_logo_24.png'
     when 'nli'
       return 'nli_logo_24.png'
     when 'pby'
       return 'pby_logo_24.png'
     when 'wikidata'
-      return 'wikidata_logo_24.png'
+      return ''
     else
       return ''
     end

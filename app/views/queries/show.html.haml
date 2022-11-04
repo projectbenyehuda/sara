@@ -295,7 +295,7 @@
           %p.headline-3= t('.summary_by_type')
           %a.by-icon-v02{:href => "#"} -
         .dashboard
-          - @query.response_items.group(:media_type).count.each do |mtype, count|
+          - @query.response_items.without_ignored.group(:media_type).count.each do |mtype, count|
             .dashboard-item
               %p.headline-4
                 %a{:href => "#"}= textify_media_type(mtype)

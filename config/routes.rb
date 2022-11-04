@@ -15,9 +15,10 @@ Rails.application.routes.draw do
 
   resources :projects, except: [:new] do
     resources :queries, only: [:create]
+    resources :ignored_items, only: [:create]
   end
 
-  
+  resources :ignored_items, only: [:destroy]
   resources :timelines, only: :index do
     collection do
       get :data
