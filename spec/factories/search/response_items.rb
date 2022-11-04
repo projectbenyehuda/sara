@@ -5,5 +5,6 @@ FactoryBot.define do
     thumbnail_url { Faker::Internet.url }
     title { Faker::Book.title }
     text { Faker::Books::Lovecraft.paragraph}
+    external_id { Faker::Internet.url }
   end
 end

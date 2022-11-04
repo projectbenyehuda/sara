@@ -2,13 +2,7 @@ FactoryBot.define do
   factory :project do
     title { Faker::Book.title }
 
-    transient do
-      queries { build_list(:query, 3) }
-    end
-
-    after(:create) do |project, evaluator|
-      project.queries << evaluator.queries
-      project.save!
-    end
+    queries { build_list(:query, 3, project: nil) }
+    ignored_items { build_list(:ignored_item, 2, project: nil) }
   end
 end
