@@ -1,11 +1,9 @@
 name: Rspec
-
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
-
+    branches: [ main ]
 jobs:
   test:
     name: CI
@@ -24,8 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get install -y libmysqlclient-dev
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
       - name: Verify MySQL connection from host
@@ -34,14 +31,25 @@ jobs:
       - name: Setup DB
         env:
           RAILS_ENV: test
-          MYSQL_PORT: ${{ job.services.mysql.ports[3306] }}
+          DATABASE_URL: mysql2://root:root@127.0.0.1:${{ job.services.mysql.ports[3306] }}/sara_test
         run: |
           bin/rails db:create
           bin/rails db:migrate
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/gallium
+          cache: 'yarn'
+      - name: Configure Yarn
+        run: |
+          yarn set version berry
+          yarn config set nodeLinker node-modules
+      - name: Build Assets
+        run: |
+          yarn install
+          rake assets:precompile
       - name: Run tests
         env:
           RAILS_ENV: test
-          MYSQL_PORT: ${{ job.services.mysql.ports[3306] }}
-          ELASTICSEARCH_PORT: ${{ job.services.elasticsearch.ports[9200] }}
+          DATABASE_URL: mysql2://root:root@127.0.0.1:${{ job.services.mysql.ports[3306] }}/sara_test
         run: |
           bundle exec rspec
