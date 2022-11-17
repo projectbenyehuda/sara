@@ -45,7 +45,7 @@ jobs:
           yarn config set nodeLinker node-modules
       - name: Build Assets
         run: |
-          yarn install
+          yarn install --no-immutable
           rake assets:precompile
       - name: Run tests
         env:
