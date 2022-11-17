@@ -5,7 +5,8 @@ class ResponseItem < ApplicationRecord
     wikipedia: 1,
     nli: 2,
     pby: 3,
-    wikidata: 4
+    wikidata: 4,
+    commons: 5
   }, _prefix: true
 
   enum media_type: {

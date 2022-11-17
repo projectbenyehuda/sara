@@ -49,6 +49,8 @@ gem "bootsnap", require: false
 gem 'sparql-client' # for querying Wikidata with SPARQL
 gem "rest-client", "~> 2.1"
 
+gem 'mediawiki_api' # for querying Commons
+
 # Use Sass to process CSS
 gem "sassc-rails", "~> 2.1.2"
 
