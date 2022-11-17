@@ -23,7 +23,7 @@ module Search
         Search::ResponseItem.new(
           url: item['@id'],
           thumbnail_url: property_value(item, 'thumbnail'),
-          external_id: item['http://purl.org/dc/elements/1.1/recordid'],
+          external_id: property_value(item, 'recordid'),
           title: "#{property_value(item, 'creator')} / #{property_value(item, 'title')}",
           media_type: media_type_from_nli_type(property_value(item, 'type')),
           media_url: property_value(item, 'download'),
@@ -43,16 +43,13 @@ module Search
     end
     def media_type_from_nli_type(nli_type)
       case nli_type
-      when 'book'
-      when 'dissertation'
-      when 'journal'
+      when 'book', 'dissertation', 'journal'
         return :text
       when 'recbroad'
         return :audio
       when 'archive'
         return :archive
-      when 'image'
-      when 'sheet'
+      when 'image', 'sheet'
         return :image
       when 'map'
         return :map
