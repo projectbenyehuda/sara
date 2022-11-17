@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_01_161914) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_17_123238) do
   create_table "ignored_items", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.string "external_id", null: false
@@ -38,9 +38,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_01_161914) do
     t.bigint "query_id"
     t.integer "source", null: false
     t.integer "media_type", null: false
-    t.string "url", null: false
-    t.string "media_url"
-    t.string "thumbnail_url"
+    t.string "url", limit: 2048, null: false
+    t.string "media_url", limit: 2048
+    t.string "thumbnail_url", limit: 2048
     t.string "title"
     t.text "text"
     t.datetime "created_at", null: false
