@@ -63,6 +63,8 @@ module ApplicationHelper
     case source
     when 'wikipedia'
       return 'Wikipedia_logo_24.png'
+    when 'commons'
+      return 'Commons_logo_24.png'
     when 'nli'
       return 'nli_logo_24.png'
     when 'pby'
