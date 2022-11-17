@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   resources :queries, only: [:show] do
     member do
+      get 'show'
       post 'show'
     end
   end
