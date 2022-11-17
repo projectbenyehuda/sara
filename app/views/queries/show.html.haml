@@ -1,44 +1,30 @@
 .full-screen-area
   .search-content
-    %form.works_filters{"accept-charset" => "UTF-8", :action => "", "data-remote" => "true", :method => "post"}
+    = form_tag({action: :show},{method: :post, id: 'filters_form', class: 'works_filters'}) do
+      = hidden_field_tag :id, params['id']
+      = hidden_field_tag :q, params['q']
+      = hidden_field_tag :qid, params['qid']
       %input{:name => "utf8", :type => "hidden", :value => "✓"}/
       %input#sort_by{:name => "sort_by", :type => "hidden", :value => "alphabetical_asc"}/
       .filters-panel
+        .sara-button.button-primary#apply_filters{style:'display:none'}= t('filters.apply')
         .flex-headline-space-between
-          %p.headline-3 סינון לפי:
-          %a{:href => ""} איפוס סינון
+          %p.headline-3= t('filters.filter_by')
+          %a{:href => ""}= t('filters.clear_all')
         .sort-type
           .vertical-expand.fcoll{"data-target" => ".collforigin", "data-toggle" => "collapse"}
-            %p.headline-4 מאגר מידע
+            %p.headline-4= t('filters.database')
           .nested.active.collapse.show.collforigin
             .nested-content.nested-list
-              .option-line
-                %input#nli{:name => "ckb_origin[]", :type => "checkbox", :value => "nli"}>/
-                הספריה הלאומית
-              .option-line
-                %input#nli-articles{:name => "ckb_origin[]", :type => "checkbox", :value => "nli-articles"}>/
-                מאמרים בספריה הלאומית
-              .option-line
-                %input#heb-wikipedia{:name => "ckb_origin[]", :type => "checkbox", :value => "heb-wikipedia"}>/
-                ויקיפדיה העברית
-              .option-line
-                %input#wikintons{:name => "ckb_origin[]", :type => "checkbox", :value => "wikintons"}>/
-                ויקינתונים
-              .option-line
-                %input#wikishare{:name => "ckb_origin[]", :type => "checkbox", :value => "wikishare"}>/
-                ויקישיתוף
-              .option-line
-                %input#pby{:name => "ckb_origin[]", :type => "checkbox", :value => "pby"}>/
-                פרויקט בן־יהודה
-              .option-line
-                %input#heb-lex{:name => "ckb_origin[]", :type => "checkbox", :value => "heb-lex"}>/
-                לקסיקון הספרות העברית
-              .option-line
-                %input#youtube{:name => "ckb_origin[]", :type => "checkbox", :value => "youtube"}>/
-                יוטיוב
-              .option-line
-                %input#lex-ref{:name => "ckb_origin[]", :type => "checkbox", :value => "lex-ref"}>/
-                לקסיקון הקשרים
+              - ResponseItem.sources.invert.each do |p|
+                .option-line
+                  - attrs = {}
+                  - attrs.merge!({:name => "ckb_sources[]", :type => "checkbox", id: "source_#{p[1]}", value: p[1]})
+                  - attrs.merge!({checked: 'checked'}) if @sources.present? && @sources.include?(p[1])
+                  %input{ attrs}
+                  %label
+                    = t(p[1])
+                  %br/
         .sort-type
           .vertical-expand.fcoll{"data-target" => ".collfmetadata", "data-toggle" => "collapse"}
             %p.headline-4 אזכור הנושא במטה-דאטה
@@ -259,17 +245,15 @@
               .option-line
                 %input#undifined-gender{:name => "ckb_gender[]", :type => "checkbox", :value => "undifined-gender"}>/
                 לא הוגדר
-        %input#emit_filters{:name => "emit_filters", :type => "hidden", :value => "true"}/
         %input#cur_page_tag{:name => "cur_page", :type => "hidden", :value => "1"}/
         %input#page_tag{:name => "page", :type => "hidden", :value => ""}/
-        %input#toletter_tag{:name => "to_letter", :type => "hidden", :value => ""}/
     .subjects-fixed-top-elements
       .right-gap-large
         .filter-tags-area
           .tags-right
             %p
               %strong= t('.result_count')
-              = t('.x_results', x: @query.response_items.count)
+              = t('.x_results', x: @items.count)
             .tag-line
               .tag
                 = @query.text
@@ -295,7 +279,7 @@
           %p.headline-3= t('.summary_by_type')
           %a.by-icon-v02{:href => "#"} -
         .dashboard
-          - @query.response_items.without_ignored.group(:media_type).count.each do |mtype, count|
+          - @items.group(:media_type).count.each do |mtype, count|
             .dashboard-item
               %p.headline-4
                 %a{:href => "#"}= textify_media_type(mtype)
@@ -319,10 +303,10 @@
             %div
               %p.headline-3
                 תוצאות לפי סוג פריט
-                %span{:style => "font-weight: normal"}= @query.response_items.count.to_s
+                %span{:style => "font-weight: normal"}= @items.count.to_s
             .collapsed.vertical-expand.fcoll{"data-target" => "", "data-toggle" => "collapse"}
               %p הרחבת כל הפריטים
-          - @query.response_items.to_a.group_by(&:media_type).each do |mtype, items|
+          - @items.to_a.group_by(&:media_type).each do |mtype, items|
             .item-type-headline
               %p.headline-4
                 %a{:href => "#"}= textify_media_type(mtype)
@@ -386,3 +370,12 @@
 -#            %h5.card-title
 -#              = link_to item.title, item.url, target: :blank
 -#            %p.card-text= item.text
+:javascript
+  $(document).ready(function() {
+    $('#filters_form').on('change', function() {
+      $('#apply_filters').show();
+    });
+    $('#apply_filters').on('click', function() {
+      $('#filters_form').submit();
+    });
+  });

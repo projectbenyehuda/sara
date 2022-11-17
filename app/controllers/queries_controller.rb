@@ -17,6 +17,9 @@ class QueriesController < ApplicationController
   def show
     @query = Query.find(params[:id])
     @header_partial = 'queries/show_top'
+    @sources = params['ckb_sources']
+    @items = @query.response_items.without_ignored
+    @items = @items.merge(ResponseItem.where(source: @sources)) if @sources.present?
   end
 
   def set_models
