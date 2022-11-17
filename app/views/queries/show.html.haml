@@ -10,7 +10,7 @@
         .sara-button.button-primary#apply_filters{style:'display:none'}= t('filters.apply')
         .flex-headline-space-between
           %p.headline-3= t('filters.filter_by')
-          %a{:href => ""}= t('filters.clear_all')
+          %a#reset_filters{href: ''}= t('filters.clear_all')
         .sort-type
           .vertical-expand.fcoll{"data-target" => ".collforigin", "data-toggle" => "collapse"}
             %p.headline-4= t('filters.database')
@@ -25,34 +25,34 @@
                   %label
                     = t(p[1])
                   %br/
-        .sort-type
-          .vertical-expand.fcoll{"data-target" => ".collfmetadata", "data-toggle" => "collapse"}
-            %p.headline-4 אזכור הנושא במטה-דאטה
-          .nested.active.collapse.show.collfmetadata
-            .nested-content.nested-list
-              .option-line
-                %input#headline{:name => "ckb_metadata[]", :type => "checkbox", :value => "headline"}>/
-                כותרת
-              .option-line
-                %input#author{:name => "ckb_ckb_metadata[]", :type => "checkbox", :value => "author"}>/
-                יוצרים/ות
-              .option-line
-                %input#description{:name => "ckb_metadata[]", :type => "checkbox", :value => "description"}>/
-                תיאור
-              .option-line
-                %input#additional-authors{:name => "ckb_metadata[]", :type => "checkbox", :value => "additional-authors"}>/
-                יוצרים/ות נוספים
-        .sort-type
-          .vertical-expand.fcoll{"data-target" => ".collfaccess", "data-toggle" => "collapse"}
-            %p.headline-4 סוג גישה
-          .nested.active.collapse.show.collfaccess
-            .nested-content.nested-list
-              .option-line
-                %input#digital-far{:name => "ckb_access[]", :type => "checkbox", :value => "digital-far"}>/
-                דיגיטלית מרחוק
-              .option-line
-                %input#physical-local{:name => "ckb_ckb_access[]", :type => "checkbox", :value => "physical-local"}>/
-                פיזית מקומית
+        -#.sort-type
+        -#  .vertical-expand.fcoll{"data-target" => ".collfmetadata", "data-toggle" => "collapse"}
+        -#    %p.headline-4 אזכור הנושא במטה-דאטה
+        -#  .nested.active.collapse.show.collfmetadata
+        -#    .nested-content.nested-list
+        -#      .option-line
+        -#        %input#headline{:name => "ckb_metadata[]", :type => "checkbox", :value => "headline"}>/
+        -#        כותרת
+        -#      .option-line
+        -#        %input#author{:name => "ckb_ckb_metadata[]", :type => "checkbox", :value => "author"}>/
+        -#        יוצרים/ות
+        -#      .option-line
+        -#        %input#description{:name => "ckb_metadata[]", :type => "checkbox", :value => "description"}>/
+        -#        תיאור
+        -#      .option-line
+        -#        %input#additional-authors{:name => "ckb_metadata[]", :type => "checkbox", :value => "additional-authors"}>/
+        -#        יוצרים/ות נוספים
+        -#.sort-type
+        -#  .vertical-expand.fcoll{"data-target" => ".collfaccess", "data-toggle" => "collapse"}
+        -#    %p.headline-4 סוג גישה
+        -#  .nested.active.collapse.show.collfaccess
+        -#    .nested-content.nested-list
+        -#      .option-line
+        -#        %input#digital-far{:name => "ckb_access[]", :type => "checkbox", :value => "digital-far"}>/
+        -#        דיגיטלית מרחוק
+        -#      .option-line
+        -#        %input#physical-local{:name => "ckb_ckb_access[]", :type => "checkbox", :value => "physical-local"}>/
+        -#        פיזית מקומית
         .sort-type
           .vertical-expand.fcoll{"data-target" => ".collfinfotype", "data-toggle" => "collapse"}
             %p.headline-4 סוג המידע
@@ -96,7 +96,7 @@
                         ציורים, רישומים ואיורים
                       %li.option-line
                         %input#posters-brochures{:name => "ckb_pictures[]", :type => "checkbox", :value => "posters-brochures"}>/
-                        פוסטרים, כרזות ואפרמה
+                        פוסטרים, כרזות ואפמרה
                       %li.option-line
                         %input#historical-maps{:name => "ckb_pictures[]", :type => "checkbox", :value => "historical-maps"}>/
                         מפות היסטוריות
@@ -378,4 +378,23 @@
     $('#apply_filters').on('click', function() {
       $('#filters_form').submit();
     });
+    $('#reset_filters').click(function(e){
+      e.preventDefault();
+      $('#filters_form').find(':input').each(function() {
+        switch(this.type) {
+          case 'password':
+          case 'select-multiple':
+          case 'select-one':
+          case 'text':
+          case 'textarea':
+            $(this).val('');
+            break;
+          case 'checkbox':
+          case 'radio':
+            this.checked = false;
+        }
+      });
+      $('#filters_form').submit();
+    });
+
   });
