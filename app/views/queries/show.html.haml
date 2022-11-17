@@ -319,7 +319,7 @@
             %div
               %p.headline-3
                 תוצאות לפי סוג פריט
-                %span{:style => "font-weight: normal"} (39)
+                %span{:style => "font-weight: normal"}= @query.response_items.count.to_s
             .collapsed.vertical-expand.fcoll{"data-target" => "", "data-toggle" => "collapse"}
               %p הרחבת כל הפריטים
           - @query.response_items.to_a.group_by(&:media_type).each do |mtype, items|
