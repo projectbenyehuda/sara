@@ -17,12 +17,20 @@ Rails.application.routes.draw do
       post 'show'
     end
   end
+
   resources :projects, except: [:new] do
     resources :queries, only: [:create]
     resources :ignored_items, only: [:create]
   end
 
   resources :ignored_items, only: [:destroy]
+
+  resources :response_items, only: [] do
+    member do
+      post :toggle_favorite
+    end
+  end
+
   resources :timelines, only: :index do
     collection do
       get :data

@@ -11,6 +11,7 @@ class SearchService < ApplicationService
         query.response_items.where(source: source).delete_all
         items.each_with_index do |item, index|
           Rails.logger.error "DBG: can't create response item for #{item.url}!" unless query.response_items.create(
+            project: query.project,
             source: source,
             index: index,
             title: item.title[0..100],
@@ -23,7 +24,6 @@ class SearchService < ApplicationService
             normalized_year: item.normalized_year,
             external_id: item.external_id
           )
-          
         end
       end
     end
