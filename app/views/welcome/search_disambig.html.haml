@@ -1,3 +1,5 @@
+%script{ type: 'text/javascript', charset:'utf-8', src: asset_url('histropedia-1.2.0.js')}
+
 .full-screen-area
   .search-content
     .subjects-fixed-top-elements
@@ -110,6 +112,7 @@
             %h3= t('filters.too_many_results', count: @topic_count)
         .timeline{style:'margin-top:121px;display:none;'}
           %h3= t(:display_timeline)
+          #histropedia-timeline
         .map{style:'margin-top:121px;display:none;'}
           %h3= t(:display_map)
 
@@ -118,6 +121,7 @@
   = f.submit t('projects.show.run'), style: 'display:none'
 
 :javascript
+
   $(document).ready(function() {
     $('.result-item').click(function(e) {
       e.stopPropagation();
@@ -169,5 +173,31 @@
       $('#map').removeClass('active');
       $('.map').hide();
     });
+    // prep timeline
+    const container = document.getElementById('histropedia-timeline');
+    if (container != null) {
+      data = JSON.parse("#{j(raw @timeline_data)}");
+      let min = null;
+      let minVal = Infinity;
+      data.forEach((item) => {
+        if(item.from != null) {
+          const val = item.from.year * 10000; // + item.from.month * 100 + item.from.day;
+          if (val < minVal) {
+            minVal = val;
+            min = item;
+          }
+        }
+      });
+      const timeline = new Histropedia.Timeline(container, { height: 700, article: {distanceToMainLine: 100}, 
+        initialDate: (min ? min.from : null),
+        article: {autoStacking: {topGap: 0, fitToHeight: false}},
+        onArticleClick: function(article) {
+
+        },
+        onArticleDoubleClick: function(article) {
+        }
+      });
+      timeline.load(data);
+    }
   });
   

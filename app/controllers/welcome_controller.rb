@@ -117,7 +117,7 @@ class WelcomeController < ApplicationController
                 @results[qid]['nationality'] = item['claims']['P27'] ? item['claims']['P27'][0]['mainsnak']['datavalue']['value']['id'] : ''
                 @results[qid]['benyehuda_url'] = 'https://benyehuda.org/author/'+item['claims']['P7507'][0]['mainsnak']['datavalue']['value'] if item['claims']['P7507']
                 @results[qid]['nli_id'] = item['claims']['P8189'][0]['mainsnak']['datavalue']['value'] if item['claims']['P8189']
-              when @results[qid]['instance-of'].include?('Q16521') # organization
+              when @results[qid]['instance-of'].include?('Q16521'), @results[qid]['instance-of'].include?('Q7075') # organization, library
                 @results[qid]['inception'] = item['claims']['P571'] ? item['claims']['P571'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
                 @results[qid]['country'] = item['claims']['P17'] ? item['claims']['P17'][0]['mainsnak']['datavalue']['value']['id'] : ''
               when @results[qid]['instance-of'].include?('Q486972') # human settlement
@@ -153,6 +153,19 @@ class WelcomeController < ApplicationController
     end
     @labels = get_labels_for_qids(qids.uniq)
     # TODO: also fetch Wikipedia article intros?
+    @timeline_data = JSON.generate(prep_timeline_data(@results))
+  end
+  def prep_timeline_data(results)
+    timeline_data = []
+    results.each do |qid, data|
+      timeline_rec = { 'id' => qid, 'title' => data[:label], 'subtitle' => data[:description]}
+      timeline_rec['from'] = {'year' => data['birthyear'].to_i} if data['birthyear'].present? && data['birthyear'].to_i != nil
+      timeline_rec['from'] = {'year' => data['inception'].to_i} if data['inception'].present? && data['inception'].to_i != nil # mutually exclusive with birthyear
+      timeline_rec['to'] = {'year' => data['deathyear'].to_i} if data['deathyear'].present? && data['deathyear'].to_i != nil
+      timeline_rec['imageUrl'] = data['thumbnail'] if data['thumbnail'].present?
+      timeline_data << timeline_rec if timeline_rec['to'].present? || timeline_rec['from'].present? # no point in adding records that cannot be displayed on the timeline
+    end
+    return timeline_data
   end
   def compose_query(base_query)
     ret = base_query
