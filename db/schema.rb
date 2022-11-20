@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_17_123238) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_20_164633) do
   create_table "ignored_items", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.string "external_id", null: false
@@ -47,6 +47,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_17_123238) do
     t.datetime "updated_at", null: false
     t.string "external_id", null: false
     t.integer "index", null: false
+    t.string "item_date"
+    t.integer "normalized_year"
     t.index ["query_id"], name: "index_response_items_on_query_id"
   end
 

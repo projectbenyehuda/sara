@@ -30,7 +30,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 gem "haml", "~> 5.2"
-
+gem 'hebrew' # for Hebrew string manipulation
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 

@@ -122,6 +122,7 @@ GEM
     haml (5.2.2)
       temple (>= 0.8.0)
       tilt
+    hebrew (0.2.6)
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
@@ -335,6 +336,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   haml (~> 5.2)
+  hebrew
   jbuilder
   jsbundling-rails (~> 1.0)
   mediawiki_api

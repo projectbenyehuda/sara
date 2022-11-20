@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+require 'sara_utils'
 module Search
   class NliSearchProvider < ApplicationService
     NLI_API_KEY = ENV['NLI_API_KEY']
@@ -27,7 +27,9 @@ module Search
           title: "#{property_value(item, 'creator')} / #{property_value(item, 'title')}",
           media_type: media_type_from_nli_type(property_value(item, 'type')),
           media_url: property_value(item, 'download'),
-          text: property_value(item, 'format')
+          text: property_value(item, 'format'),
+          item_date: property_value(item, 'date'),
+          normalized_year: normalize_year(property_value(item, 'date'))
         )
       end
     end

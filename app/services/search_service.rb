@@ -19,6 +19,8 @@ class SearchService < ApplicationService
             media_type: item.media_type,
             url: item.url,
             text: item.text,
+            item_date: item.item_date,
+            normalized_year: item.normalized_year,
             external_id: item.external_id
           )
           

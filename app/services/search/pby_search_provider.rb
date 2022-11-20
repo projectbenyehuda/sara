@@ -32,6 +32,8 @@ module Search
             media_type: :text,
             url: rec['url'],
             text: rec['snippet'],
+            item_date: metadata['orig_publication_date'],
+            normalized_year: normalize_year(metadata['orig_publication_date']),
             external_id: rec['id']
           )
         end
