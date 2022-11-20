@@ -108,6 +108,10 @@
                       %a{href: @results[qid]['wikipedia_url']}= t(:to_wikipedia)
           - else
             %h3= t('filters.too_many_results', count: @topic_count)
+        .timeline{style:'margin-top:121px;display:none;'}
+          %h3= t(:display_timeline)
+        .map{style:'margin-top:121px;display:none;'}
+          %h3= t(:display_map)
 
 = form_for([Project.last, Query.new]) do |f|
   = f.hidden_field :text, class: 'form-control', id: 'search_q'
@@ -137,6 +141,33 @@
       e.preventDefault();
       $('#filter_by_gender').val('');
       $('#filters_form').submit();
+    });
+    $('#timeline').click(function(e) {
+      e.preventDefault();
+      $('.results-list').hide();
+      $('.timeline').show();
+      $('#timeline').addClass('active');
+      $('#list').removeClass('active');
+      $('#map').removeClass('active');
+      $('.map').hide();
+    });
+    $('#map').click(function(e) {
+      e.preventDefault();
+      $('.results-list').hide();
+      $('#list').removeClass('active');
+      $('.timeline').hide();
+      $('#timeline').removeClass('active');
+      $('.map').show();
+      $('#map').addClass('active');
+    });
+    $('#list').click(function(e) {
+      e.preventDefault();
+      $('.results-list').show();
+      $('#list').addClass('active');
+      $('.timeline').hide();
+      $('#timeline').removeClass('active');
+      $('#map').removeClass('active');
+      $('.map').hide();
     });
   });
   
