@@ -94,6 +94,7 @@ class WelcomeController < ApplicationController
   def prep_items(ids)
     # get images, occupations, and life years
     @topic_count = @results.keys.count
+    qids = []
     print "DBG: prepping #{ids.count} Wikidata items..."
     ids.each_slice(50) do |id_slice|
       print "."
@@ -139,7 +140,6 @@ class WelcomeController < ApplicationController
             end
           end
           # get the labels for the QID values we collected
-          qids = []
           @results.each do |qid, data|
             data.keys.each do |key|
               qids << data[key] if data[key].is_a?(String) && data[key].start_with?('Q')
@@ -148,11 +148,11 @@ class WelcomeController < ApplicationController
               end
             end
           end
-          @labels = get_labels_for_qids(qids.uniq)
-          # TODO: also fetch Wikipedia article intros?
         end
       end
     end
+    @labels = get_labels_for_qids(qids.uniq)
+    # TODO: also fetch Wikipedia article intros?
   end
   def compose_query(base_query)
     ret = base_query
