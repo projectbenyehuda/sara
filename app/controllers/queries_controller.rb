@@ -18,8 +18,10 @@ class QueriesController < ApplicationController
     @query = Query.find(params[:id])
     @header_partial = 'queries/show_top'
     @sources = params['ckb_sources']
+    @media_types = params['ckb_types']
     @items = @query.response_items.without_ignored
     @items = @items.merge(ResponseItem.where(source: @sources)) if @sources.present?
+    @items = @items.merge(ResponseItem.where(media_type: @media_types)) if @media_types.present?
   end
 
   def set_models
