@@ -19,9 +19,13 @@ class QueriesController < ApplicationController
     @header_partial = 'queries/show_top'
     @sources = params['ckb_sources']
     @media_types = params['ckb_types']
+    @fromdate = params['fromdate']
+    @todate = params['todate']
     @items = @query.response_items.without_ignored
     @items = @items.merge(ResponseItem.where(source: @sources)) if @sources.present?
     @items = @items.merge(ResponseItem.where(media_type: @media_types)) if @media_types.present?
+    @items = @items.merge(ResponseItem.where('item_date >= ?', @fromdate)) if @fromdate.present?
+    @items = @items.merge(ResponseItem.where('item_date <= ?', @todate)) if @todate.present?
   end
 
   def set_models

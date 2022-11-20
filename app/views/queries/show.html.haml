@@ -69,13 +69,13 @@
                   %br/
         .sort-type
           .vertical-expand.fcoll{"data-target" => ".collfdates", "data-toggle" => "collapse"}
-            %p.headline-4 תאריכים
+            %p.headline-4= t('filters.dates')
           .nested.active.collapse.show.collfdates
             .nested-content.nested-list{:style => "column-count: 1"}
               .dates-range
-                %input#fromdate{"data-target" => "#fromdate", "data-toggle" => "datetimepicker", :name => "fromdate", :placeholder => "שנה"}/
-                %div עד
-                %input#todate{"data-target" => "#todate", "data-toggle" => "datetimepicker", :name => "todate", :placeholder => "שנה"}/
+                %input#fromdate{"data-target" => "#fromdate", "data-toggle" => "datetimepicker", :name => "fromdate", :placeholder => "משנה", value: @fromdate.present? ? @fromdate : ''}/
+                %div= t('filters.to')
+                %input#todate{"data-target" => "#todate", "data-toggle" => "datetimepicker", :name => "todate", :placeholder => "שנה", value: @todate.present? ? @todate : ''}/
         %input#cur_page_tag{:name => "cur_page", :type => "hidden", :value => "1"}/
         %input#page_tag{:name => "page", :type => "hidden", :value => ""}/
     .subjects-fixed-top-elements
