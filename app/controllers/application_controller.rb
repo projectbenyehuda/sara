@@ -31,9 +31,9 @@ class ApplicationController < ActionController::Base
     return @@sparql_endpoint.query(interpolated_query) # returns a collection of RDF:QUERY::Solutions
   end
   def wikidata_query_as_qid_hash(query, params)
-    Rails.cache.fetch("wikidata_query_as_qid_hash_#{Digest::SHA256.hexdigest(query+params.to_s)}", expires_in: 12.hours) do
-      puts "DBG: cache miss for query #{query+params.to_s}\n#{Digest::SHA256.hexdigest(query+params.to_s)}"
-      Rails.logger.debug "Running Wikidata query: #{query}"
+    cache_key = "wikidata_query_as_qid_hash_#{Digest::SHA256.hexdigest(query+params.except('authenticity_token').to_s)}"
+    Rails.cache.fetch(cache_key, expires_in: 12.hours) do
+      Rails.logger.debug "DBG: cache miss for cache_key #{cache_key}:\n==> query #{query+params.except('authenticity_token').to_s}\n#{Digest::SHA256.hexdigest(query+params.to_s)}"
       begin
         results = wikidata_query(query, params[:params])
       rescue
@@ -46,9 +46,9 @@ class ApplicationController < ActionController::Base
     end
   end
   def wikidata_query_as_hash(query)
-    Rails.cache.fetch("wikidata_query_as_hash_#{Digest::SHA256.hexdigest(query+params.to_s)}", expires_in: 12.hours) do
-      puts "DBG: cache miss for query #{query+params.to_s}\n#{Digest::SHA256.hexdigest(query+params.to_s)}"
-      Rails.logger.debug "Running Wikidata query: #{query}"
+    cache_key = "wikidata_query_as_hash_#{Digest::SHA256.hexdigest(query+params.except('authenticity_token').to_s)}"
+    Rails.cache.fetch(cache_key, expires_in: 12.hours) do
+      Rails.logger.debug "DBG: cache miss for cache_key #{cache_key}:\n==> query #{query+params.except('authenticity_token').to_s}\n#{Digest::SHA256.hexdigest(query+params.to_s)}"
       begin
         results = wikidata_query(query, params[:params])
       rescue
@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base
     end
   end
   def wikidata_count(query)
-    Rails.cache.fetch("wikidata_count_#{Digest::SHA256.digest(query+params.to_s)}", expires_in: 12.hours) do
+    Rails.cache.fetch("wikidata_count_#{Digest::SHA256.hexdigest(query+params.except('authenticity_token').to_s)}", expires_in: 12.hours) do
       ret = -1
       interpolated_query = "SELECT (COUNT(?item) AS ?count) "+interpolate_sparql_statement(query, params) # handle any remaining params (perhaps from base_query)
       Rails.logger.debug "Running interpolated query: #{interpolated_query}"
@@ -74,15 +74,29 @@ class ApplicationController < ActionController::Base
       ret
     end
   end
-  # retrieve labels for a group of QIDs from Wikidata
+  # retrieve labels for a group of QIDs from Wikidata, with caching
   def get_labels_for_qids(qids)
     ret = {}
-    qids.each_slice(50) do |qids_slice|
+    uncached_qids = []
+    qids.each do |qid|
+      clabel = Rails.cache.read(qid)
+      if clabel.present?
+        ret[qid] = clabel
+      else
+        uncached_qids << qid
+      end
+    end
+    Rails.logger.debug "cache hit for #{qids.length - uncached_qids.length} QIDs!"
+    Rails.logger.debug "cache miss for get_labels_for_qids for #{uncached_qids.to_s}"
+    uncached_qids.each_slice(50) do |qids_slice|
       RestClient.get 'https://www.wikidata.org/w/api.php', {params: {action: 'wbgetentities', ids: qids_slice.join('|'), languages: 'he', props: 'labels', format: 'json'}} do |resp, req, res, &block|
         if resp.code == 200
           json = JSON.parse(resp)
           json['entities'].each do |qid, data|
-            ret[qid] = data['labels']['he']['value'] if data['labels']['he'].present?
+            if data['labels']['he'].present?
+              ret[qid] = data['labels']['he']['value']
+              Rails.cache.write(qid, data['labels']['he']['value'])
+            end
           end
         else
           Rails.logger.error "Error retrieving labels for QIDs #{qids_slice.join(', ')}: #{resp}"

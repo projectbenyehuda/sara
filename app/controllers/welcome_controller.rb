@@ -97,56 +97,65 @@ class WelcomeController < ApplicationController
     qids = []
     print "DBG: prepping #{ids.count} Wikidata items..."
     ids.each_slice(50) do |id_slice|
+      images = {}
       print "."
-      RestClient.get 'https://www.wikidata.org/w/api.php', {params: {action: 'wbgetentities', ids: id_slice.join('|'), language: 'he', uselang: 'he', props: 'sitelinks|claims', format: 'json'}} do |resp, req, res, &block|
-        if res.class == Net::HTTPOK
-          images = {}
-          json2 = JSON.parse(resp.body)
-          json2['entities'].keys.each do |qid|
-            item = json2['entities'][qid]
-            @results[qid]['instance-of'] = item['claims']['P31'].map{|c| c['mainsnak']['datavalue']['value']['id']} if item['claims'].key?('P31')
-            @results[qid]['wikipedia_url'] = item['sitelinks']['hewiki'] ? 'https://he.wikipedia.org/wiki/'+item['sitelinks']['hewiki']['title'] : ''
-            imagename = item['claims']['P18'] ? item['claims']['P18'][0]['mainsnak']['datavalue']['value'] : ''
-            images['File:'+imagename] = qid unless imagename.empty?
-            unless @results[qid]['instance-of'].nil?
-              case
-              when @results[qid]['instance-of'].include?('Q5') # human
-                @results[qid]['birthyear'] = item['claims']['P569'] ? item['claims']['P569'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
-                @results[qid]['deathyear'] = item['claims']['P570'] ? item['claims']['P570'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
-                @results[qid]['occupations'] = item['claims']['P106'].map{|c| c['mainsnak']['datavalue']['value']['id']} if item['claims']['P106']
-                @results[qid]['nationality'] = item['claims']['P27'] ? item['claims']['P27'][0]['mainsnak']['datavalue']['value']['id'] : ''
-                @results[qid]['benyehuda_url'] = 'https://benyehuda.org/author/'+item['claims']['P7507'][0]['mainsnak']['datavalue']['value'] if item['claims']['P7507']
-                @results[qid]['nli_id'] = item['claims']['P8189'][0]['mainsnak']['datavalue']['value'] if item['claims']['P8189']
-              when @results[qid]['instance-of'].include?('Q16521'), @results[qid]['instance-of'].include?('Q7075') # organization, library
-                @results[qid]['inception'] = item['claims']['P571'] ? item['claims']['P571'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
-                @results[qid]['country'] = item['claims']['P17'] ? item['claims']['P17'][0]['mainsnak']['datavalue']['value']['id'] : ''
-              when @results[qid]['instance-of'].include?('Q486972') # human settlement
-                @results[qid]['population'] = item['claims']['P1082'] ? item['claims']['P1082'][0]['mainsnak']['datavalue']['value']['amount'] : ''
-                @results[qid]['coordinates'] = item['claims']['P625'] ? item['claims']['P625'][0]['mainsnak']['datavalue']['value'] : ''
-                @results[qid]['inception'] = item['claims']['P571'] ? item['claims']['P571'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
-                @results[qid]['country'] = item['claims']['P17'] ? item['claims']['P17'][0]['mainsnak']['datavalue']['value']['id'] : ''
-              end
+      slice_ids = id_slice.join('|')
+      json2 = Rails.cache.fetch("entities_#{Digest::SHA256.hexdigest(slice_ids)}", expires_in: 12.hours) do
+        Rails.logger.debug "cache miss for entities for #{slice_ids}"
+        RestClient.get 'https://www.wikidata.org/w/api.php', {params: {action: 'wbgetentities', ids: slice_ids, language: 'he', uselang: 'he', props: 'sitelinks|claims', format: 'json'}} do |resp, req, res, &block|
+          if res.class == Net::HTTPOK
+            json2 = JSON.parse(resp.body)
+          end
+        end
+      end
+      json2['entities'].keys.each do |qid|
+        item = json2['entities'][qid]
+        @results[qid]['instance-of'] = item['claims']['P31'].map{|c| c['mainsnak']['datavalue']['value']['id']} if item['claims'].key?('P31')
+        @results[qid]['wikipedia_url'] = item['sitelinks']['hewiki'] ? 'https://he.wikipedia.org/wiki/'+item['sitelinks']['hewiki']['title'] : ''
+        imagename = item['claims']['P18'] ? item['claims']['P18'][0]['mainsnak']['datavalue']['value'] : ''
+        images['File:'+imagename] = qid unless imagename.empty?
+        unless @results[qid]['instance-of'].nil?
+          case
+          when @results[qid]['instance-of'].include?('Q5') # human
+            @results[qid]['birthyear'] = item['claims']['P569'] ? item['claims']['P569'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
+            @results[qid]['deathyear'] = item['claims']['P570'] ? item['claims']['P570'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
+            @results[qid]['occupations'] = item['claims']['P106'].map{|c| c['mainsnak']['datavalue']['value']['id']} if item['claims']['P106']
+            @results[qid]['nationality'] = item['claims']['P27'] ? item['claims']['P27'][0]['mainsnak']['datavalue']['value']['id'] : ''
+            @results[qid]['benyehuda_url'] = 'https://benyehuda.org/author/'+item['claims']['P7507'][0]['mainsnak']['datavalue']['value'] if item['claims']['P7507']
+            @results[qid]['nli_id'] = item['claims']['P8189'][0]['mainsnak']['datavalue']['value'] if item['claims']['P8189']
+          when @results[qid]['instance-of'].include?('Q16521'), @results[qid]['instance-of'].include?('Q7075') # organization, library
+            @results[qid]['inception'] = item['claims']['P571'] ? item['claims']['P571'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
+            @results[qid]['country'] = item['claims']['P17'] ? item['claims']['P17'][0]['mainsnak']['datavalue']['value']['id'] : ''
+          when @results[qid]['instance-of'].include?('Q486972') # human settlement
+            @results[qid]['population'] = item['claims']['P1082'] ? item['claims']['P1082'][0]['mainsnak']['datavalue']['value']['amount'] : ''
+            @results[qid]['coordinates'] = item['claims']['P625'] ? item['claims']['P625'][0]['mainsnak']['datavalue']['value'] : ''
+            @results[qid]['inception'] = item['claims']['P571'] ? item['claims']['P571'][0]['mainsnak']['datavalue']['value']['time'][1..4] : ''
+            @results[qid]['country'] = item['claims']['P17'] ? item['claims']['P17'][0]['mainsnak']['datavalue']['value']['id'] : ''
+          end
+        end
+      end
+      # get image thumbnail URLs
+      unless images.empty?
+        image_titles = images.keys.join('|')
+        json3 = Rails.cache.fetch("thumbnails_#{Digest::SHA256.hexdigest(image_titles)}", expires_in: 12.hours) do
+          Rails.logger.debug "cache miss for thumbnails for #{image_titles}"
+          RestClient.get 'https://commons.wikimedia.org/w/api.php', {params: {action: 'query', prop: 'imageinfo', iiprop: 'url', iiurlwidth: 80, titles: image_titles, format: 'json'}} do |resp3, req3, res3, &block|
+            if res3.class == Net::HTTPOK
+              JSON.parse(resp3.body)['query']['pages']
             end
           end
-          # get image thumbnail URLs
-          unless images.empty?
-            RestClient.get 'https://commons.wikimedia.org/w/api.php', {params: {action: 'query', prop: 'imageinfo', iiprop: 'url', iiurlwidth: 80, titles: images.keys.join('|'), format: 'json'}} do |resp3, req3, res3, &block|
-              if res3.class == Net::HTTPOK
-                json3 = JSON.parse(resp3.body)['query']['pages']
-                json3.each do |page, data|
-                  @results[images[data['title']]]['thumbnail'] = data['imageinfo'][0]['thumburl']
-                end
-              end
-            end
-          end
-          # get the labels for the QID values we collected
-          @results.each do |qid, data|
-            data.keys.each do |key|
-              qids << data[key] if data[key].is_a?(String) && data[key].start_with?('Q')
-              if data[key].is_a?(Array)
-                data[key].each {|v| qids << v if v.start_with?('Q')}
-              end
-            end
+        end
+        json3.each do |page, data|
+          @results[images[data['title']]]['thumbnail'] = data['imageinfo'][0]['thumburl']
+        end
+      end
+
+      # get the labels for the QID values we collected
+      @results.each do |qid, data|
+        data.keys.each do |key|
+          qids << data[key] if data[key].is_a?(String) && data[key].start_with?('Q')
+          if data[key].is_a?(Array)
+            data[key].each {|v| qids << v if v.start_with?('Q')}
           end
         end
       end
