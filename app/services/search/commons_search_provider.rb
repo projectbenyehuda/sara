@@ -21,7 +21,7 @@ module Search
           media_type: media_type_from_mime_type(iinfo(item, 'mime')),
           media_url: iinfo(item, 'url'),
           text: '' # TODO: figure out if there's a way to grab summary/description in single call
-        ) # TODO: add item_date and normalized_year
+        ) # TODO: add item_date and normalized_year per https://www.mediawiki.org/wiki/Extension:CommonsMetadata
       end
     end
 
