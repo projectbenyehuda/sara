@@ -28,6 +28,16 @@ class QueriesController < ApplicationController
     @items = @items.merge(ResponseItem.where('item_date <= ?', @todate)) if @todate.present?
   end
 
+  def destroy
+    # we should keep favorite items even if query is destroed
+    # so at first we delete all non-favorite items
+    @query.response_items.where(favorite: false).delete_all
+
+    @query.response_items.update_all(query_id: nil)
+    @query.destroy!
+    redirect_to @query.project, alert: t('.success')
+  end
+
   def set_models
     project_id = params[:project_id]
     if project_id.present?

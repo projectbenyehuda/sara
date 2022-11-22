@@ -45,6 +45,7 @@ he:
       create_new: חיפוש חדש
       run: חפש!
       stored_queries: חיפושים שמורים
+      destroy_query: Destroy Query
   queries:
     show:
       header: "להלן התוצאות עבור החיפוש: '%{query_text}'"
@@ -56,6 +57,8 @@ he:
       by_type: לפי סוג פריט
       flat_list: רשימה שטוחה
       summary_by_type: תמצית תוצאות לפי סוג פריט
+    destroy:
+      success: "Query destroyed"
   databases: מאגרי מידע
   data_items: פריטי מידע
   about_8_million: כ־8 מיליון

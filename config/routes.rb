@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   match 'welcome/suggest', as: 'suggest', via: [:get, :post]
   match 'welcome/search_disambig', as: 'search_disambig', via: [:get, :post]
 
-  resources :queries, only: [:show] do
+  resources :queries, only: [:show, :destroy] do
     member do
       get 'show'
       post 'show'

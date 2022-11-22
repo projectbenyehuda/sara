@@ -21,6 +21,7 @@ en:
       responses_quantity: Responses Quantity
       create_new: New Search
       run: Run!
+      destroy_query: Destroy Query
   queries:
     show:
       header: "Found results for query: '%{query_text}'"
@@ -32,6 +33,8 @@ en:
       by_type: לפי סוג פריט
       flat_list: רשימה שטוחה
       summary_by_type: תמצית תוצאות לפי סוג פריט
+    destroy:
+      success: "Query destroyed"
   databases: מאגרי מידע
   data_items: פריטי מידע
   about_8_million: כ־8 מליון

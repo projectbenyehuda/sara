@@ -24,14 +24,36 @@ describe QueriesController do
   end
 
   describe 'Member Actions' do
-    let! (:query) { create(:query) }
+    let! (:query) { create(:query, response_items_count: 5) }
+    let!(:project) { query.project }
 
     describe '#show' do
-      subject { get :show, params: { id: query.id }}
+      subject { get :show, params: { id: query.id } }
 
       it {
         is_expected.to be_successful
       }
+    end
+
+    describe '#destroy' do
+      let!(:favorite_item) do
+        create(
+          :response_item,
+          project: project,
+          query: query,
+          favorite: true
+        )
+      end
+
+      subject(:call) { delete :destroy, params: { id: query.id } }
+
+      it 'destroys query, all its items except favorite and redirects to project page' do
+        expect { call }.to change { Query.count }.by(-1).and change { ResponseItem.count }.by(-5)
+        expect(response).to redirect_to project
+        expect(flash.alert).to eq I18n.t('queries.destroy.success')
+        favorite_item.reload
+        expect(favorite_item.query_id).to be_nil
+      end
     end
   end
 
