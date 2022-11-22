@@ -1,3 +1,13 @@
+%div#spinnerdiv{style: 'display: none; top: 50%; left: 50%;'}
+  #floatingCirclesG
+    #frotateG_01.f_circleG
+    #frotateG_02.f_circleG
+    #frotateG_03.f_circleG
+    #frotateG_04.f_circleG
+    #frotateG_05.f_circleG
+    #frotateG_06.f_circleG
+    #frotateG_07.f_circleG
+    #frotateG_08.f_circleG
 .full-screen-area
   .search-content
     = form_tag({action: :show},{method: :post, id: 'filters_form', class: 'works_filters'}) do
@@ -202,11 +212,19 @@
 -#              = link_to item.title, item.url, target: :blank
 -#            %p.card-text= item.text
 :javascript
+  function startModal(id) {
+      $("body").prepend("<div id='PopupMask' style='position:fixed;width:100%;height:100%;z-index:10;background-color:gray;'></div>");
+      $("#PopupMask").css('opacity', 0.5);
+      $("#"+id).css( "z-index" , 11 );
+      $("#"+id).css( "position" , "fixed" );
+      $("#"+id).css( "display" , "block" );
+  }
   $(document).ready(function() {
     $('#filters_form').on('change', function() {
       $('#apply_filters').show();
     });
     $('#apply_filters').on('click', function() {
+      startModal('spinnerdiv');
       $('#filters_form').submit();
     });
     $('#reset_filters').click(function(e){
@@ -225,6 +243,7 @@
             this.checked = false;
         }
       });
+      startModal('spinnerdiv');
       $('#filters_form').submit();
     });
 
