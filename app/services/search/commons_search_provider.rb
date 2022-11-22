@@ -11,17 +11,22 @@ module Search
       mw = MediawikiApi::Client.new(COMMONS_SEARCH_API_URL)
       # https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=imageinfo&generator=search&formatversion=2&iiprop=mime%7Cthumbmime%7Curl&iiurlheight=80&gsrsearch=david%20frischmann&gsrnamespace=6&gsrlimit=100
       res = mw.query(generator: :search, gsrsearch: query, gsrnamespace: 6, gsrlimit: MAX_RESULTS, prop: :imageinfo, iiprop: [:mime, :thumbmime, :url], iiurlheight: 80, formatversion: 2)
-      Rails.logger.info "DBG: Commons query for [#{query}] returned #{res['query']['pages'].count} results"
-      res['query']['pages'].map do |item|
-        Search::ResponseItem.new(
-          url: iinfo(item, 'descriptionurl'),
-          thumbnail_url: iinfo(item, 'thumburl'),
-          external_id: iinfo(item, 'descriptionurl'),
-          title: item['title'].sub('File:', ''),
-          media_type: media_type_from_mime_type(iinfo(item, 'mime')),
-          media_url: iinfo(item, 'url'),
-          text: '' # TODO: figure out if there's a way to grab summary/description in single call
-        ) # TODO: add item_date and normalized_year per https://www.mediawiki.org/wiki/Extension:CommonsMetadata
+      if res['query'].present?
+        Rails.logger.info "DBG: Commons query for [#{query}] returned #{res['query']['pages'].count} results"
+        res['query']['pages'].map do |item|
+          Search::ResponseItem.new(
+            url: iinfo(item, 'descriptionurl'),
+            thumbnail_url: iinfo(item, 'thumburl'),
+            external_id: iinfo(item, 'descriptionurl'),
+            title: item['title'].sub('File:', ''),
+            media_type: media_type_from_mime_type(iinfo(item, 'mime')),
+            media_url: iinfo(item, 'url'),
+            text: '' # TODO: figure out if there's a way to grab summary/description in single call
+          ) # TODO: add item_date and normalized_year per https://www.mediawiki.org/wiki/Extension:CommonsMetadata
+        end
+      else
+        Rails.logger.info "DBG: Commons query for [#{query}] returned no results"
+        return []
       end
     end
 

@@ -7,30 +7,35 @@ module Search
 
     def call(query)
       # see https://www.nli.org.il/en/research-and-teach/open-library/search-api
-      response = RestClient::Request.execute(
-        method: :get,
-        url: NLI_SEARCH_API_URL,
-        verify_ssl: false,
-        headers: {
-          params: {
-            api_key: NLI_API_KEY,
-            query: "any,contains,#{query}&availability_type=online_and_api_access"
-          },
-          content_type: :json
-        }
-      )
-      JSON.parse(response).map do |item|
-        Search::ResponseItem.new(
-          url: item['@id'],
-          thumbnail_url: property_value(item, 'thumbnail'),
-          external_id: property_value(item, 'recordid'),
-          title: "#{property_value(item, 'creator')} / #{property_value(item, 'title')}",
-          media_type: media_type_from_nli_type(property_value(item, 'type')),
-          media_url: property_value(item, 'download'),
-          text: property_value(item, 'format'),
-          item_date: property_value(item, 'date'),
-          normalized_year: normalize_year(property_value(item, 'date'))
+      begin
+        response = RestClient::Request.execute(
+          method: :get,
+          url: NLI_SEARCH_API_URL,
+          verify_ssl: false,
+          headers: {
+            params: {
+              api_key: NLI_API_KEY,
+              query: "any,contains,#{query}&availability_type=online_and_api_access"
+            },
+            content_type: :json
+          }
         )
+        JSON.parse(response).map do |item|
+          Search::ResponseItem.new(
+            url: item['@id'],
+            thumbnail_url: property_value(item, 'thumbnail'),
+            external_id: property_value(item, 'recordid'),
+            title: "#{property_value(item, 'creator')} / #{property_value(item, 'title')}",
+            media_type: media_type_from_nli_type(property_value(item, 'type')),
+            media_url: property_value(item, 'download'),
+            text: property_value(item, 'format'),
+            item_date: property_value(item, 'date'),
+            normalized_year: normalize_year(property_value(item, 'date'))
+          )
+        end
+      rescue RestClient::ExceptionWithResponse => error
+        Rails.logger.error("NLI search failed: #{error.message}")
+        return []
       end
     end
 
