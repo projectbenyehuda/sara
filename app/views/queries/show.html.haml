@@ -155,7 +155,7 @@
                 = "(#{items.count})"
             - items.each do |item|
               .card-line
-                %input{:id => "", :name => "", :type => "checkbox", :value => ""}
+                %input.ckitem{:id => "ck_#{item.id}", :name => "ck_#{item.id}", :type => "checkbox", :value => ""}
                 .result-item
                   .result-item-content
                     - if item.thumbnail_url.present?
@@ -251,6 +251,15 @@
     $('.closenote').click(function(e){
       e.preventDefault();
       $(this).parent().parent().hide();
+    });
+    $('.ckitem').change(function(e){
+      if($('.ckitem:checked').length > 0 ) {
+        $('#delete-from-list-button').removeClass('disabled');
+        $('#add-to-fav-button').removeClass('disabled');
+      } else {
+        $('#delete-from-list-button').addClass('disabled');
+        $('#add-to-fav-button').addClass('disabled');
+      }
     });
     $('.fav').click(function(e){
       e.preventDefault();
