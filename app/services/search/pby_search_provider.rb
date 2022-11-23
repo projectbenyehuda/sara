@@ -6,6 +6,10 @@ module Search
 
     PBY_API_KEY = ENV['PBY_API_KEY']
 
+    # Max number of items to be fetched from PBY
+    # current implementation assumes its value to be a multiple of page size, otherwise it can return a bit more items
+    PBY_MAX_RESULTS = ENV['PBY_MAX_RESULTS'].to_i || 200
+
     # see https://benyehuda.org/api-docs/index.html#operations-tag-search
     def call(query)
       page = 1
@@ -23,7 +27,7 @@ module Search
           { content_type: :json }
         )
         response = JSON.parse(response)
-        total = response['total_count']
+        total = [response['total_count'], PBY_MAX_RESULTS].min
         result += response['data'].map do |rec|
           metadata = rec['metadata']
           Search::ResponseItem.new(
@@ -38,7 +42,7 @@ module Search
           )
         end
         page += 1
-      end while result.size < total && page < 5 # limit search to first 100 texts only
+      end while result.size < total
       return result
     end
 
