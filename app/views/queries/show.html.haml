@@ -272,5 +272,7 @@
             id: $(this).attr('data-id'),
         }
       });
+      cur_fav_count = parseInt($('#favorites_count').text().match(/\d+/)[0]);
+      $('#favorites_count').text($('#favorites_count').text().replace(/\d+/, (cur_fav_count + (value_to_set ? 1 : -1)).toString())) ; // update fav count
     });
   });
