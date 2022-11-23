@@ -166,7 +166,7 @@
                           = link_to item.title, item.url, target: '_blank'
                         %br
                       %p= item.text
-                    %a.by-icon-v02.fav{:href => "#"} !
+                    %a.by-icon-v02.fav{:href => "#", 'data-id' => item.id}= item.favorite ? '"' : '!'
                   .result-item-buttom-area
                     -#.result-typr-labels-area
                     -#  .result-type-label תמונה
@@ -250,5 +250,27 @@
     $('.closenote').click(function(e){
       e.preventDefault();
       $(this).parent().parent().hide();
+    });
+    $('.fav').click(function(e){
+      e.preventDefault();
+      value_to_set = true;
+      if($(this).text() == '!') { // toggle fav icon
+        $(this).text('"');
+      } else {
+        $(this).text('!');
+        value_to_set = false;
+      }
+      // toggle fav in DB
+      $.ajax({
+        type: "POST",
+        url: "#{toggle_favorite_response_item_path(id: '0')}".replace('0', $(this).data('id')),
+        beforeSend(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+        },
+        data: {
+            value: value_to_set,
+            id: $(this).attr('data-id'),
+        }
+      });
     });
   });

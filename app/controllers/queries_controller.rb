@@ -17,6 +17,8 @@ class QueriesController < ApplicationController
   def show
     @query = Query.find(params[:id])
     @header_partial = 'queries/show_top'
+    @project = @query.project
+    @favorite_items_count = @project.favorite_items.count
     @sources = params['ckb_sources']
     @media_types = params['ckb_types']
     @fromdate = params['fromdate']
