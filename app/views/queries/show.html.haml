@@ -163,7 +163,7 @@
                     .result-texts
                       - if item.title.present?
                         %b
-                          = link_to item.title, item.url
+                          = link_to item.title, item.url, target: '_blank'
                         %br
                       %p= item.text
                     %a.by-icon-v02.fav{:href => "#"} !
@@ -178,7 +178,7 @@
           .note
             .flex-headline-space-between
               %p.headline-3 הידעת?
-              %a.by-icon-v02{:href => "#"} -
+              %a.by-icon-v02.closenote{:href => "#"} -
             .note-content
               .sara-icon b
               %div
@@ -190,7 +190,7 @@
           .note
             .flex-headline-space-between
               %p.headline-3 הידעת?
-              %a.by-icon-v02{:href => "#"} -
+              %a.by-icon-v02.closenote{:href => "#"} -
             .note-content
               .sara-icon b
               %div
@@ -247,5 +247,8 @@
       startModal('spinnerdiv');
       $('#filters_form').submit();
     });
-
+    $('.closenote').click(function(e){
+      e.preventDefault();
+      $(this).parent().parent().hide();
+    });
   });
