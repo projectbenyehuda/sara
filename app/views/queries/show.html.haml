@@ -162,7 +162,8 @@
                         %img{src: item.thumbnail_url}
                     .result-texts
                       - if item.title.present?
-                        %b= item.title
+                        %b
+                          = link_to item.title, item.url
                         %br
                       %p= item.text
                     %a.by-icon-v02.fav{:href => "#"} !

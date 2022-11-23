@@ -18,9 +18,13 @@
     %th= t('activerecord.attributes.default.created_at')
     %th= t('activerecord.attributes.query.text')
     %th= t('.responses_quantity')
+    %th
   %tbody
     - @queries.each do |q|
       %tr
         %td= q.created_at
         %td= link_to q.text, q
         %td= q.responses_quantity
+        %td
+          = button_to t('.destroy_query'), "/queries/#{q.id}", method: :delete, class: 'btn btn-danger'
+

@@ -1,4 +1,7 @@
 class ResponseItem < ApplicationRecord
+  # We need a link for project, to keep favorite items available if parent query will be deleted
+  # see https://github.com/projectbenyehuda/sara/issues/13#issuecomment-1310482546
+  belongs_to :project, inverse_of: :response_items
   belongs_to :query, inverse_of: :response_items
 
   enum source: {
@@ -19,10 +22,11 @@ class ResponseItem < ApplicationRecord
     unknown: 7
   }, _prefix: true
 
-  validates_presence_of :query, :source, :media_type, :url, :index
+  validates_presence_of :source, :media_type, :url, :index
 
   scope :without_ignored, -> {
-    where(<<~sql.squish
+    where(
+      <<~SQL.squish
         not exists (
           select 1 from
             ignored_items i
@@ -32,7 +36,7 @@ class ResponseItem < ApplicationRecord
             and i.external_id = response_items.external_id
             and i.source = response_items.source
         )
-      sql
+      SQL
     )
   }
 end
