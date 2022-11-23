@@ -106,7 +106,8 @@
             %button#add-to-fav-button.sara-button.button-primary.disabled
               .by-icon-v02> '"'
               = t('.add_to_fav')
-            %button#create-outline-button.sara-button.button-primary.disabled
+            - enable = @favorite_items_count > 0 ? '' : ' disabled'
+            %button#create-outline-button{class: 'sara-button button-primary'+enable}
               .by-icon-v02> J
               = t('.create_outline')
         .view-switch-line
@@ -273,6 +274,12 @@
         }
       });
       cur_fav_count = parseInt($('#favorites_count').text().match(/\d+/)[0]);
-      $('#favorites_count').text($('#favorites_count').text().replace(/\d+/, (cur_fav_count + (value_to_set ? 1 : -1)).toString())) ; // update fav count
+      new_fav_count = cur_fav_count + (value_to_set ? 1 : -1);
+      if(new_fav_count == 0) {
+        $('#create-outline-button').addClass('disabled');
+      } else {
+        $('#create-outline-button').removeClass('disabled');
+      }
+      $('#favorites_count').text($('#favorites_count').text().replace(/\d+/, new_fav_count.toString())) ; // update fav count
     });
   });
