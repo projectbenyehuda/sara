@@ -17,7 +17,7 @@ module Search
             key: PBY_API_KEY,
             view: :basic,
             snippet: true,
-            fulltext: query,
+            fulltext: "\"#{query}\"",
             page: page,
           }.to_json,
           { content_type: :json }
