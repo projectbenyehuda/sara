@@ -221,6 +221,38 @@
       $("#"+id).css( "position" , "fixed" );
       $("#"+id).css( "display" , "block" );
   }
+  function update_fav_count(value_to_set) {
+    cur_fav_count = parseInt($('#favorites_count').text().match(/\d+/)[0]);
+    new_fav_count = cur_fav_count + (value_to_set ? 1 : -1);
+    if(new_fav_count == 0) {
+      $('#create-outline-button').addClass('disabled');
+    } else {
+      $('#create-outline-button').removeClass('disabled');
+    }
+    $('#favorites_count').text($('#favorites_count').text().replace(/\d+/, new_fav_count.toString())) ; // update fav count
+  }
+  function toggle_fav(item){
+    value_to_set = true;
+    if($(item).text() == '!') { // toggle fav icon
+      $(item).text('"');
+    } else {
+      $(item).text('!');
+      value_to_set = false;
+    }
+    // toggle fav in DB
+    $.ajax({
+      type: "POST",
+      url: "#{toggle_favorite_response_item_path(id: '0')}".replace('0', $(item).data('id')),
+      beforeSend(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+      },
+      data: {
+          value: value_to_set,
+          id: $(item).attr('data-id'),
+      }
+    });
+    update_fav_count(value_to_set);
+  }
   $(document).ready(function() {
     $('#filters_form').on('change', function() {
       $('#apply_filters').show();
@@ -261,6 +293,15 @@
         $('#add-to-fav-button').addClass('disabled');
       }
     });
+    $('#add-to-fav-button').click(function(e){
+      e.preventDefault();
+      if($('.ckitem:checked').length > 0 ) {
+        $('.ckitem:checked').each(function(i, item) {
+          target = $(item).parent().find('.fav')[0];
+          toggle_fav(target);
+        });
+      }
+    });
     $('#delete-from-list-button').click(function(e){
       e.preventDefault();
       if($('.ckitem:checked').length > 0 ) {
@@ -285,32 +326,6 @@
 
     $('.fav').click(function(e){
       e.preventDefault();
-      value_to_set = true;
-      if($(this).text() == '!') { // toggle fav icon
-        $(this).text('"');
-      } else {
-        $(this).text('!');
-        value_to_set = false;
-      }
-      // toggle fav in DB
-      $.ajax({
-        type: "POST",
-        url: "#{toggle_favorite_response_item_path(id: '0')}".replace('0', $(this).data('id')),
-        beforeSend(xhr) {
-          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
-        },
-        data: {
-            value: value_to_set,
-            id: $(this).attr('data-id'),
-        }
-      });
-      cur_fav_count = parseInt($('#favorites_count').text().match(/\d+/)[0]);
-      new_fav_count = cur_fav_count + (value_to_set ? 1 : -1);
-      if(new_fav_count == 0) {
-        $('#create-outline-button').addClass('disabled');
-      } else {
-        $('#create-outline-button').removeClass('disabled');
-      }
-      $('#favorites_count').text($('#favorites_count').text().replace(/\d+/, new_fav_count.toString())) ; // update fav count
+      toggle_fav(this);
     });
   });
