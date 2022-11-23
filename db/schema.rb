@@ -11,7 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2022_11_20_164633) do
-  create_table "ignored_items", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "ignored_items", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.string "external_id", null: false
     t.integer "source", null: false
@@ -20,13 +20,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_164633) do
     t.index ["project_id"], name: "index_ignored_items_on_project_id"
   end
 
-  create_table "projects", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "projects", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "queries", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "queries", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "text", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -34,7 +34,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_164633) do
     t.index ["project_id"], name: "index_queries_on_project_id"
   end
 
-  create_table "response_items", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "response_items", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "query_id"
     t.integer "source", null: false
     t.integer "media_type", null: false
@@ -47,10 +47,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_164633) do
     t.datetime "updated_at", null: false
     t.string "external_id", null: false
     t.integer "index", null: false
-    t.boolean "favorite", default: false, null: false
-    t.bigint "project_id", null: false
     t.string "item_date"
     t.integer "normalized_year"
+    t.boolean "favorite", default: false, null: false
+    t.bigint "project_id", null: false
     t.index ["project_id"], name: "index_response_items_on_project_id"
     t.index ["query_id"], name: "index_response_items_on_query_id"
   end
