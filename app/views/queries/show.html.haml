@@ -155,7 +155,7 @@
                 = "(#{items.count})"
             - items.each do |item|
               .card-line
-                %input.ckitem{:id => "ck_#{item.id}", :name => "ck_#{item.id}", :type => "checkbox", :value => ""}
+                %input.ckitem{:id => "ck_#{item.id}", :name => "ck_#{item.id}", :type => "checkbox", :value => "", 'data-external-id' => item.external_id, 'data-source' => item.source}
                 .result-item
                   .result-item-content
                     - if item.thumbnail_url.present?
@@ -261,6 +261,28 @@
         $('#add-to-fav-button').addClass('disabled');
       }
     });
+    $('#delete-from-list-button').click(function(e){
+      e.preventDefault();
+      if($('.ckitem:checked').length > 0 ) {
+        $('.ckitem:checked').each(function(i, item) {
+          $.ajax("#{project_ignored_items_path(project_id: @project.id)}", {
+            type: "POST",
+            beforeSend(xhr) {
+              xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+            },
+            data: {
+              project_id: "#{@project.id}", 
+              ignored_item: {external_id: $(this).attr('data-external-id'), source: $(this).attr('data-source')}
+            },
+            success: function(data) {
+              $(item).parent().remove();
+              $('.ckitem').change();
+            }
+          });
+        });
+      }
+    });
+
     $('.fav').click(function(e){
       e.preventDefault();
       value_to_set = true;
