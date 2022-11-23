@@ -22,7 +22,7 @@ module Search
         )
         JSON.parse(response).map do |item|
           Search::ResponseItem.new(
-            url: item['@id'],
+            url: item['@id'].sub('https://www.nli.org.il/en/','https://www.nli.org.il/he/'),
             thumbnail_url: property_value(item, 'thumbnail'),
             external_id: property_value(item, 'recordid'),
             title: "#{property_value(item, 'creator')} / #{property_value(item, 'title')}",
