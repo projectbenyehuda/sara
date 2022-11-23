@@ -34,6 +34,7 @@
             %button#map.small-switch-option.sort-by= t(:display_map)
     = form_tag(search_disambig_path, method: :post, id: 'filters_form') do
       = hidden_field_tag :base_query, params['base_query']
+      = hidden_field_tag :qid, params['qid']
       = hidden_field_tag :q, params['q']
       .filters#filters
         .subjects-filter
@@ -147,7 +148,9 @@
     });
     $('#search-subject-results-button').click(function(e) {
       if(!$(this).hasClass('disabled')) {
-        $('#search_q').val($('div.result-item.active > div.result-texts > div.flex-headline-space-between > p').text());
+        if($('.results-list').css('display') != 'none') {
+          $('#search_q').val($('div.result-item.active > div.result-texts > div.flex-headline-space-between > p').text());
+        }
         startModal('spinnerdiv');
         $('form').submit();
       } else alert('#{ t(:please_select_topic) }');
@@ -216,7 +219,9 @@
         initialDate: (min ? min.from : null),
         article: {autoStacking: {topGap: 0, fitToHeight: false}},
         onArticleClick: function(article) {
-
+          $('#qid').val(article.id);
+          $('#search_q').val(article.title);
+          $('#search-subject-results-button').removeClass('disabled');
         },
         onArticleDoubleClick: function(article) {
         }
