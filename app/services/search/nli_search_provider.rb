@@ -15,8 +15,9 @@ module Search
       begin
         # getting total number of records
         response = query_nli(query, count_mode: true)
-        total = [JSON.parse(response)['countInfos']['total'], NLI_MAX_RESULTS].min
-
+        ctotal = JSON.parse(response)['countInfos']['total']
+        total = [ctotal, NLI_MAX_RESULTS].min
+        Rails.logger.info "DBG: NLI query for [#{query}] returned #{ctotal} results, of which we'll grab #{total}"
         page = 1 # page index starts from 1
         while result.size < total do
           response = query_nli(query, { result_page: page } )

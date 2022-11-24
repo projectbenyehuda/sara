@@ -14,6 +14,7 @@ module Search
     def call(query)
       page = 1
       result = []
+      q = query.gsub(/[0-9()–]+/, '').strip
       begin
         response = RestClient.post(
           PBY_SEARCH_API_URL,
@@ -21,13 +22,14 @@ module Search
             key: PBY_API_KEY,
             view: :basic,
             snippet: true,
-            fulltext: "\"#{query}\"",
+            fulltext: "\"#{q}\"",
             page: page,
           }.to_json,
           { content_type: :json }
         )
         response = JSON.parse(response)
         total = [response['total_count'], PBY_MAX_RESULTS].min
+        Rails.logger.info "DBG: PBY query for [#{q}] returned #{response['total_count']} results, of which we'll grab #{total}" if page == 1
         result += response['data'].map do |rec|
           metadata = rec['metadata']
           Search::ResponseItem.new(
