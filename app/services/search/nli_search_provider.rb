@@ -30,6 +30,7 @@ module Search
               media_type: media_type_from_nli_type(property_value(item, 'type')),
               media_url: property_value(item, 'download'),
               text: property_value(item, 'format'),
+              authors: property_value(item, 'creator'),
               item_date: property_value(item, 'date'),
               normalized_year: normalize_year(property_value(item, 'date'))
             )
@@ -66,6 +67,9 @@ module Search
 
     def property_value(item, property)
       val = item["http://purl.org/dc/elements/1.1/#{property}"]&.first
+      if property == 'date' && val.nil? # workaround date oddity in some records
+        val = item["http://purl.org/dc/elements/1.1/non_standard_date"]&.first
+      end
       return val.present? ? val['@value'] : nil
     end
     def media_type_from_nli_type(nli_type)

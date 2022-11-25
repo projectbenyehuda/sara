@@ -16,3 +16,9 @@
           - else
             .breadcrumbs-text.active
               %a= t('nav.suggest_topics')
+- if @sara_mode == :outline
+  .navigation-area
+    .navigation
+      %button.sara-button.button-primary.back-button
+        .by-icon-v02> 2
+        = t(:back_to_favorites)

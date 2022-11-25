@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
 
   helper_method :wikidata_query_as_hash
   helper_method :wikidata_count
+  helper_method :textify_media_type
+  helper_method :textify_source
 
   SARA_BROWSING_TREE_FILENAME = './sara_poc_tree.json' # TODO: un-hardcode this
 
@@ -109,4 +111,72 @@ class ApplicationController < ActionController::Base
   def load_browsing_tree
     @browsing_tree = JSON.parse(File.read(SARA_BROWSING_TREE_FILENAME))
   end
+  def textify_media_type(mtype)
+    case mtype
+    when 'text'
+      return t(:text)
+    when 'image'
+      return t(:image)
+    when 'audio'
+      return t(:audio)
+    when 'video'
+      return t(:video)
+    when 'map'
+      return t(:map)
+    when 'archive'
+      return t(:archive)
+    else
+      return t(:unknown)
+    end
+  end
+  def textify_source_license(source, item)
+    case source
+    when 'wikipedia'
+      return t(:wikipedia_license)
+    when 'nli'
+      return t(:nli) # TODO: figure out how to get the license for NLI items
+    when 'pby'
+      return t(:pby) # TODO: grab copyright status from PBY API
+    when 'commons'
+      return t(:commons) # TODO: grab license from Commons item metadata
+    when 'wikidata'
+      return t(:wikidata_license)
+    else
+      return t(:unknown)
+    end
+  end
+  def textify_citation(item)
+    ret = ''
+    case item['source']
+    when 'wikipedia'
+      ret += t(:wikipedia_citation, title: item['title'], url: item['url'])
+    when 'nli'
+      ret += t(:nli_citation, authors: item['authors'], year: item['normalized_year'], title: item['title'], url: item['url'])
+    when 'pby'
+      ret += t(:pby_citation, authors: item['authors'], year: item['normalized_year'], title: item['title'], url: item['url'])
+    when 'commons'
+      ret += t(:commons_citation, title: item['title'], url: item['url'])
+    when 'wikidata'
+      ret += t(:wikidata_citation, title: item['title'], url: item['url'])
+    else
+      ret += t(:unknown)
+    end
+  end
+  def textify_source(source)
+    case source
+    when 'wikipedia'
+      return t(:wikipedia)
+    when 'nli'
+      return t(:nli)
+    when 'pby'
+      return t(:pby)
+    when 'commons'
+      return t(:commons)
+    when 'wikidata'
+      return t(:wikidata)
+    else
+      return t(:unknown)
+    end
+  end
+
 end

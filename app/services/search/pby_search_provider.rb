@@ -36,6 +36,8 @@ module Search
             title: "#{metadata['title']} / #{metadata['author_string']}",
             media_url: metadata['url'],
             media_type: :text,
+            authors: metadata['author_string'],
+            copyright: parse_pby_copyright(metadata['copyright_status']),
             url: rec['url'],
             text: rec['snippet'],
             item_date: metadata['orig_publication_date'],
@@ -50,6 +52,9 @@ module Search
 
     def source
       return :pby
+    end
+    def parse_pby_copyright(status)
+      status ? :copyrighted : :public_domain
     end
   end
 end

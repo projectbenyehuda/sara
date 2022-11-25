@@ -4,6 +4,18 @@ class ResponseItem < ApplicationRecord
   belongs_to :project, inverse_of: :response_items
   belongs_to :query, inverse_of: :response_items
 
+  enum copyright: {
+    unknown: 0,
+    public_domain: 1,
+    cc_by: 2,
+    cc_by_sa: 3,
+    cc_by_nd: 4,
+    cc_by_nc: 5,
+    cc_by_nc_sa: 6,
+    cc_by_nc_nd: 7,
+    cc0: 8,
+    copyrighted: 9
+  }
   enum source: {
     wikipedia: 1,
     nli: 2,

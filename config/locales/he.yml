@@ -25,7 +25,7 @@ he:
     to: עד
   welcome:
     index:
-      intro_html: "ברוכות וברוכים הבאים! אני <b>שרה</b> ואשמח לעזור לכם במחקר שלכם. אני אגש לכל מאגרי המידע אליהם אני מחוברת ואפעיל את קשריי בכדי למצוא עבורכם פריטי מידע רלוונטיים.</p><p> לחילופין אני מציגה עבורכם גם הצעות לנושאים מעניינים מהמאגרים שלנו."
+      intro_html: "ברוכות וברוכים הבאים! אני <b>שרה</b> ואשמח לעזור לכם במחקר שלכם. אני אגש לכל מאגרי המידע שאליהם אני מחוברת ואפעיל את קשריי כדי למצוא עבורכם פריטי מידע רלוונטיים.</p><p> לחילופין אני מציגה עבורכם גם הצעות לנושאים מעניינים מהמאגרים שלנו."
   projects:
     index:
       header: 'רשימת תיקי נושא'
@@ -45,7 +45,13 @@ he:
       create_new: חיפוש חדש
       run: חפש!
       stored_queries: חיפושים שמורים
-      destroy_query: Destroy Query
+      destroy_query: מחיקת שאילתה
+    outline:
+      outline: שלד לכתיבה
+      sources: מקורות
+    outline_download:
+      filename: "%{title} – שלד לכתיבה.html"
+      sources: מקורות
   queries:
     show:
       header: "להלן התוצאות עבור החיפוש: '%{query_text}'"
@@ -58,7 +64,7 @@ he:
       flat_list: רשימה שטוחה
       summary_by_type: תמצית תוצאות לפי סוג פריט
     destroy:
-      success: "Query destroyed"
+      success: "השאילתה נמחקה"
   databases: מאגרי מידע
   data_items: פריטי מידע
   about_8_million: כ־8 מיליון
@@ -75,6 +81,7 @@ he:
   pby: פרויקט בן־יהודה
   nli: הספרייה הלאומית
   wikipedia: ויקיפדיה
+  wikipedia_license: הטקסט מוגש ברשיון קריאייטיב קומונז ייחוס שיתוף זהה (CC-BY-SA)
   commons: ויקישיתוף
   jpress: עיתונות יהודית היסטורית
   kan: כאן
@@ -94,3 +101,10 @@ he:
   to: עד
   year: שנה
   wikidata: ויקינתונים
+  wikidata_license: הנתונים ברשיון CC0 (שקול לנחלת הכלל)
+  back_to_favorites: חזרה למועדפים
+  sources: מקורות
+  pby_citation: "%{authors}. (%{year}). %{title}. [גרסה אלקטרונית]. %{url}. פרויקט בן־יהודה."
+  nli_citation: "%{authors}. (%{year}). %{title}. [גרסה אלקטרונית]. %{url}. הספרייה הלאומית."
+  source: מקור
+  download_as_file: הורדה כקובץ

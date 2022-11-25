@@ -9,38 +9,6 @@ module ApplicationHelper
       end
     end
   end
-  def textify_media_type(mtype)
-    case mtype
-    when 'text'
-      return t(:text)
-    when 'image'
-      return t(:image)
-    when 'audio'
-      return t(:audio)
-    when 'video'
-      return t(:video)
-    when 'map'
-      return t(:map)
-    when 'archive'
-      return t(:archive)
-    else
-      return t(:unknown)
-    end
-  end
-  def textify_source(source)
-    case source
-    when 'wikipedia'
-      return t(:wikipedia)
-    when 'nli'
-      return t(:nli)
-    when 'pby'
-      return t(:pby)
-    when 'wikidata'
-      return t(:wikidata)
-    else
-      return t(:unknown)
-    end
-  end
   def image_for_media_type(mtype)
     case mtype
     when 'text'

@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   match 'welcome/search', as: 'search', via: [:get, :post]
   match 'welcome/suggest', as: 'suggest', via: [:get, :post]
   match 'welcome/search_disambig', as: 'search_disambig', via: [:get, :post]
+  match 'outline/:id' => 'projects#outline', as: 'outline', via: [:get, :post]
+  match 'outline_download/:id' => 'projects#outline_download', as: 'outline_download', via: [:get]
 
   resources :queries, only: [:show, :destroy] do
     member do

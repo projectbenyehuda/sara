@@ -1,0 +1,26 @@
+.full-screen-area
+  .search-content
+    .outline-sources-panel
+      .outline-sources
+        .source-type-line
+          %a.headline-4{:href => ""} על אודות היוצר/ת
+    .outline-fixed-top-elements
+      .outline-top-area.outline-top-right
+        .outline-right
+          %span.by-icon-v02 p
+          %p.headline-3= t(:sources)
+      .outline-top-area.outline-top-left
+        .outline-right
+          %span.by-icon-v02 H
+          %p.headline-3= t('projects.outline.outline')
+        .left-bottons-area
+          %a{href: outline_download_path(id: @project.id), target: '_blank'}
+            %button#download.sara-button.button-primary
+              .by-icon-v02.larger-icon> J
+              = t(:download_as_file)
+          %button#close.sara-button.button-primary
+            .by-icon-v02> -
+            יציאה
+    .outline-page-container{style: 'margin-top: 56px;'}
+      .outline-page
+        != @outline
