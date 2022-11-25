@@ -107,9 +107,10 @@
               .by-icon-v02> '"'
               = t('.add_to_fav')
             - enable = @favorite_items_count > 0 ? '' : ' disabled'
-            %button#create-outline-button{class: 'sara-button button-primary'+enable}
-              .by-icon-v02> J
-              = t('.create_outline')
+            %a{href: outline_path(id: @project.id)}
+              %button#create-outline-button{class: 'sara-button button-primary'+enable}
+                .by-icon-v02> J
+                = t('.create_outline')
         .view-switch-line
           = t(:display_colon)
           .small-switch
