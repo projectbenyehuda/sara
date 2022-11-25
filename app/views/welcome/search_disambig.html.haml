@@ -86,7 +86,7 @@
       .results-area
         .results-list{style: 'margin-top: 121px;'}
           - if @results.present?
-            - @results.keys.each do |qid|
+            - @sorted_keys.each do |qid|
               .result-item
                 - if @results[qid]['thumbnail'].present? # if result has a picture
                   .subject-picture

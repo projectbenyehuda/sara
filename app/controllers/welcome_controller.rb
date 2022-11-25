@@ -74,6 +74,8 @@ class WelcomeController < ApplicationController
         @results = []
         @topic_count = count
         flash[:error] = "לא ניתן להציג תוצאות כי יש #{count} תוצאות. יש להוסיף מסננים עד שיהיו פחות מ־#{MAX_WIKIDATA_RESULTS} תוצאות"
+      else
+        @sorted_keys = @results.sort_by{|item| item[1][:label]}.map{|arr| arr[0]}
       end
     end
   end
