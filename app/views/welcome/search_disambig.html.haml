@@ -125,10 +125,8 @@
           - else
             %h3= t('filters.too_many_results', count: @topic_count)
         .timeline{style:'margin-top:121px;display:none;'}
-          %h3= t(:display_timeline)
           #histropedia-timeline
         .map{style:'margin-top:121px;display:none;'}
-          %h3= t(:display_map)
           #map_container{ style: "height: 600px; width: 1024px;" }
 = form_for([Project.last, Query.new]) do |f|
   = f.hidden_field :text, class: 'form-control', id: 'search_q'
@@ -217,6 +215,8 @@
         const data = JSON.parse("#{j(raw @timeline_data)}");
         let min = null;
         let minVal = Infinity;
+        let max = null;
+        let maxVal = 0;
         data.forEach((item) => {
           if(item.from != null) {
             const val = item.from.year * 10000; // + item.from.month * 100 + item.from.day;
@@ -224,10 +224,15 @@
               minVal = val;
               min = item;
             }
+            if (val > maxVal) {
+              maxVal = val;
+              max = item;
+            }
           }
         });
+        alert('min: ' + minVal + ' max: ' + maxVal);
         const timeline = new Histropedia.Timeline(container, { height: 700, article: {distanceToMainLine: 100},
-          initialDate: (min ? min.from : 19800000),
+          initialDate: ((max && min) ? (min.from.year + (max.from.year - min.from.year) / 2) : (min ? min.from : 19800000)),
           article: {autoStacking: {topGap: 0, fitToHeight: false}},
           onArticleClick: function(article) { selectItem(article.id, article.title); },
           onArticleDoubleClick: function(article) {
