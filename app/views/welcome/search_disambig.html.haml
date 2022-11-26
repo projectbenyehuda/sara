@@ -1,3 +1,7 @@
+= content_for :head do
+  %script{ src: "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS_JS_API_KEY']}" }
+  %script{ src: "https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js" }
+
 %script{ type: 'text/javascript', charset:'utf-8', src: asset_url('histropedia-1.2.0.js')}
 %div#spinnerdiv{style: 'display: none; top: 50%; left: 50%;'}
   #floatingCirclesG
@@ -125,19 +129,26 @@
           #histropedia-timeline
         .map{style:'margin-top:121px;display:none;'}
           %h3= t(:display_map)
-
+          #map_container{ style: "height: 600px; width: 1024px;" }
 = form_for([Project.last, Query.new]) do |f|
   = f.hidden_field :text, class: 'form-control', id: 'search_q'
   = f.submit t('projects.show.run'), style: 'display:none'
 
 :javascript
   function startModal(id) {
-      $("body").prepend("<div id='PopupMask' style='position:fixed;width:100%;height:100%;z-index:10;background-color:gray;'></div>");
-      $("#PopupMask").css('opacity', 0.5);
-      $("#"+id).css( "z-index" , 11 );
-      $("#"+id).css( "position" , "fixed" );
-      $("#"+id).css( "display" , "block" );
+    $("body").prepend("<div id='PopupMask' style='position:fixed;width:100%;height:100%;z-index:10;background-color:gray;'></div>");
+    $("#PopupMask").css('opacity', 0.5);
+    $("#"+id).css( "z-index" , 11 );
+    $("#"+id).css( "position" , "fixed" );
+    $("#"+id).css( "display" , "block" );
   }
+
+  function selectItem(qid, search_q) {
+    $('#qid').val(qid);
+    $('#search_q').val(search_q);
+    $('#search-subject-results-button').removeClass('disabled');
+  };
+
 
   $(document).ready(function() {
     $('.result-item').click(function(e) {
@@ -199,34 +210,55 @@
       $('.map').hide();
     });
 
-
-    // prep timeline
-    const container = document.getElementById('histropedia-timeline');
-    if (container != null) {
-      data = JSON.parse("#{j(raw @timeline_data)}");
-      let min = null;
-      let minVal = Infinity;
-      data.forEach((item) => {
-        if(item.from != null) {
-          const val = item.from.year * 10000; // + item.from.month * 100 + item.from.day;
-          if (val < minVal) {
-            minVal = val;
-            min = item;
+    try {
+      // prep timeline
+      const container = document.getElementById('histropedia-timeline');
+      if (container != null) {
+        const data = JSON.parse("#{j(raw @timeline_data)}");
+        let min = null;
+        let minVal = Infinity;
+        data.forEach((item) => {
+          if(item.from != null) {
+            const val = item.from.year * 10000; // + item.from.month * 100 + item.from.day;
+            if (val < minVal) {
+              minVal = val;
+              min = item;
+            }
           }
-        }
-      });
-      const timeline = new Histropedia.Timeline(container, { height: 700, article: {distanceToMainLine: 100}, 
-        initialDate: (min ? min.from : null),
-        article: {autoStacking: {topGap: 0, fitToHeight: false}},
-        onArticleClick: function(article) {
-          $('#qid').val(article.id);
-          $('#search_q').val(article.title);
-          $('#search-subject-results-button').removeClass('disabled');
-        },
-        onArticleDoubleClick: function(article) {
-        }
-      });
-      timeline.load(data);
+        });
+        const timeline = new Histropedia.Timeline(container, { height: 700, article: {distanceToMainLine: 100},
+          initialDate: (min ? min.from : 19800000),
+          article: {autoStacking: {topGap: 0, fitToHeight: false}},
+          onArticleClick: function(article) { selectItem(article.id, article.title); },
+          onArticleDoubleClick: function(article) {
+          }
+        });
+        timeline.load(data);
+      }
+    } catch (e) {
+      console.error(e);
     }
+
+    const map = new google.maps.Map(
+        document.getElementById('map_container'),
+        {
+          center: { lat: 31.771959, lng: 35.217018 }, /* coordinates of Jerusalem */
+          zoom: 2
+        }
+    );
+
+    const markers = [];
+
+    #{raw @map_markers.to_json}.forEach(item => {
+      const marker = new google.maps.Marker({
+        position: { lat: item['latitude'], lng: item['longitude'] },
+        map,
+        title: item['title'],
+        icon: item['icon']
+      });
+      marker.addListener("click", () => { selectItem(item['qid'], item['title']); });
+      markers.push(marker);
+    });
+
+    new markerClusterer.MarkerClusterer({ markers, map });
   });
-  

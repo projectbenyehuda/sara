@@ -2,6 +2,9 @@ require 'rest-client'
 
 MAX_WIKIDATA_RESULTS = 400
 
+PROP_COORDINATES = 'P625'
+PROP_INSTANCE_OF = 'P31'
+
 class WelcomeController < ApplicationController
   before_action :force_json, only: [:autocomplete_by_filter_tag, :query_by_filter]
 
@@ -103,17 +106,21 @@ class WelcomeController < ApplicationController
       images = {}
       print "."
       slice_ids = id_slice.join('|')
-      json2 = Rails.cache.fetch("entities_#{Digest::SHA256.hexdigest(slice_ids)}", expires_in: 12.hours) do
+      slice_items = Rails.cache.fetch("entities_#{Digest::SHA256.hexdigest(slice_ids)}", expires_in: 12.hours) do
         Rails.logger.debug "cache miss for entities for #{slice_ids}"
         RestClient.get 'https://www.wikidata.org/w/api.php', {params: {action: 'wbgetentities', ids: slice_ids, language: 'he', uselang: 'he', props: 'sitelinks|claims', format: 'json'}} do |resp, req, res, &block|
           if res.class == Net::HTTPOK
-            json2 = JSON.parse(resp.body)
+            JSON.parse(resp.body)
           end
         end
       end
-      json2['entities'].keys.each do |qid|
-        item = json2['entities'][qid]
-        @results[qid]['instance-of'] = item['claims']['P31'].map{|c| c['mainsnak']['datavalue']['value']['id']} if item['claims'].key?('P31')
+      slice_items['entities'].keys.each do |qid|
+        item = slice_items['entities'][qid]
+        claims = item['claims']
+
+        @results[qid]['instance-of'] = wikimedia_prop_values(claims, PROP_INSTANCE_OF)&.map{|c| c['id']}
+        @results[qid]['coordinates'] = first_prop_value(claims, PROP_COORDINATES, nil)
+
         @results[qid]['wikipedia_url'] = item['sitelinks']['hewiki'] ? 'https://he.wikipedia.org/wiki/'+item['sitelinks']['hewiki']['title'] : ''
         imagename = item['claims']['P18'] ? item['claims']['P18'][0]['mainsnak']['datavalue']['value'] : ''
         images['File:'+imagename] = qid unless imagename.empty?
@@ -166,7 +173,21 @@ class WelcomeController < ApplicationController
     @labels = get_labels_for_qids(qids.uniq)
     # TODO: also fetch Wikipedia article intros?
     @timeline_data = JSON.generate(prep_timeline_data(@results))
+
+    @map_markers = prep_map_markers(@results)
   end
+
+  def wikimedia_prop_values(claims, prop)
+    values = claims[prop]
+    return nil if values.nil?
+    return claims[prop].map { |item| item['mainsnak']['datavalue']['value']}
+  end
+
+  def first_prop_value(claims, prop, default_value = '')
+    values = wikimedia_prop_values(claims, prop)
+    return values.nil? || values.empty? ? default_value : values[0]
+  end
+
   def prep_timeline_data(results)
     timeline_data = []
     results.each do |qid, data|
@@ -179,6 +200,18 @@ class WelcomeController < ApplicationController
     end
     return timeline_data
   end
+
+  def prep_map_markers(items)
+    result = []
+    items.each do |qid, data|
+      coordinates = data['coordinates']
+      next if coordinates.blank?
+      result << coordinates.slice('latitude', 'longitude').merge(title: data[:label], icon: data['thumbnail'], qid: qid)
+    end
+
+    return result
+  end
+
   def compose_query(base_query)
     ret = base_query
     if params[:fromdate].present? || params[:todate].present?
