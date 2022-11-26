@@ -85,6 +85,7 @@ he:
   commons: ויקישיתוף
   jpress: עיתונות יהודית היסטורית
   kan: כאן
+  kan_source: כאן – תאגיד השידור הציבורי
   occupations: תחומי עיסוק
   nationality: לאום
   to_wikipedia: לערך בוויקיפדיה
@@ -106,5 +107,7 @@ he:
   sources: מקורות
   pby_citation: "%{authors}. (%{year}). %{title}. [גרסה אלקטרונית]. %{url}. פרויקט בן־יהודה."
   nli_citation: "%{authors}. (%{year}). %{title}. [גרסה אלקטרונית]. %{url}. הספרייה הלאומית."
+  kan_citation: "%{title}. %{url}. כאן – תאגיד השידור הציבורי."
+  commons_citation: "%{title}. %{url}. דרך ויקישיתוף."
   source: מקור
   download_as_file: הורדה כקובץ

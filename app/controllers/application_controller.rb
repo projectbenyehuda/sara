@@ -158,6 +158,8 @@ class ApplicationController < ActionController::Base
       ret += t(:commons_citation, title: item['title'], url: item['url'])
     when 'wikidata'
       ret += t(:wikidata_citation, title: item['title'], url: item['url'])
+    when 'kan'
+      ret += t(:kan_citation, title: item['title'], url: item['url'])
     else
       ret += t(:unknown)
     end
@@ -174,6 +176,8 @@ class ApplicationController < ActionController::Base
       return t(:commons)
     when 'wikidata'
       return t(:wikidata)
+    when 'kan'
+      return t(:kan_source)
     else
       return t(:unknown)
     end
