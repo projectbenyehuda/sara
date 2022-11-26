@@ -71,7 +71,7 @@
               - ResponseItem.media_types.invert.each do |p|
                 .option-line
                   - attrs = {}
-                  - attrs.merge!({:name => "ckb_types[]", :type => "checkbox", id: "source_#{p[1]}", value: p[1]})
+                  - attrs.merge!({:name => "ckb_types[]", :type => "checkbox", id: "mtype_#{p[1]}", value: p[1]})
                   - attrs.merge!({checked: 'checked'}) if @media_types.present? && @media_types.include?(p[1])
                   %input{ attrs}
                   %label
@@ -123,7 +123,7 @@
           %a.by-icon-v02{:href => "#"} -
         .dashboard
           - @items.group(:media_type).count.each do |mtype, count|
-            .dashboard-item
+            .dashboard-item{'data-mtype' => mtype}
               %p.headline-4
                 %a{:href => "#"}= textify_media_type(mtype)
                 = "(#{count})"
@@ -324,7 +324,12 @@
         });
       }
     });
-
+    $('.dashboard-item').click(function(e){
+      e.preventDefault();
+      $('#mtype_'+$(this).attr('data-mtype')).prop('checked', true);
+      startModal('spinnerdiv');
+      $('#filters_form').submit();
+    });
     $('.fav').click(function(e){
       e.preventDefault();
       toggle_fav(this);
