@@ -31,6 +31,7 @@ gem "jbuilder"
 
 gem "haml", "~> 5.2"
 gem 'hebrew' # for Hebrew string manipulation
+gem 'hebruby' # for Hebrew calendar dates
 gem 'httparty' # for HTTP requests
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"

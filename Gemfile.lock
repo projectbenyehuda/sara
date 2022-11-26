@@ -123,6 +123,7 @@ GEM
       temple (>= 0.8.0)
       tilt
     hebrew (0.2.6)
+    hebruby (2.1.1)
     http-accept (1.7.0)
     http-cookie (1.0.5)
       domain_name (~> 0.5)
@@ -341,6 +342,7 @@ DEPENDENCIES
   faker
   haml (~> 5.2)
   hebrew
+  hebruby
   httparty
   jbuilder
   jsbundling-rails (~> 1.0)
