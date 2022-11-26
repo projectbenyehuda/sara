@@ -21,7 +21,8 @@ class ResponseItem < ApplicationRecord
     nli: 2,
     pby: 3,
     wikidata: 4,
-    commons: 5
+    commons: 5,
+    kan: 6
   }, _prefix: true
 
   enum media_type: {

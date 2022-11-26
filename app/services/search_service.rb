@@ -1,5 +1,5 @@
 class SearchService < ApplicationService
-  PROVIDERS = [Search::PbySearchProvider, Search::NliSearchProvider, Search::CommonsSearchProvider]
+  PROVIDERS = [Search::NliSearchProvider, Search::PbySearchProvider, Search::CommonsSearchProvider, Search::KanSearchProvider]
 
   def call(query)
     PROVIDERS.each do|klass|
