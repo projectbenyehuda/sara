@@ -55,6 +55,7 @@ class WelcomeController < ApplicationController
             prep_items(ids)
           end
         end
+        @sorted_keys = @results.sort_by{|item| item[1][:label]}.map{|arr| arr[0]}
       else
         flash[:error] = 'לא הוזנו די פרטים'
         redirect_to root_path
