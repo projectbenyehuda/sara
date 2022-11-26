@@ -116,30 +116,31 @@
           .small-switch
             %button#item-by-type.small-switch-option.sort-by.active= t('.by_type')
             %button#flat-list.small-switch-option.sort-by= t('.flat_list')
-    .results-side
-      .dashboard-views{style: 'margin-top: 121px;'}
-        .flex-headline-space-between
-          %p.headline-3= t('.summary_by_type')
-          %a.by-icon-v02{:href => "#"} -
-        .dashboard
-          - @items.group(:media_type).count.each do |mtype, count|
-            .dashboard-item{'data-mtype' => mtype}
-              %p.headline-4
-                %a{:href => "#"}= textify_media_type(mtype)
-                = "(#{count})"
-              .d-frame.d1
-              .d-frame.d2
-              .d-frame.d3
-                %a{:href => "#"}
-                  .dashboard-item-right
-                    - mtype_img = image_for_media_type(mtype)
-                    - unless mtype_img.empty?
-                      .dashboard-image
-                        = image_tag mtype_img, {alt: textify_media_type(mtype)}
-                  -#.dashboard-item-left
-                  -#  .result-sources-icons
-                  -#    %img{:alt => "הספריה הלאומית של ישראל", :src => "/assets/nli_logo_24.png"}/
-                  -#  .result-type-label תמונה
+    .results-side{style: 'margin-top: 121px;'}
+      - unless @media_types.present?
+        .dashboard-views
+          .flex-headline-space-between
+            %p.headline-3= t('.summary_by_type')
+            %a.by-icon-v02#dismiss_mtype_dashboard{:href => "#"} -
+          .dashboard
+            - @items.group(:media_type).count.each do |mtype, count|
+              .dashboard-item{'data-mtype' => mtype}
+                %p.headline-4
+                  %a{:href => "#"}= textify_media_type(mtype)
+                  = "(#{count})"
+                .d-frame.d1
+                .d-frame.d2
+                .d-frame.d3
+                  %a{:href => "#"}
+                    .dashboard-item-right
+                      - mtype_img = image_for_media_type(mtype)
+                      - unless mtype_img.empty?
+                        .dashboard-image
+                          = image_tag mtype_img, {alt: textify_media_type(mtype)}
+                    -#.dashboard-item-left
+                    -#  .result-sources-icons
+                    -#    %img{:alt => "הספריה הלאומית של ישראל", :src => "/assets/nli_logo_24.png"}/
+                    -#  .result-type-label תמונה
       .results-by-type
         .results-list
           .flex-headline-space-between
@@ -333,5 +334,9 @@
     $('.fav').click(function(e){
       e.preventDefault();
       toggle_fav(this);
+    });
+    $('#dismiss_mtype_dashboard').click(function(e){
+      e.preventDefault();
+      $('.dashboard-views').hide();
     });
   });
