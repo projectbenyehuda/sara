@@ -37,6 +37,8 @@ module ApplicationHelper
       return 'nli_logo_24.png'
     when 'pby'
       return 'pby_logo_24.png'
+    when 'kan'
+      return 'kan_logo_24.png'
     when 'wikidata'
       return ''
     else
