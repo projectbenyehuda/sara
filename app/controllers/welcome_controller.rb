@@ -172,7 +172,7 @@ class WelcomeController < ApplicationController
     end
     @labels = get_labels_for_qids(qids.uniq)
     # TODO: also fetch Wikipedia article intros?
-    @timeline_data = JSON.generate(prep_timeline_data(@results))
+    @timeline_data = prep_timeline_data(@results)
 
     @map_markers = prep_map_markers(@results)
   end

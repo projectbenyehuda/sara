@@ -212,7 +212,7 @@
       // prep timeline
       const container = document.getElementById('histropedia-timeline');
       if (container != null) {
-        const data = JSON.parse("#{j(raw @timeline_data)}");
+        const data = #{raw @timeline_data.to_json} || [];
         let min = null;
         let minVal = Infinity;
         let max = null;
@@ -253,7 +253,8 @@
 
     const markers = [];
 
-    #{raw @map_markers.to_json}.forEach(item => {
+    const data = #{raw @map_markers.to_json} || [];
+    data.forEach(item => {
       const marker = new google.maps.Marker({
         position: { lat: item['latitude'], lng: item['longitude'] },
         map,
