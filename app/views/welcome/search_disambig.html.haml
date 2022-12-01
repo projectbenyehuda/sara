@@ -230,13 +230,23 @@
             }
           }
         });
-        const timeline = new Histropedia.Timeline(container, { height: 700, article: {distanceToMainLine: 100},
-          initialDate: ((max && min) ? (min.from.year + (max.from.year - min.from.year) / 2) : (min ? min.from : 19800000)),
-          article: {autoStacking: {topGap: 0, fitToHeight: false}},
-          onArticleClick: function(article) { selectItem(article.id, article.title); },
-          onArticleDoubleClick: function(article) {
+        const timeline = new Histropedia.Timeline(
+          container,
+          {
+            height: 700,
+            article: {distanceToMainLine: 100},
+            initialDate: ((max && min) ? (min.from.year + (max.from.year - min.from.year) / 2) : (min ? min.from : 19800000)),
+            zoom: {
+              initial: 30,
+              minimum: 24,
+              maximum: 40,
+              wheelStep: 1
+            },
+            article: { autoStacking: {topGap: 0, fitToHeight: false } },
+            onArticleClick: function(article) { selectItem(article.id, article.title); },
+            onArticleDoubleClick: function(article) { }
           }
-        });
+        );
         timeline.load(data);
       }
     } catch (e) {
