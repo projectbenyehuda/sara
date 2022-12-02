@@ -212,7 +212,7 @@
       // prep timeline
       const container = document.getElementById('histropedia-timeline');
       if (container != null) {
-        const data = JSON.parse("#{j(raw @timeline_data)}");
+        const data = #{raw @timeline_data.to_json} || [];
         let min = null;
         let minVal = Infinity;
         let max = null;
@@ -230,13 +230,23 @@
             }
           }
         });
-        const timeline = new Histropedia.Timeline(container, { height: 700, article: {distanceToMainLine: 100},
-          initialDate: ((max && min) ? (min.from.year + (max.from.year - min.from.year) / 2) : (min ? min.from : 19800000)),
-          article: {autoStacking: {topGap: 0, fitToHeight: false}},
-          onArticleClick: function(article) { selectItem(article.id, article.title); },
-          onArticleDoubleClick: function(article) {
+        const timeline = new Histropedia.Timeline(
+          container,
+          {
+            height: 700,
+            article: {distanceToMainLine: 100},
+            initialDate: ((max && min) ? (min.from.year + (max.from.year - min.from.year) / 2) : (min ? min.from : 19800000)),
+            zoom: {
+              initial: 30,
+              minimum: 24,
+              maximum: 40,
+              wheelStep: 1
+            },
+            article: { autoStacking: {topGap: 0, fitToHeight: false } },
+            onArticleClick: function(article) { selectItem(article.id, article.title); },
+            onArticleDoubleClick: function(article) { }
           }
-        });
+        );
         timeline.load(data);
       }
     } catch (e) {
@@ -253,7 +263,8 @@
 
     const markers = [];
 
-    #{raw @map_markers.to_json}.forEach(item => {
+    const data = #{raw @map_markers.to_json} || [];
+    data.forEach(item => {
       const marker = new google.maps.Marker({
         position: { lat: item['latitude'], lng: item['longitude'] },
         map,
