@@ -162,7 +162,11 @@
                   .result-item-content
                     - if item.thumbnail_url.present?
                       .subject-picture
-                        %img{src: item.thumbnail_url}
+                        - if item.media_url.present? && item.media_type == 'image'
+                          = link_to item.media_url, {'data-lightbox' => "item_#{item.id}"} do
+                            %img{src: item.thumbnail_url}
+                        - else
+                          %img{src: item.thumbnail_url}
                     .result-texts
                       - if item.title.present?
                         %b

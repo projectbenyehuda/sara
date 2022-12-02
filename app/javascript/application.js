@@ -5,7 +5,7 @@ import * as bootstrap from "bootstrap"
 
 require('jquery-mousewheel')($);
 require('easy-autocomplete');
-
+require('./lightbox.min')
 import { Histropedia } from '../../lib/assets/javascript/histropedia-1.2.0';
 
 
